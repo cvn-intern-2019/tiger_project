@@ -2,6 +2,47 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/header.css')
+    block stylesheet
   body
+    header
+      <nav class="navbar navbar-expand-lg navbar-dark bg_222" id="top_nav">
+      <a class="navbar-brand" href="/">Werewolf</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#site_page_menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="site_page_menu">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/lounge">Lounge</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+        </ul>
+        <div class="my-2 my-lg-0 dropdown" id="user_actions_dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="user_actions_dropdown_list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown huynhlehieunam
+          </button>
+          <div class="dropdown-menu" aria-labelledby="user_actions_dropdown_list">
+            <a class="dropdown-item" href="/profile">View profile</a>
+            <a class="dropdown-item" href="/user/history">View history</a>
+            <a class="dropdown-item" href="/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+
     block content
+
+    footer(class='container-fluid py-2 bg_222 text-white')
+      p Made by Tiger Team
+
+    script(src='/javascripts/popper.min.js')
+    script(src='/javascripts/jquery-3.4.1.js')
+    script(src='/javascripts/bootstrap.js')
+    script(src='/javascripts/main.js')

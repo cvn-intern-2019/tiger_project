@@ -1,0 +1,12 @@
+#top_nav {
+  padding: 0 15px;
+}
+
+#top_nav #site_page_menu a {
+  padding: 10px 20px;
+}
+
+#top_nav #site_page_menu a:hover {
+  background: #6C757D !important;
+}
+/*# sourceMappingURL=header.css.map */

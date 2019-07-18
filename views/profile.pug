@@ -1,0 +1,31 @@
+extends layout
+
+block stylesheet
+  link(rel='stylesheet', href='/stylesheets/profile.css')
+
+block content
+  main.profile_detail.bg_secondary_c.py-5
+    div#profile_detail_panel
+      div#avatar_area
+        img.img-fluid(src='/img/user-avatar.png')
+
+      div.text-center.font-weight-bold#username #{username}
+
+      div.mt-5.user_info
+        div.row.user_info_field
+          span.col-3.user_info_label Email
+          span.col-9.user_info_value #{email}
+        div.row.user_info_field
+          span.col-3.user_info_label Phone
+          span.col-9.user_info_value #{phone}
+        div.row.user_info_field
+          span.col-3.user_info_label Birthday
+          span.col-9.user_info_value #{birthday}
+        div.row.user_info_field
+          span.col-3.user_info_label Password
+          span.col-9.user_info_value #{password}
+      div.change_profile_btn_container.mt-5.text-center
+        a#change_profile_btn(class='btn btn-primary',href='/profile/edit') Change Profile
+
+
+    
