@@ -20,4 +20,16 @@ This is project of Tiger Team when we join the internship in Cybozu Vietnam comp
 		- MongoDB  
 		- MongooseJS library
 	
-Updating...
+2. **FEATURES:**
+- Register account, sign in and sign out.
+- Create room and join room.
+- Play game (traditional rules) and communicate with chat box.
+- View the playing history.
+- Add friend with other player.
+- View profile of other player
+3. **TEAM MEMBER:**
+- Mentor: Vu Cong Tan Tai
+- Trinh Duc Duy
+- Phan Thi Mai
+- Huynh Le Hieu Nam
+- Nguyen Duy Poon
