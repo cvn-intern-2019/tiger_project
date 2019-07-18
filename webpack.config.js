@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -28,8 +27,8 @@ module.exports = {
 	mode: 'development',
 
 	entry: {
-		pageOne: './pageOne.js',
-		pageTwo: './pageTwo.js'
+		pageOne: './src/pageOne.js',
+		pageTwo: './src/pageTwo.js'
 	},
 
 	output: {
