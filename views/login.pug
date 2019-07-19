@@ -2,7 +2,7 @@ doctype html
 html
     head
         title Login | Werewolf Online - Tiger Team
-        link(rel="stylesheet", href="/stylesheets/animate.css")
+        //- link(rel="stylesheet", href="/stylesheets/animate.css")
         script(src="/javascripts/login.js")
         script(src="https://kit.fontawesome.com/3f47eb379d.js")
     body.bg-dark.text-light(style="overflow:hidden;")
@@ -12,19 +12,23 @@ html
                     .container.bg-secondary.p-5.animated.slideInLeft.faster
                         .row
                             .display-4.font-weight-bold Welcome
-                            .h3.pl-5 Please log in to continue...
-
-                        //error notify
+                            .h3.pl-5 Please log in to continue...                        
 
                         .row.d-flex.justify-content-center.mt-5
-                            form.form-group.w-75
+                            form.form-group.w-75(method="POST" action="")
+                                if errMsg
+                                    .alert.alert-danger
+                                        span
+                                            i.fas.fa-lg.fa-exclamation-triangle.mr-2
+                                        | #{errMsg}
                                 .input-group
                                     i.fas.fa-3x.fa-user.mr-2
                                     input.form-control-lg.form-control.mb-3.w-75(type="text" name="username" placeholder="Username" required)
-
                                 .input-group
                                     i.fas.fa-3x.fa-lock.mr-2
                                     input.form-control-lg.form-control.w-75(type="password" name="password" placeholder="Password" required)
+                                .input-group
+                                    input(type="hidden" name="csrfToken" value=csrfToken)
                                 .row.mt-4
                                     .col
                                         a.text-light(href="#") Forget password?
