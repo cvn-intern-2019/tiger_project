@@ -28,8 +28,7 @@ module.exports = {
 	mode: 'development',
 
 	entry: {
-		pageOne: './pageOne.js',
-		pageTwo: './pageTwo.js'
+		lounge: ['./src/lounge.js' ]
 	},
 
 	output: {

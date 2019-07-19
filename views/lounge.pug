@@ -1,0 +1,57 @@
+doctype html
+html
+    head
+        title Lounge | Werewolf Online - Tiger Team
+        link(rel="stylesheet", href="/stylesheets/lounge.css")
+        link(rel="stylesheet",href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+        script(src="/javascripts/lounge.js")
+        script(src="https://kit.fontawesome.com/3f47eb379d.js")
+
+        script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+
+    body.bg-dark.text-light
+        .container-fluid
+    -   var username = "PhanMai"
+        .row.top
+            .col-8
+                h1 WereWolf Online
+            .col-4
+                h5.float-right  #{username}
+
+
+        .row
+            form.form-inline.my-2.my-lg-0.float-right.searchForm 
+                input.form-control.mr-sm-2(type='search', placeholder='ID_Room', aria-label='Search')
+                button.btn.btn-outline-light.my-2.my-sm-0(type='click')  Search
+                button.btn.btn-outline-light.my-2.my-sm-0.createRoom(type='click')  CreateNewRoom
+
+        .row.room
+                each room in rooms 
+                    .col-sm-6.col-md-4.col-lg-4.mt-3
+                        .card
+                            h5.card-header.text-dark RoomID :  #{room.roomID}
+                            .card-body
+                                h5.card-title.text-dark Room's auther :   
+                                    a(href='/user') #{room.roomAuthor}
+                                p.card-text.text-dark Number players : #{room.roomNumPlayers}
+                                a.btn.btn-dark(href='/user/room') Join
+
+        .row
+            footer.page-footer.font-small.dark
+                .footer-copyright.py-3.text-center
+                    | &copy; 2019 Internship's Cybozu 
+                    a(href='#')  Made by Tiger Team
+
+
+
+
+
+
+
+
+
+
+
+
