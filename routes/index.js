@@ -57,17 +57,37 @@ router.get('/lounge', function(req, res, next) {
 });
 
 router.get('/user/room', function(req, res, next) {
-  res.render('user/room', { title: 'Room' });
+
+  var players = [
+    {
+      username : "HoangNhi",
+      id : 1
+    },
+    {
+      username : "HongMo",
+      id : 2
+    },
+    {
+      username : "TuPhi",
+      id : 3
+    },
+    {
+      username : "ThuQuyen",
+      id : 4
+    },
+    {
+      username : "KieuNgan",
+      id : 5
+    }
+  ]
+  res.render('user/room', { title: 'Room', players: players });
+
 });
 
 router.get('/user', function(req, res, next) {
   res.render('user/index', { title: 'Profile' });
 });
 
-// router.get('/user/:id', function(req, res, next) {
-//   let id = req.params.id;
-//   res.render('user/'+ id, { title: 'Room' });
-// });
 
 
 module.exports = router;

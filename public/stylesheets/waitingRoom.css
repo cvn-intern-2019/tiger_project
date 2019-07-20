@@ -4,7 +4,7 @@ body {
     min-height: 100vh;
     position: relative;
     margin: 0;
-    
+    overflow: hidden;
     background-image: url('../images/logo.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -19,7 +19,46 @@ body {
     width: 90%;
 }
 
+.top h5:hover{
+    cursor: pointer;
+}
 
+.customSetting{
+    position: fixed;
+    bottom: 10%;
+}
+
+
+.customSetting :hover{
+    cursor: pointer;
+    
+}
+
+
+.container{
+    margin-top : 50px;
+    position: fixed;
+    bottom: 15%;
+}
+
+.searchForm{
+    padding-right : 22%;
+    padding-top : 5px;
+    
+    
+}
+
+.listPlayers button{
+    width: 45%;
+    margin-right: 5px;
+}
+
+
+
+.list-group{
+    width: 90%;
+
+}
 
 footer {
     position: absolute;
