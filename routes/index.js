@@ -5,7 +5,8 @@ var User = require("../models/user.model");
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
-  res.render("index", { title: "Express" });
+  if (req.session.isLogin) return res.redirect("/lounge");
+  res.redirect('/login');
 });
 
 //===============================================================================
