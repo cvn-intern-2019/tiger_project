@@ -6,6 +6,7 @@ const register = require("./register");
 
 $(document).ready(() => {
   register.hideForm();
+  login.showForm();
 
   $(`#loginSubmit`).mousedown(event => {
     if (event.which == 1) {

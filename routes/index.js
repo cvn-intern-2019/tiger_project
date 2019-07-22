@@ -70,7 +70,6 @@ router.post("/login", (req, res, next) => {
           msg: "Account does not exist!"
         });
       }
-      console.log(hashPassword(body.username, body.password));
       if (hashPassword(body.username, body.password) !== user.password) {
         req.session.csrfToken = csrfToken;
         return res.json({

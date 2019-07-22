@@ -3,7 +3,7 @@ html
     head
         title Login | Werewolf Online - Tiger Team
         //- link(rel="stylesheet", href="/stylesheets/animate.css")
-        script(src="/javascripts/main.js")
+        script(src="/javascripts/login_main.js")
         script(src="https://kit.fontawesome.com/3f47eb379d.js")
     body.bg-dark.text-light(style="overflow:hidden;")
         .container-fluid
@@ -15,8 +15,8 @@ html
                             .h3.pl-5 Please log in to continue...                        
 
                         .row.d-flex.justify-content-center.mt-5
-                            form.form-group.w-75(method="POST", action="/login")
-                                #loginMsg.alert.alert-danger
+                            form.form-group.w-75.was-validated
+                                #msg.alert.alert-danger
 
                                 .input-group
                                     i.fas.fa-3x.fa-user.mr-2

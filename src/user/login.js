@@ -5,7 +5,7 @@ module.exports.hideForm = () => {
 };
 
 module.exports.showForm = () => {
-  $(`#loginMsg`).hide();
+  $(`#loginForm #msg`).hide();
   $(`#loginForm`).show();
 };
 
@@ -20,7 +20,7 @@ module.exports.loginBtnEvent = () => {
 
   $.post("/login", input)
     .done(data => {
-      let msgTag = $(`#loginForm #loginMsg`);
+      let msgTag = $(`#loginForm #msg`);
       let icon = `<i class="fas fa-lg fa-exclamation-triangle mr-2"/>`;
       let child = `<span>${icon}${data.msg}</span>`;
 
@@ -37,7 +37,7 @@ module.exports.loginBtnEvent = () => {
       }
       $(`#loginForm input[name=csrfToken`).val(data.csrfToken);
       $(`#loginForm input[name=csrfToken`).val(data.csrfToken);
-      $(`#loginForm #loginMsg`).show();
+      $(`#loginForm #msg`).show();
       $(`#loginSubmit`).attr("disabled", false);
     })
     .fail(() => {
