@@ -1,0 +1,22 @@
+#user_detail_panel {
+  height: auto;
+}
+
+#user_detail_panel #avatar_area {
+  width: 160px;
+  height: 160px;
+  padding: 5px;
+}
+
+#user_detail_panel > div, #user_detail_panel > form {
+  margin-bottom: 30px;
+}
+
+#user_detail_panel > div .detail_info_field, #user_detail_panel > form .detail_info_field {
+  margin-top: 8px;
+}
+
+#user_detail_panel > div .detail_info_field .detail_info_value, #user_detail_panel > form .detail_info_field .detail_info_value {
+  font-weight: bold;
+}
+/*# sourceMappingURL=profile.css.map */

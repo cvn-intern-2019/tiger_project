@@ -1,31 +1,29 @@
 extends layout
-
 block stylesheet
-  link(rel='stylesheet', href='/stylesheets/profile.css')
-
+  link(rel="stylesheet", href="/stylesheets/profile/profile.css")
 block content
-  main.profile_detail.bg_secondary_c.py-5
-    div#profile_detail_panel
-      div#avatar_area
-        img.img-fluid(src='/img/user-avatar.png')
+  main.bg_dark_medium.py-5
+    div.container
+      div.row
+        div.col-md-6.mx-auto.bg_dark_light#user_detail_panel
+          div.mx-auto#avatar_area
+            img.img-fluid(src="/images/user_avatar.png", alt="")
+          div.text-center
+            p.font-weight-bold #{userData.username}
+          div.detail_info.mb-5
+            div.row.detail_info_field
+              div.col-4.detail_info_key Email
+              div.col-8.detail_info_value #{userData.email}
+            div.row.detail_info_field
+              div.col-4.detail_info_key Phone
+              div.col-8.detail_info_value #{userData.phone}
+            div.row.detail_info_field
+              div.col-4.detail_info_key Birthday
+              div.col-8.detail_info_value #{userData.birthday}
+            div.row.detail_info_field
+              div.col-4.detail_info_key Password
+              div.col-8.detail_info_value #{userData.password}
+          div#edit_profile.text-center
+            a.btn_no_radius.btn.btn-primary(href="/profile/edit") Edit Profile
 
-      div.text-center.font-weight-bold#username #{username}
-
-      div.mt-5.user_info
-        div.row.user_info_field
-          span.col-3.user_info_label Email
-          span.col-9.user_info_value #{email}
-        div.row.user_info_field
-          span.col-3.user_info_label Phone
-          span.col-9.user_info_value #{phone}
-        div.row.user_info_field
-          span.col-3.user_info_label Birthday
-          span.col-9.user_info_value #{birthday}
-        div.row.user_info_field
-          span.col-3.user_info_label Password
-          span.col-9.user_info_value #{password}
-      div.change_profile_btn_container.mt-5.text-center
-        a#change_profile_btn(class='btn btn-primary',href='/profile/edit') Change Profile
-
-
-    
+  

@@ -1,0 +1,24 @@
+.bg_dark_bold {
+  background: #222;
+}
+
+.bg_dark_medium {
+  background: #343a40;
+}
+
+.bg_dark_light {
+  background: #6c757d;
+}
+
+.text_light {
+  color: #f8f9fa;
+}
+
+.bg_light {
+  background: #f8f9fa;
+}
+
+.btn_no_radius {
+  border-radius: 0px !important;
+}
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,17 @@
+#user_detail_panel{
+    height: auto;
+    #avatar_area{
+        width: 160px;
+        height: 160px;
+        padding: 5px;
+    }
+    >div,>form{
+        margin-bottom: 30px;
+        .detail_info_field{
+            margin-top: 8px;
+            .detail_info_value{
+                font-weight: bold;
+            }
+        }
+    }
+}

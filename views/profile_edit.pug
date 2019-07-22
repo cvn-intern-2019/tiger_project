@@ -1,0 +1,36 @@
+extends layout
+block stylesheet
+  script(src="/javascripts/profile_edit.js")
+  link(rel="stylesheet", href="/stylesheets/profile/profile.css")
+  link(rel="stylesheet", href="/stylesheets/profile/profile_edit.css")
+block content
+  main.bg_dark_medium.py-5
+    div.container
+      div.row
+        div.col-md-6.mx-auto.bg_dark_light#user_detail_panel
+          div.mx-auto#avatar_area
+            img.img-fluid(src="/images/user_avatar.png", alt="")
+            input(type="file" name="avatar", form="edit_info_form")
+          div.text-center
+            p.font-weight-bold #{userData.username}
+          ul.error-panel.bg_light.list-unstyled
+          form.detail_info.mb-5.pr-2#edit_info_form(action="/profile/edit",method="post",enctype="multipart/form-data")
+            div.row.detail_info_field
+              div.col-4.detail_info_key Email
+              p.col-8.detail_info_value= userData.email
+            div.row.detail_info_field
+              div.col-4.detail_info_key Phone
+              input.col-8.detail_info_value(type="string" name="phone" placeholder=userData.phone)
+            div.row.detail_info_field
+              div.col-4.detail_info_key Birthday
+              input.col-8.detail_info_value(type="date" name="birthday" plaxeholder="1997-04-12")
+            div.row.detail_info_field
+              div.col-4.detail_info_key Password
+              input.col-8.detail_info_value(type="text" name="password" placeholder=userData.password)
+            div.row.detail_info_field
+              div.col-4.detail_info_key Password
+              input.col-8.detail_info_value(type="text" name="retypePassword" placeholder="****************")
+          div#edit_profile.text-center
+            input.btn_no_radius.btn.btn-primary(type="submit" form="edit_info_form",value="Apply changes")
+
+  

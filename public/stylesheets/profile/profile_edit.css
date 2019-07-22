@@ -1,0 +1,20 @@
+.error-panel {
+  min-height: 150px;
+}
+
+#avatar_area {
+  position: relative;
+}
+
+#avatar_area input {
+  position: absolute;
+  top: 60px;
+  left: 30px;
+  color: transparent;
+  opacity: 0;
+}
+
+#avatar_area:hover input {
+  opacity: 1;
+}
+/*# sourceMappingURL=profile_edit.css.map */

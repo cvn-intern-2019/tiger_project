@@ -1,9 +1,11 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-var ManageProfileController = require('../controllers/ManageProfileController')
+var profileControlleer = require("../controllers/profileController");
 
-/* GET users listing. */
-router.get('/', ManageProfileController.getProfilePage);
-router.get('/edit', ManageProfileController.getProfileUpdatePage);
+
+router.get("/", profileControlleer.getProfilePage);
+router.get("/edit", profileControlleer.getProfileEditPage);
+router.post("/edit", profileControlleer.postProfileEdit);
+
 
 module.exports = router;

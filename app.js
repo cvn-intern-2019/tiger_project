@@ -1,7 +1,9 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
+var fileUpload = require("express-fileupload");
 var cookieParser = require("cookie-parser");
+//var cookieSession = require("cookie-session");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
@@ -13,7 +15,7 @@ var profileRouter = require('./routes/profile');
 var app = express();
 
 // database setup
-mongoose.connect("mongodb://localhost/werewolf", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/WereWolf", { useNewUrlParser: true });
 mongoose.connection
   .on("error", console.error.bind(console, "connection error:"))
   .once("open", () => {
@@ -24,15 +26,31 @@ mongoose.connection
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+app.use(fileUpload());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/img',express.static(path.join(__dirname, 'public/images')));
+//app.use(session({secret: "Tiger Team"}));
+
+// var checkLoggedIn = (req,res,next)=>{
+//   if(req.session.id){
+//     res.redirect('/lounge');
+//   }
+// }
+// var checkLoggedOut = (req,res,next)=>{
+//   if(!req.session.id){
+//     res.redirect('/login');
+//   }
+// }
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/profile', profileRouter);
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

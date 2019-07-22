@@ -27,8 +27,9 @@ module.exports = {
 	mode: 'development',
 
 	entry: {
-		pageOne: './src/pageOne.js',
-		pageTwo: './src/pageTwo.js'
+		layout: './src/layout/layout.js',
+		profile: './src/profile/profile.js',
+		profile_edit: './src/profile/profile_edit.js'
 	},
 
 	output: {
@@ -38,6 +39,10 @@ module.exports = {
 
 	module: {
 		rules: [
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
+			},
 			{
 				test: /.(js|jsx)$/,
 				include: [],

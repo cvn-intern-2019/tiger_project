@@ -81,19 +81,19 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/pageTwo.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/profile/profile.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/pageTwo.js":
-/*!************************!*\
-  !*** ./src/pageTwo.js ***!
-  \************************/
+/***/ "./src/profile/profile.js":
+/*!********************************!*\
+  !*** ./src/profile/profile.js ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("\n\n//# sourceURL=webpack:///./src/pageTwo.js?");
+eval("\n\n//# sourceURL=webpack:///./src/profile/profile.js?");
 
 /***/ })
 

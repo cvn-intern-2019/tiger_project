@@ -1,0 +1,12 @@
+#top_nav{
+    padding: 0px 15px;
+    #actions_menu{
+        a{
+            padding: 15px 20px;
+            &:hover{
+                background: #6c757d;
+                color: #f8f9fa;
+            }
+        }
+    }
+}

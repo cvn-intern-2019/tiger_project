@@ -1,0 +1,16 @@
+.error-panel{
+    min-height: 150px;
+}
+#avatar_area{
+    position: relative;
+    input{
+        position: absolute;
+        top: 60px;
+        left: 30px;
+        color: transparent;
+        opacity: 0;
+    }
+    &:hover input{
+        opacity: 1;
+    }
+}

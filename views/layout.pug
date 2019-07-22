@@ -1,48 +1,35 @@
 doctype html
 html
   head
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
     title= title
-    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
-    link(rel='stylesheet', href='/stylesheets/header.css')
+    link(rel="stylesheet", href="/stylesheets/main.css")
+    link(rel="stylesheet", href="/stylesheets/layout/layout.css")
+    script(src="/javascripts/layout.js")
     block stylesheet
   body
     header
-      <nav class="navbar navbar-expand-lg navbar-dark bg_222" id="top_nav">
-      <a class="navbar-brand" href="/">Werewolf</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#site_page_menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="site_page_menu">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/lounge">Lounge</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
-          </li>
-        </ul>
-        <div class="my-2 my-lg-0 dropdown" id="user_actions_dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="user_actions_dropdown_list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown huynhlehieunam
-          </button>
-          <div class="dropdown-menu" aria-labelledby="user_actions_dropdown_list">
-            <a class="dropdown-item" href="/profile">View profile</a>
-            <a class="dropdown-item" href="/user/history">View history</a>
-            <a class="dropdown-item" href="/logout">Logout</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-
+      nav.navbar.navbar-expand-lg.navbar-dark.bg_dark_bold#top_nav
+          a.navbar-brand(href='/') Werewolf Online
+          button.navbar-toggler(type='button' data-toggle='collapse' data-target='#actions_menu')
+              span.navbar-toggler-icon
+          div#actions_menu.collapse.navbar-collapse
+              ul.navbar-nav.mr-auto
+                  li.nav-item.active
+                      a.nav-link(href='/lounge') Lounge
+                  li.nav-item
+                      a.nav-link(href='/about') About
+              div.dropdown.my-2.my-lg-0#user_actions_dropdown
+                  button#user_actions_dropdown_btn.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                      | huynhlehieunam
+                  .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                      a.dropdown-item(href='/profile') View Profile
+                      a.dropdown-item(href='/profile/edit') Edit Profile
+                      a.dropdown-item(href='/user/history') View History
+                
 
     block content
 
-    footer(class='container-fluid py-2 bg_222 text-white')
-      p Made by Tiger Team
-
-    script(src='/javascripts/popper.min.js')
-    script(src='/javascripts/jquery-3.4.1.js')
-    script(src='/javascripts/bootstrap.js')
-    script(src='/javascripts/main.js')
+    footer.bg_dark_bold.p-2
+      p.text_light Made by Tiger Team
+    
