@@ -22,12 +22,12 @@ var historySchema = new Schema({
 
 // virtual attribute timeStart_formatted
 historySchema.virtual("timeStart_formatted").get(() => {
-  return moment(this.timeStart).format("YYYY/mm/DD");
+  return moment(this.timeStart).format("HH:MM:ss DD/MM/YYYY");
 });
 
 // virtual attribute timeFinish to timeFinish_formatted
 historySchema.virtual("timeFinish_formatted").get(() => {
-  return moment(this.timeFinish).format("YYYY/mm/DD");
+  return moment(this.timeFinish).format("HH:MM:ss DD/MM/YYYY");
 });
 
 module.exports = mongoose.model("History", historySchema);
