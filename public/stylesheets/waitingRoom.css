@@ -34,13 +34,6 @@ body {
     
 }
 
-
-.container{
-    margin-top : 50px;
-    position: fixed;
-    bottom: 15%;
-}
-
 .searchForm{
     padding-right : 22%;
     padding-top : 5px;
@@ -48,16 +41,27 @@ body {
     
 }
 
+.listPlayers{
+    margin-top : 50px;
+    position: fixed;
+    bottom: 15%;
+    
+}
+
+.listPlayers a:hover{
+    cursor: pointer;
+}
 .listPlayers button{
-    width: 45%;
+  
     margin-right: 5px;
+
 }
 
 
 
-.list-group{
-    width: 90%;
 
+.messages{
+    border: 1px solid white;
 }
 
 footer {

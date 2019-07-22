@@ -32,27 +32,42 @@ block content
                             i.fa.fa-user(aria-hidden='true')
                             |                             Profile
                         .dropdown-divider
+                        a.dropdown-item(href='/')
+                            i.fa.fa-history(aria-hidden='true')
+                            |                             History
+                        .dropdown-divider
                         a.dropdown-item(href="/")
-                            i.fal.fa-sign-out-alt(aria-hidden='true')
+                            i.fa.fa-sign-out-alt(aria-hidden='true')
                             |                             Sign Out
 
-        .row.container
+        .row
             .col-2
                 .customSetting
                     i.fas.fa-user-cog       CustomSetting
             .col-7
                 .messages
+                    
             .col-3
                 .listPlayers
                     ul.list-group.list-group-flush
+                        li.list-group-item.text-dark Number players :       #{players.length + 1}
                         each player in players 
                             li.list-group-item.text-dark
                                 a.btn.btn-outline-light(role="button")  
                                     i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
 
+                        form.form-inline
+                            input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
+                            a.btn.btn-outline-dark(role="button") 
+                                i.fa.fa-search-plus(aria-hidden='true')
+                                |                             Add
+                                
                     button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
                     a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
 
 
 
         footer.page-footer.font-small.dark
+            .footer-copyright.py-3.text-center
+                | &copy; 2019 Internship's Cybozu 
+                a(href='#')  Made by Tiger Team
