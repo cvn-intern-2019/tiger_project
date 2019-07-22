@@ -26,7 +26,11 @@ module.exports = {
   mode: "development",
 
   entry: {
-    main: ["./src/user/main.js", "./src/user/login.js"]
+    login_main: [
+      "./src/user/main.js",
+      "./src/user/login.js",
+      "./src/user/register.js"
+    ]
   },
 
   output: {

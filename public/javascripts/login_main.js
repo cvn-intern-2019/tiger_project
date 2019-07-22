@@ -194,18 +194,29 @@ eval("const $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/j
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ \"./node_modules/bootstrap/dist/css/bootstrap.min.css\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../user/animate.css */ \"./src/user/animate.css\");\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_user_animate_css__WEBPACK_IMPORTED_MODULE_1__);\n\r\n\r\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\r\nconst login = __webpack_require__(/*! ./login */ \"./src/user/login.js\");\r\n\r\n$(document).ready(() => {\r\n  $(`#loginSubmit`).mousedown(event => {\r\n    if (event.which == 1) {\r\n      login.loginBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#loginForm input`).keypress(event => {\r\n    if (event.which == 13) {\r\n      login.loginBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#goRegister`).mousedown(event => {\r\n    if (event.which == 1) {\r\n    }\r\n  });\r\n});\r\n\n\n//# sourceURL=webpack:///./src/user/main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ \"./node_modules/bootstrap/dist/css/bootstrap.min.css\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../user/animate.css */ \"./src/user/animate.css\");\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_user_animate_css__WEBPACK_IMPORTED_MODULE_1__);\n\r\n\r\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\r\nconst login = __webpack_require__(/*! ./login */ \"./src/user/login.js\");\r\nconst register = __webpack_require__(/*! ./register */ \"./src/user/register.js\");\r\n\r\n$(document).ready(() => {\r\n  register.hideForm();\r\n\r\n  $(`#loginSubmit`).mousedown(event => {\r\n    if (event.which == 1) {\r\n      login.loginBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#loginForm input`).keypress(event => {\r\n    if (event.which == 13) {\r\n      login.loginBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#registerSubmit`).mousedown(event => {\r\n    if (event.which == 1) {\r\n      register.registerBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#registerForm input`).keypress(event => {\r\n    if (event.which == 13) {\r\n      register.registerBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#goRegister`).mousedown(event => {\r\n    if (event.which == 1) {\r\n      login.hideForm();\r\n      register.showForm();\r\n    }\r\n  });\r\n\r\n  $(`#goLogin`).mousedown(event => {\r\n    if (event.which == 1) {\r\n      register.hideForm();\r\n      login.showForm();\r\n    }\r\n  });\r\n});\r\n\n\n//# sourceURL=webpack:///./src/user/main.js?");
+
+/***/ }),
+
+/***/ "./src/user/register.js":
+/*!******************************!*\
+  !*** ./src/user/register.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\r\n\r\nmodule.exports.hideForm = () => {\r\n  $(`#registerForm`).hide();\r\n};\r\n\r\nmodule.exports.showForm = () => {\r\n  $(`#registerForm #msg`).hide();\r\n  $(`#registerForm`).show();\r\n};\r\n\r\nmodule.exports.registerBtnEvent = () => {\r\n  $(`#registerSubmit`).attr(\"disabled\", true);\r\n  let input = {\r\n    username: $(`#registerForm input[name=username]`).val(),\r\n    password: $(`#registerForm input[name=password]`).val(),\r\n    confirmPassword: $(`#registerForm input[name=confirmPassword]`).val(),\r\n    csrfToken: $(`#registerForm input[name=csrfToken]`).val()\r\n  };\r\n  $.post(\"/register\", input)\r\n    .done(data => {\r\n      let msgTag = $(`#registerForm #msg`);\r\n      let icon = `<i class=\"fas fa-lg fa-exclamation-triangle mr-2\"/>`;\r\n      let child = `<span>${icon}${data.msg}</span>`;\r\n      if (data.type === 0) {\r\n        msgTag\r\n          .empty()\r\n          .removeClass(\"alert-success\")\r\n          .addClass(\"alert-danger\")\r\n          .append(child);\r\n      }\r\n      if (data.type === 1) {\r\n        msgTag\r\n          .empty()\r\n          .removeClass(\"alert-danger\")\r\n          .addClass(\"alert-success\")\r\n          .append(child);\r\n      }\r\n      $(`#registerForm input[name=csrfToken`).val(data.csrfToken);\r\n      $(`#registerForm #msg`).show();\r\n      $(`#registerSubmit`).attr(\"disabled\", false);\r\n    })\r\n    .fail(err => {\r\n      alert(\"Error: Something wrong!\");\r\n      $(`#registerSubmit`).attr(\"disabled\", false);\r\n    });\r\n};\r\n\n\n//# sourceURL=webpack:///./src/user/register.js?");
 
 /***/ }),
 
 /***/ 0:
-/*!****************************************************!*\
-  !*** multi ./src/user/main.js ./src/user/login.js ***!
-  \****************************************************/
+/*!***************************************************************************!*\
+  !*** multi ./src/user/main.js ./src/user/login.js ./src/user/register.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("__webpack_require__(/*! ./src/user/main.js */\"./src/user/main.js\");\nmodule.exports = __webpack_require__(/*! ./src/user/login.js */\"./src/user/login.js\");\n\n\n//# sourceURL=webpack:///multi_./src/user/main.js_./src/user/login.js?");
+eval("__webpack_require__(/*! ./src/user/main.js */\"./src/user/main.js\");\n__webpack_require__(/*! ./src/user/login.js */\"./src/user/login.js\");\nmodule.exports = __webpack_require__(/*! ./src/user/register.js */\"./src/user/register.js\");\n\n\n//# sourceURL=webpack:///multi_./src/user/main.js_./src/user/login.js_./src/user/register.js?");
 
 /***/ })
 

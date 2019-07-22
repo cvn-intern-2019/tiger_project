@@ -88,4 +88,85 @@ router.post("/login", (req, res, next) => {
   });
 });
 
+router.post("/register", (req, res, next) => {
+  let body = req.body;
+  let csrfToken = generateToken();
+  let regExp = new RegExp(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/, "g");
+
+  if (
+    regExp.test(body.username) ||
+    regExp.test(body.password) ||
+    regExp.test(body.confirmPassword)
+  ) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your input must alphabetic character or number!"
+    });
+  }
+
+  if (body.csrfToken !== req.session.csrfToken) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Session is invalid!"
+    });
+  }
+
+  if (body.username.length < 5 || body.username.length > 20) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Username must have length 5 - 20 characters!"
+    });
+  }
+
+  if (body.password.length < 5 || body.password.length > 20) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Password must have length 5 - 20 characters!"
+    });
+  }
+
+  if (body.password !== body.confirmPassword) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Confirm password not match!"
+    });
+  }
+
+  User.findOne({ username: body.username }, async (err, user) => {
+    if (err) next(err);
+    else {
+      if (user != undefined) {
+        req.session.csrfToken = csrfToken;
+        return res.json({
+          type: 0,
+          csrfToken: csrfToken,
+          msg: "Account already exists!"
+        });
+      } else {
+        let newUser = new User({
+          username: body.username,
+          password: hashPassword(body.username, body.password)
+        });
+
+        await newUser.save();
+        res.json({
+          type: 1,
+          csrfToken: csrfToken,
+          msg: "Register success!"
+        });
+      }
+    }
+  });
+});
+
 module.exports = router;
