@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "npx webpack && node ./bin/www",
-    "build": "npx webpack"
+    "build": "npx webpack",
+    "test": "mocha --timeout 10000 --exit"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
@@ -23,7 +24,9 @@
     "@babel/preset-env": "^7.5.4",
     "babel-loader": "^8.0.6",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "chai": "^4.2.0",
     "css-loader": "^3.0.0",
+    "mocha": "^6.1.4",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.6"
