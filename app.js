@@ -32,6 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //session setup
 app.use(
   session({
+    path: "/lounge",
     secret: "tiger team",
     resave: false,
     saveUninitialized: true,
