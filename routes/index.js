@@ -2,11 +2,12 @@ var express = require("express");
 var router = express.Router();
 var crypto = require("crypto");
 var User = require("../models/user.model");
+var crypto = require("crypto");
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
   if (req.session.isLogin) return res.redirect("/lounge");
-  res.redirect('/login');
+  res.redirect("/login");
 });
 
 //===============================================================================
@@ -15,21 +16,17 @@ var generateToken = () => {
   return crypto.randomBytes(64).toString("hex");
 };
 
-// var setCookie = (req, res, next) => {
-//   var cookie = req.cookies.cookieName;
-//   if (cookie === undefined) {
-//     // no: set a new cookie
-//     var randomNumber = Math.random().toString();
-//     randomNumber = randomNumber.substring(2, randomNumber.length);
-//     res.cookie("token", randomNumber, {
-//       maxAge: 1000 * 60 * 5
-//     });
-//   } else {
-//     // yes, cookie was already present
-//     console.log("cookie exists", cookie);
-//   }
-//   next();
-// };
+var hashPassword = (username, password) => {
+  let secret = `${username}${password}`
+    .toUpperCase()
+    .split("")
+    .reverse()
+    .join();
+  return crypto
+    .createHmac("SHA256", secret)
+    .update(password)
+    .digest("hex");
+};
 
 router.get("/login", (req, res, next) => {
   if (req.session.isLogin) return res.redirect("/lounge");
@@ -46,17 +43,19 @@ router.post("/login", (req, res, next) => {
 
   if (regExp.test(body.username) || regExp.test(body.password)) {
     req.session.csrfToken = csrfToken;
-    return res.render("login", {
+    return res.json({
+      type: 0,
       csrfToken: csrfToken,
-      errMsg: "Your input must alphabetic character or number!"
+      msg: "Your input must alphabetic character or number!"
     });
   }
 
   if (body.csrfToken !== req.session.csrfToken) {
     req.session.csrfToken = csrfToken;
-    return res.render("login", {
+    return res.json({
+      type: 0,
       csrfToken: csrfToken,
-      errMsg: "Session is invalid!"
+      msg: "Session is invalid!"
     });
   }
 
@@ -65,22 +64,26 @@ router.post("/login", (req, res, next) => {
     else {
       if (user == undefined) {
         req.session.csrfToken = csrfToken;
-        return res.render("login", {
+        return res.json({
+          type: 0,
           csrfToken: csrfToken,
-          errMsg: "Account does not exist!"
+          msg: "Account does not exist!"
         });
       }
-
-      if (body.password !== user.password) {
+      console.log(hashPassword(body.username, body.password));
+      if (hashPassword(body.username, body.password) !== user.password) {
         req.session.csrfToken = csrfToken;
-        return res.render("login", {
+        return res.json({
+          type: 0,
           csrfToken: csrfToken,
-          errMsg: "Your username or password is invalid!"
+          msg: "Your username or password is invalid!"
         });
       }
       req.session.isLogin = true;
       req.session.userId = user._id;
-      res.redirect("/lounge");
+      res.json({
+        type: 1
+      });
     }
   });
 });
