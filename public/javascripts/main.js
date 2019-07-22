@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/user/login.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -179,11 +179,33 @@ eval("\nvar content = __webpack_require__(/*! !../../node_modules/css-loader/dis
 /*!***************************!*\
   !*** ./src/user/login.js ***!
   \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\r\n\r\nmodule.exports.hideForm = () => {\r\n  $(`#loginForm`).hide();\r\n};\r\n\r\nmodule.exports.showForm = () => {\r\n  $(`#loginMsg`).hide();\r\n  $(`#loginForm`).show();\r\n};\r\n\r\nmodule.exports.loginBtnEvent = () => {\r\n  $(`#loginSubmit`).attr(\"disabled\", true);\r\n\r\n  let input = {\r\n    username: $(`#loginForm input[name=username]`).val(),\r\n    password: $(`#loginForm input[name=password]`).val(),\r\n    csrfToken: $(`#loginForm input[name=csrfToken]`).val()\r\n  };\r\n\r\n  $.post(\"/login\", input)\r\n    .done(data => {\r\n      let msgTag = $(`#loginForm #loginMsg`);\r\n      let icon = `<i class=\"fas fa-lg fa-exclamation-triangle mr-2\"/>`;\r\n      let child = `<span>${icon}${data.msg}</span>`;\r\n\r\n      if (data.type === 0) {\r\n        msgTag\r\n          .empty()\r\n          .removeClass(\"alert-success\")\r\n          .addClass(\"alert-danger\")\r\n          .append(child);\r\n      }\r\n\r\n      if (data.type === 1) {\r\n        window.location.replace(`${window.origin}/lounge`);\r\n      }\r\n      $(`#loginForm input[name=csrfToken`).val(data.csrfToken);\r\n      $(`#loginForm input[name=csrfToken`).val(data.csrfToken);\r\n      $(`#loginForm #loginMsg`).show();\r\n      $(`#loginSubmit`).attr(\"disabled\", false);\r\n    })\r\n    .fail(() => {\r\n      alert(\"Error: Something wrong!\");\r\n      $(`#loginSubmit`).attr(\"disabled\", false);\r\n    });\r\n};\r\n\n\n//# sourceURL=webpack:///./src/user/login.js?");
+
+/***/ }),
+
+/***/ "./src/user/main.js":
+/*!**************************!*\
+  !*** ./src/user/main.js ***!
+  \**************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ \"./node_modules/bootstrap/dist/css/bootstrap.min.css\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../user/animate.css */ \"./src/user/animate.css\");\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_user_animate_css__WEBPACK_IMPORTED_MODULE_1__);\n\r\n\r\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\r\n\r\n$(document).ready(() => {\r\n  $(`#loginMsg`).hide();\r\n\r\n  var loginBtnEvent = () => {\r\n    $(`#loginSubmit`).attr(\"disabled\", true);\r\n\r\n    let input = {\r\n      username: $(`#loginForm input[name=username]`).val(),\r\n      password: $(`#loginForm input[name=password]`).val(),\r\n      csrfToken: $(`#loginForm input[name=csrfToken]`).val()\r\n    };\r\n\r\n    $.post(\"/login\", input)\r\n      .done(data => {\r\n        let msgTag = $(`#loginForm #loginMsg`);\r\n        let icon = `<i class=\"fas fa-lg fa-exclamation-triangle mr-2\"/>`;\r\n        let child = `<span>${icon}${data.msg}</span>`;\r\n\r\n        if (data.type === 0) {\r\n          msgTag\r\n            .empty()\r\n            .removeClass(\"alert-success\")\r\n            .addClass(\"alert-danger\")\r\n            .append(child);\r\n        }\r\n\r\n        if (data.type === 1) {\r\n          window.location.replace(`${window.origin}/lounge`);\r\n        }\r\n        $(`#loginForm input[name=csrfToken`).val(data.csrfToken);\r\n        $(`#loginForm input[name=csrfToken`).val(data.csrfToken);\r\n        $(`#loginForm #loginMsg`).show();\r\n        $(`#loginSubmit`).attr(\"disabled\", false);\r\n      })\r\n      .fail(err => {\r\n        alert(\"Something wrong!\");\r\n        $(`#loginSubmit`).attr(\"disabled\", false);\r\n      });\r\n  };\r\n\r\n  $(`#loginSubmit`).mousedown(event => {\r\n    if (event.which == 1) {\r\n      loginBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#loginForm input`).keypress(event => {\r\n    if (event.which == 13) {\r\n      loginBtnEvent();\r\n    }\r\n  });\r\n});\r\n\n\n//# sourceURL=webpack:///./src/user/login.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ \"./node_modules/bootstrap/dist/css/bootstrap.min.css\");\n/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../user/animate.css */ \"./src/user/animate.css\");\n/* harmony import */ var _user_animate_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_user_animate_css__WEBPACK_IMPORTED_MODULE_1__);\n\r\n\r\nconst $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\r\nconst login = __webpack_require__(/*! ./login */ \"./src/user/login.js\");\r\n\r\n$(document).ready(() => {\r\n  $(`#loginSubmit`).mousedown(event => {\r\n    if (event.which == 1) {\r\n      login.loginBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#loginForm input`).keypress(event => {\r\n    if (event.which == 13) {\r\n      login.loginBtnEvent();\r\n    }\r\n  });\r\n\r\n  $(`#goRegister`).mousedown(event => {\r\n    if (event.which == 1) {\r\n    }\r\n  });\r\n});\r\n\n\n//# sourceURL=webpack:///./src/user/main.js?");
+
+/***/ }),
+
+/***/ 0:
+/*!****************************************************!*\
+  !*** multi ./src/user/main.js ./src/user/login.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("__webpack_require__(/*! ./src/user/main.js */\"./src/user/main.js\");\nmodule.exports = __webpack_require__(/*! ./src/user/login.js */\"./src/user/login.js\");\n\n\n//# sourceURL=webpack:///multi_./src/user/main.js_./src/user/login.js?");
 
 /***/ })
 

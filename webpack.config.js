@@ -26,8 +26,7 @@ module.exports = {
   mode: "development",
 
   entry: {
-    login: "./src/user/login.js",
-    pageTwo: "./src/pageTwo.js"
+    main: ["./src/user/main.js", "./src/user/login.js"]
   },
 
   output: {
