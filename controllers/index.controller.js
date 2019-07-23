@@ -22,13 +22,17 @@ module.exports.index = (req, res, next) => {
 };
 
 module.exports.getLogin = (req, res, next) => {
-  if (!req.session.isLogin) return res.render("login", { errMsg: undefined });
+  if (!req.session.userData || !req.cookies.user_sid)
+    return res.render("login", { errMsg: undefined });
   res.redirect("/lounge");
 };
 
 module.exports.postLogin = (req, res, next) => {
   let body = req.body;
-  if (userRegEx.test(body.username) || userRegEx.test(body.password)) {
+  if (
+    userRegEx.test(body.username) === false ||
+    userRegEx.test(body.password) === false
+  ) {
     return res.json({
       type: 0,
       msg: "Your input must alphabetic character or number!"
@@ -86,11 +90,6 @@ var registerTransaction = async user => {
 
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
-  console.log(body);
-  console.log(userRegEx.test(body.username));
-  console.log(userRegEx.test(body.password));
-  console.log(userRegEx.test(body.confirmPassword));
-  console.log(userRegEx.test(body.email));
 
   if (
     userRegEx.test(body.username) === false ||

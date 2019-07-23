@@ -5,8 +5,6 @@ var indexController = require("../controllers/index.controller");
 // middleware function to check for logged-in users
 var loginChecker = (req, res, next) => {
   if (req.session.userData && req.cookies.user_sid) {
-    console.log(req.session);
-    console.log(req.cookies);
     next();
   } else {
     res.redirect("/login");

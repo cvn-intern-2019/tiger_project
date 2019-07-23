@@ -5,6 +5,8 @@ module.exports.hideForm = () => {
 };
 
 module.exports.showForm = () => {
+  $(`#loginForm input[name=username]`).val("");
+  $(`#loginForm input[name=password]`).val("");
   $(`#loginForm #msg`).hide();
   $(`#loginForm`).show();
 };
@@ -14,9 +16,10 @@ module.exports.loginBtnEvent = () => {
 
   let input = {
     username: $(`#loginForm input[name=username]`).val(),
-    password: $(`#loginForm input[name=password]`).val(),
-    csrfToken: $(`#loginForm input[name=csrfToken]`).val()
+    password: $(`#loginForm input[name=password]`).val()
   };
+
+  $(`#loginForm input[name=password]`).val("");
 
   $.post("/login", input)
     .done(data => {
@@ -36,8 +39,6 @@ module.exports.loginBtnEvent = () => {
       if (data.type === 1) {
         window.location.replace(`${window.origin}/lounge`);
       }
-      $(`#loginForm input[name=csrfToken`).val(data.csrfToken);
-      $(`#loginForm input[name=csrfToken`).val(data.csrfToken);
       $(`#loginSubmit`).attr("disabled", false);
     })
     .fail(() => {
