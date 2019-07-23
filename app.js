@@ -7,11 +7,12 @@ var mongoose = require("mongoose");
 var session = require("express-session");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+var userRouter = require("./routes/user");
 
 var app = express();
 
-// database setup
+
+// // database setup
 mongoose.set("useCreateIndex", true);
 mongoose.connect(
   "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority",
@@ -22,6 +23,7 @@ mongoose.connection
   .once("open", () => {
     console.log("Database connected!");
   });
+
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -56,7 +58,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/user", userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

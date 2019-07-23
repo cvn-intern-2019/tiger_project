@@ -25,13 +25,18 @@ const path = require("path");
 module.exports = {
   mode: "development",
 
-  entry: {
+	entry: {
+
+		lounge: './src/lounge.js',
     login_main: [
-      "./src/user/main.js",
-      "./src/user/login.js",
-      "./src/user/register.js"
-    ]
-  },
+        "./src/user/main.js",
+        "./src/user/login.js",
+        "./src/user/register.js"
+      ]
+
+
+	},
+
 
   output: {
     filename: "[name].js",
