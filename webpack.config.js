@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -13,7 +13,6 @@ const path = require('path');
  *
  */
 
-
 /*
  * We've enabled HtmlWebpackPlugin for you! This generates a html
  * page for you when you compile webpack, which will make you start
@@ -24,29 +23,35 @@ const path = require('path');
  */
 
 module.exports = {
-	mode: 'development',
+  mode: "development",
 
 	entry: {
 
 		lounge: './src/lounge.js',
+    login_main: [
+        "./src/user/main.js",
+        "./src/user/login.js",
+        "./src/user/register.js"
+      ]
 
 
 	},
 
-	output: {
-		filename: '[name].js',
-		path: path.resolve(__dirname, 'public/javascripts/')
-	},
 
-	module: {
-		rules: [
-			{
-				test: /.(js|jsx)$/,
-				include: [],
-				loader: 'babel-loader',
+  output: {
+    filename: "[name].js",
+    path: path.resolve(__dirname, "public/javascripts/")
+  },
 
-				options: {
-					plugins: ['syntax-dynamic-import'],
+  module: {
+    rules: [
+      {
+        test: /.(js|jsx)$/,
+        include: [],
+        loader: "babel-loader",
+
+        options: {
+          plugins: ["syntax-dynamic-import"],
 
 					presets: [
 						[
@@ -57,27 +62,28 @@ module.exports = {
 						]
 					]
 				}
-			}
+			},
+			
 		]
 	},
 
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				vendors: {
-					priority: -10,
-					test: /[\\/]node_modules[\\/]/
-				}
-			},
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          priority: -10,
+          test: /[\\/]node_modules[\\/]/
+        }
+      },
 
-			chunks: 'async',
-			minChunks: 1,
-			minSize: 30000,
-			name: true
-		}
-	},
+      chunks: "async",
+      minChunks: 1,
+      minSize: 30000,
+      name: true
+    }
+  },
 
-	devServer: {
-		open: true
-	}
+  devServer: {
+    open: true
+  }
 };
