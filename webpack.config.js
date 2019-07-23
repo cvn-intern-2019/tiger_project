@@ -30,8 +30,6 @@ module.exports = {
 
 		lounge: './src/lounge.js',
 
-		pageOne: './src/pageOne.js',
-		pageTwo: './src/pageTwo.js'
 
 	},
 

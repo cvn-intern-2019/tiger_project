@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/lounge.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -94,17 +94,6 @@
 /***/ (function(module, exports) {
 
 eval("\n\n//# sourceURL=webpack:///./src/lounge.js?");
-
-/***/ }),
-
-/***/ 0:
-/*!*****************************!*\
-  !*** multi ./src/lounge.js ***!
-  \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("module.exports = __webpack_require__(/*! ./src/lounge.js */\"./src/lounge.js\");\n\n\n//# sourceURL=webpack:///multi_./src/lounge.js?");
 
 /***/ })
 
