@@ -12,7 +12,11 @@ var usersRouter = require("./routes/users");
 var app = express();
 
 // database setup
-mongoose.connect("mongodb://localhost/werewolf", { useNewUrlParser: true });
+mongoose.set("useCreateIndex", true);
+mongoose.connect(
+  "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority",
+  { useNewUrlParser: true }
+);
 mongoose.connection
   .on("error", console.error.bind(console, "connection error:"))
   .once("open", () => {
@@ -32,7 +36,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //session setup
 app.use(
   session({
-    path: "/lounge",
+    key: "user_sid",
     secret: "tiger team",
     resave: false,
     saveUninitialized: true,
@@ -41,6 +45,15 @@ app.use(
     }
   })
 );
+
+// This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
+// This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
+app.use((req, res, next) => {
+  if (req.cookies.user_sid && !req.session.userId) {
+    res.clearCookie("user_sid");
+  }
+  next();
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

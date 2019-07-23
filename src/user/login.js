@@ -30,6 +30,7 @@ module.exports.loginBtnEvent = () => {
           .removeClass("alert-success")
           .addClass("alert-danger")
           .append(child);
+        $(`#loginForm #msg`).show();
       }
 
       if (data.type === 1) {
@@ -37,7 +38,6 @@ module.exports.loginBtnEvent = () => {
       }
       $(`#loginForm input[name=csrfToken`).val(data.csrfToken);
       $(`#loginForm input[name=csrfToken`).val(data.csrfToken);
-      $(`#loginForm #msg`).show();
       $(`#loginSubmit`).attr("disabled", false);
     })
     .fail(() => {

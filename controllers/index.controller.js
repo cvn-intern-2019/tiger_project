@@ -20,38 +20,22 @@ var hashPassword = (username, password) => {
 //===============================================================================
 // Handle GET - POST login page
 module.exports.index = (req, res, next) => {
-  if (req.session.isLogin) return res.redirect("/lounge");
   res.redirect("/login");
 };
 
 module.exports.getLogin = (req, res, next) => {
-  if (req.session.isLogin) return res.redirect("/lounge");
-
-  let csrfToken = generateToken();
-  req.session.csrfToken = csrfToken;
-  res.render("login", { csrfToken: csrfToken, errMsg: undefined });
+  if (!req.session.isLogin) return res.render("login", { errMsg: undefined });
+  res.redirect("/lounge");
 };
 
 module.exports.postLogin = (req, res, next) => {
   let body = req.body;
-  let csrfToken = generateToken();
   let regExp = new RegExp(/[-!$%^&*()_+|~=`{@#}\[\]:";'<>?,.\/]/, "g");
 
   if (regExp.test(body.username) || regExp.test(body.password)) {
-    req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
-      csrfToken: csrfToken,
       msg: "Your input must alphabetic character or number!"
-    });
-  }
-
-  if (body.csrfToken !== req.session.csrfToken) {
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 0,
-      csrfToken: csrfToken,
-      msg: "Session is invalid!"
     });
   }
 
@@ -59,23 +43,22 @@ module.exports.postLogin = (req, res, next) => {
     if (err) next(err);
     else {
       if (user == undefined) {
-        req.session.csrfToken = csrfToken;
         return res.json({
           type: 0,
-          csrfToken: csrfToken,
           msg: "Account does not exist!"
         });
       }
+
       if (hashPassword(body.username, body.password) !== user.password) {
-        req.session.csrfToken = csrfToken;
         return res.json({
           type: 0,
-          csrfToken: csrfToken,
           msg: "Your username or password is invalid!"
         });
       }
+
+      req.session.userData = user;
       req.session.isLogin = true;
-      req.session.userId = user._id;
+
       res.json({
         type: 1
       });
@@ -85,7 +68,6 @@ module.exports.postLogin = (req, res, next) => {
 
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
-  let csrfToken = generateToken();
   let regExp = new RegExp(/[-!$%^&*()_+|~=`{@#}\[\]:";'<>?,.\/]/, "g");
 
   if (
@@ -93,46 +75,29 @@ module.exports.postRegister = (req, res, next) => {
     regExp.test(body.password) ||
     regExp.test(body.confirmPassword)
   ) {
-    req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
-      csrfToken: csrfToken,
       msg: "Your input must alphabetic character or number!"
     });
   }
 
-  if (body.csrfToken !== req.session.csrfToken) {
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 0,
-      csrfToken: csrfToken,
-      msg: "Session is invalid!"
-    });
-  }
-
   if (body.username.length < 5 || body.username.length > 20) {
-    req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
-      csrfToken: csrfToken,
       msg: "Username must have length 5 - 20 characters!"
     });
   }
 
   if (body.password.length < 5 || body.password.length > 20) {
-    req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
-      csrfToken: csrfToken,
       msg: "Password must have length 5 - 20 characters!"
     });
   }
 
   if (body.password !== body.confirmPassword) {
-    req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
-      csrfToken: csrfToken,
       msg: "Confirm password not match!"
     });
   }
@@ -141,10 +106,8 @@ module.exports.postRegister = (req, res, next) => {
     if (err) next(err);
     else {
       if (user != undefined) {
-        req.session.csrfToken = csrfToken;
         return res.json({
           type: 0,
-          csrfToken: csrfToken,
           msg: "Account already exists!"
         });
       } else {
@@ -157,7 +120,6 @@ module.exports.postRegister = (req, res, next) => {
 
         res.json({
           type: 1,
-          csrfToken: csrfToken,
           msg: "Register success!"
         });
       }
