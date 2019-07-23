@@ -5,18 +5,27 @@ module.exports.hideForm = () => {
 };
 
 module.exports.showForm = () => {
+  $(`#registerForm input[name=username]`).val("");
+  $(`#registerForm input[name=email]`).val("");
+  $(`#registerForm input[name=password]`).val("");
+  $(`#registerForm input[name=confirmPassword]`).val("");
   $(`#registerForm #msg`).hide();
   $(`#registerForm`).show();
 };
 
 module.exports.registerBtnEvent = () => {
   $(`#registerSubmit`).attr("disabled", true);
+
   let input = {
     username: $(`#registerForm input[name=username]`).val(),
+    email: $(`#registerForm input[name=email]`).val(),
     password: $(`#registerForm input[name=password]`).val(),
-    confirmPassword: $(`#registerForm input[name=confirmPassword]`).val(),
-    csrfToken: $(`#registerForm input[name=csrfToken]`).val()
+    confirmPassword: $(`#registerForm input[name=confirmPassword]`).val()
   };
+
+  $(`#registerForm input[name=password]`).val("");
+  $(`#registerForm input[name=confirmPassword]`).val("");
+
   $.post("/register", input)
     .done(data => {
       let msgTag = $(`#registerForm #msg`);
@@ -36,7 +45,6 @@ module.exports.registerBtnEvent = () => {
           .addClass("alert-success")
           .append(child);
       }
-      $(`#registerForm input[name=csrfToken`).val(data.csrfToken);
       $(`#registerForm #msg`).show();
       $(`#registerSubmit`).attr("disabled", false);
     })
