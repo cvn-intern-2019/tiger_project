@@ -1,4 +1,3 @@
-
 var express = require("express");
 var loungeController = require("../controllers/lounge.controller");
 
@@ -14,10 +13,17 @@ var loginChecker = (req, res, next) => {
   }
 };
 
-
+/* GET home page. */
 router.get("/", indexController.index);
-router.get("/lounge", loginChecker, (req, res, next) => {
-  res.send(req.session.userData);
-});
+
+router.get("/login", indexController.getLogin);
+
+router.post("/login", indexController.postLogin);
+
+router.post("/register", indexController.postRegister);
+
+router.get("/logout", indexController.getLogout);
+
+router.get("/lounge", loginChecker, loungeController.getRoomPage);
 
 module.exports = router;
