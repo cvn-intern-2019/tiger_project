@@ -9,6 +9,7 @@ module.exports.showForm = () => {
   $(`#registerForm input[name=email]`).val("");
   $(`#registerForm input[name=password]`).val("");
   $(`#registerForm input[name=confirmPassword]`).val("");
+  $(`#registerForm form`).removeClass("was-validated");
   $(`#registerForm #msg`).hide();
   $(`#registerForm`).show();
 };
@@ -23,9 +24,6 @@ module.exports.registerBtnEvent = () => {
     confirmPassword: $(`#registerForm input[name=confirmPassword]`).val()
   };
 
-  $(`#registerForm input[name=password]`).val("");
-  $(`#registerForm input[name=confirmPassword]`).val("");
-
   $.post("/register", input)
     .done(data => {
       let msgTag = $(`#registerForm #msg`);
@@ -37,6 +35,7 @@ module.exports.registerBtnEvent = () => {
           .removeClass("alert-success")
           .addClass("alert-danger")
           .append(child);
+        $(`#registerForm form`).addClass("was-validated");
       }
       if (data.type === 1) {
         msgTag
@@ -47,9 +46,13 @@ module.exports.registerBtnEvent = () => {
       }
       $(`#registerForm #msg`).show();
       $(`#registerSubmit`).attr("disabled", false);
+      $(`#registerForm input[name=password]`).val("");
+      $(`#registerForm input[name=confirmPassword]`).val("");
     })
     .fail(err => {
       alert("Error: Something wrong!");
       $(`#registerSubmit`).attr("disabled", false);
+      $(`#registerForm input[name=password]`).val("");
+      $(`#registerForm input[name=confirmPassword]`).val("");
     });
 };
