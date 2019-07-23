@@ -1,5 +1,7 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
+const userRegEx = /^[a-z0-9]*$/;
+const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
 
 var hashPassword = (username, password) => {
   let secret = `${username}${password}`
@@ -26,9 +28,7 @@ module.exports.getLogin = (req, res, next) => {
 
 module.exports.postLogin = (req, res, next) => {
   let body = req.body;
-  let regExp = new RegExp(/[-!$%^&*()_+|~=`{@#}\[\]:";'<>?,.\/]/, "g");
-
-  if (regExp.test(body.username) || regExp.test(body.password)) {
+  if (userRegEx.test(body.username) || userRegEx.test(body.password)) {
     return res.json({
       type: 0,
       msg: "Your input must alphabetic character or number!"
@@ -87,12 +87,16 @@ var registerTransaction = async user => {
 
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
-  let regExp = new RegExp(/[-!$%^&*()_+|~=`{@#}\[\]:";'<>?,.\/]/, "g");
+  console.log(body);
+  console.log(userRegEx.test(body.username));
+  console.log(userRegEx.test(body.password));
+  console.log(userRegEx.test(body.confirmPassword));
+  console.log(userRegEx.test(body.email));
 
   if (
-    regExp.test(body.username) ||
-    regExp.test(body.password) ||
-    regExp.test(body.confirmPassword)
+    userRegEx.test(body.username) === false ||
+    userRegEx.test(body.password) === false ||
+    userRegEx.test(body.confirmPassword) === false
   ) {
     return res.json({
       type: 0,
@@ -107,45 +111,61 @@ module.exports.postRegister = (req, res, next) => {
     });
   }
 
+  if (emailRegEx.test(body.email) === false) {
+    return res.json({
+      type: 0,
+      msg: "Your email is invalid!"
+    });
+  }
+
   if (body.password.length < 5 || body.password.length > 20) {
     return res.json({
       type: 0,
-      msg: "Password must have length 5 - 20 characters!"
+      msg: "Your password must have length 5 - 20 characters!"
     });
   }
 
   if (body.password !== body.confirmPassword) {
     return res.json({
       type: 0,
-      msg: "Confirm password not match!"
+      msg: "Your confirm password not match!"
     });
   }
 
-  User.findOne({ username: body.username }, async (err, user) => {
+  User.findOne({ username: body.username }, (err, user) => {
     if (err) next(err);
-    else {
-      if (user != undefined) {
-        return res.json({
-          type: 0,
-          msg: "Account already exists!"
+    if (user != undefined) {
+      return res.json({
+        type: 0,
+        msg: "Your username already exists!"
+      });
+    }
+  });
+
+  User.findOne({ email: body.email }, async (err, user) => {
+    if (err) next(err);
+    if (user != undefined) {
+      return res.json({
+        type: 0,
+        msg: "Your email already exists!"
+      });
+    } else {
+      let newUser = new User({
+        username: body.username,
+        email: body.username,
+        password: hashPassword(body.username, body.password)
+      });
+
+      if (await registerTransaction(newUser)) {
+        res.json({
+          type: 1,
+          msg: "Register success!"
         });
       } else {
-        let newUser = new User({
-          username: body.username,
-          password: hashPassword(body.username, body.password)
+        res.json({
+          type: 0,
+          msg: "Register error (DB)!"
         });
-
-        if (await registerTransaction(newUser)) {
-          res.json({
-            type: 1,
-            msg: "Register success!"
-          });
-        } else {
-          res.json({
-            type: 0,
-            msg: "Register error (DB)!"
-          });
-        }
       }
     }
   });
