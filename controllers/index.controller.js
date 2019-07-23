@@ -1,10 +1,6 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
 
-var generateToken = () => {
-  return crypto.randomBytes(64).toString("hex");
-};
-
 var hashPassword = (username, password) => {
   let secret = `${username}${password}`
     .toUpperCase()
@@ -66,6 +62,29 @@ module.exports.postLogin = (req, res, next) => {
   });
 };
 
+// Transaction register account
+var registerTransaction = async user => {
+  //init session
+  let session = await User.startSession();
+  try {
+    //start transaction
+    session.startTransaction();
+
+    //every action here
+    await user.save({ session });
+
+    //commit
+    await session.commitTransaction();
+    return true;
+  } catch (err) {
+    console.log(err);
+    //fail -> abort transaction and return false
+    await session.abortTransaction();
+    session.endSession();
+    return false;
+  }
+};
+
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
   let regExp = new RegExp(/[-!$%^&*()_+|~=`{@#}\[\]:";'<>?,.\/]/, "g");
@@ -116,12 +135,17 @@ module.exports.postRegister = (req, res, next) => {
           password: hashPassword(body.username, body.password)
         });
 
-        await newUser.save();
-
-        res.json({
-          type: 1,
-          msg: "Register success!"
-        });
+        if (await registerTransaction(newUser)) {
+          res.json({
+            type: 1,
+            msg: "Register success!"
+          });
+        } else {
+          res.json({
+            type: 0,
+            msg: "Register error (DB)!"
+          });
+        }
       }
     }
   });
