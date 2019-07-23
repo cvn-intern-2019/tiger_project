@@ -7,6 +7,7 @@ module.exports.hideForm = () => {
 module.exports.showForm = () => {
   $(`#loginForm input[name=username]`).val("");
   $(`#loginForm input[name=password]`).val("");
+  $(`#loginForm form`).removeClass("was-validated");
   $(`#loginForm #msg`).hide();
   $(`#loginForm`).show();
 };
@@ -34,6 +35,7 @@ module.exports.loginBtnEvent = () => {
           .addClass("alert-danger")
           .append(child);
         $(`#loginForm #msg`).show();
+        $(`#loginForm form`).addClass("was-validated");
       }
 
       if (data.type === 1) {
