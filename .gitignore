@@ -95,4 +95,7 @@ typings/
 # MongoDB data
 data/
 
+# ./public/javascripts/
+public/javascripts/
+
 # End of https://www.gitignore.io/api/node
