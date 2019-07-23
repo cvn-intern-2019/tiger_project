@@ -57,7 +57,6 @@ module.exports.postLogin = (req, res, next) => {
       }
 
       req.session.userData = user;
-      req.session.isLogin = true;
 
       res.json({
         type: 1
