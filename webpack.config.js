@@ -48,22 +48,19 @@ module.exports = {
         options: {
           plugins: ["syntax-dynamic-import"],
 
-          presets: [
-            [
-              "@babel/preset-env",
-              {
-                modules: false
-              }
-            ]
-          ]
-        }
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      }
-    ]
-  },
+					presets: [
+						[
+							'@babel/preset-env',
+							{
+								modules: false
+							}
+						]
+					]
+				}
+			},
+			
+		]
+	},
 
   optimization: {
     splitChunks: {

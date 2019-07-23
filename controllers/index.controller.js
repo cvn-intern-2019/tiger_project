@@ -126,3 +126,8 @@ module.exports.postRegister = (req, res, next) => {
     }
   });
 };
+
+module.exports.getLogout = (req, res, next) => {
+  res.clearCookie("user_sid");
+  res.redirect("/");
+};

@@ -20,6 +20,8 @@ router.post("/login", indexController.postLogin);
 
 router.post("/register", indexController.postRegister);
 
+router.get("/logout", indexController.getLogout);
+
 // just mocking
 router.get("/lounge", loginChecker, (req, res, next) => {
   res.send(req.session.userData);
