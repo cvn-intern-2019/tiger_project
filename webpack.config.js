@@ -27,8 +27,8 @@ module.exports = {
 	mode: 'development',
 
 	entry: {
-		pageOne: './src/pageOne.js',
-		pageTwo: './src/pageTwo.js'
+		profile: './src/profile/profile.js',
+		profile_edit: './src/profile/profile_edit.js'
 	},
 
 	output: {
@@ -55,6 +55,10 @@ module.exports = {
 						]
 					]
 				}
+			},
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
 			}
 		]
 	},

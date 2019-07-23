@@ -1,0 +1,44 @@
+.bg_dark_medium {
+  background: #343A40;
+}
+
+.bg_dark_bold {
+  background: #222222;
+}
+
+.bg_light {
+  background: #F5F5F5;
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1rem !important;
+  }
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+}
+
+#profile header #top_nav .navbar-brand {
+  font-size: 2rem;
+}
+
+#profile header #top_nav #user_actions_dropdown .dropdown-menu {
+  width: -webkit-fill-available;
+}
+
+#profile header #top_nav #user_actions_dropdown .dropdown-menu svg {
+  width: 30px;
+}
+
+#profile main #user_info_panel #avatar_area {
+  width: 120px;
+  height: 120px;
+}
+
+#profile footer p {
+  margin: 0;
+}
+/*# sourceMappingURL=profile.css.map */
