@@ -9,7 +9,7 @@ var hidePassword = password => {
 
 module.exports.getProfilePage = (req,res,next)=>{
     //In lack of session. I use mock id.
-    let idUser = "5d367b1b2e7cbe253c269e7";
+    let idUser = "5d36ca0ff9b66201c867c855";
 
     User.findById(idUser,"username phone email password birthday",(err,userData)=>{
         if(err){

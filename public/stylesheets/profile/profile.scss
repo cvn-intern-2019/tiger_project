@@ -17,6 +17,11 @@ body{
     min-height: 100vh;
     position: relative;
 }
+#user_actions_dropdown{
+    button{
+        min-width: 200px;
+    }
+}
 #profile{
     header{
         #top_nav{
