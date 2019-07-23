@@ -20,6 +20,9 @@ body{
 #profile{
     header{
         #top_nav{
+            #user_btn{
+                min-width: 200px;
+            }
             .navbar-brand{
                 font-size: 2rem;
             }
@@ -34,7 +37,8 @@ body{
         }
     }
     main{
-        
+        min-height: 90%;
+        padding:    100px;
         #user_info_panel{
             #avatar_area{
                 width: 120px;

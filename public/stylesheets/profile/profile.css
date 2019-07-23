@@ -21,6 +21,10 @@ body {
   position: relative;
 }
 
+#profile header #top_nav #user_btn {
+  min-width: 200px;
+}
+
 #profile header #top_nav .navbar-brand {
   font-size: 2rem;
 }
@@ -31,6 +35,11 @@ body {
 
 #profile header #top_nav #user_actions_dropdown .dropdown-menu svg {
   width: 30px;
+}
+
+#profile main {
+  min-height: 90%;
+  padding: 100px;
 }
 
 #profile main #user_info_panel #avatar_area {
