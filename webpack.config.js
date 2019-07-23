@@ -25,18 +25,14 @@ const path = require("path");
 module.exports = {
   mode: "development",
 
-	entry: {
-
-		lounge: './src/lounge.js',
+  entry: {
+    lounge: "./src/lounge.js",
     login_main: [
-        "./src/user/main.js",
-        "./src/user/login.js",
-        "./src/user/register.js"
-      ]
-
-
-	},
-
+      "./src/user/main.js",
+      "./src/user/login.js",
+      "./src/user/register.js"
+    ]
+  },
 
   output: {
     filename: "[name].js",
@@ -53,19 +49,22 @@ module.exports = {
         options: {
           plugins: ["syntax-dynamic-import"],
 
-					presets: [
-						[
-							'@babel/preset-env',
-							{
-								modules: false
-							}
-						]
-					]
-				}
-			},
-			
-		]
-	},
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                modules: false
+              }
+            ]
+          ]
+        }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
+      }
+    ]
+  },
 
   optimization: {
     splitChunks: {
