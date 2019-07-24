@@ -2,13 +2,7 @@ extends ../layout
 block sessionCSS
     title Profile | Werewolf Online - Tiger Team
     link(rel="stylesheet", href="/stylesheets/profile.css")
-    link(rel="stylesheet",href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-    script(src="/javascripts/lounge.js")
-    script(src="https://kit.fontawesome.com/3f47eb379d.js")
-
-    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
-    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+    script(src="/javascripts/profile_main.js")
 
 block content
     .container-fluid.text-light
@@ -152,6 +146,7 @@ block content
                         #edit.tab-pane.p-4
                             h1.font-weight-light Edit profile
                             hr
+                            #msg.alert.alert-danger
                             form.form-group(role='form')
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Fullname
@@ -187,7 +182,7 @@ block content
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
                                         input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        input.btn.btn-danger(type='button', value='Save Changes')
+                                        button#editSubmit.btn.btn-danger(type='button') Submit Change
 
 
                         #changePassword.tab-pane.p-4

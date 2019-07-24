@@ -42,15 +42,12 @@ var updateTransaction = async (userId, data) => {
   }
 };
 
-module.exports.postEditProfile = (req, res, next) => {
-  let userId = req.session.userData._id;
+var validateInput = (req, res, next) => {
   let body = req.body;
   let csrfToken = generateToken();
   const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{5,50}$/;
   const genderRegEx = /^(true|false)$/;
-  const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
   const phoneRegEx = /^[0-9]{10,10}$/;
-  //   const addressRegEx = /^[0-9a-zA-Z\u00c0-\u1ef9 ,]*$/;
   const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
 
   //   if (
@@ -83,15 +80,6 @@ module.exports.postEditProfile = (req, res, next) => {
     });
   }
 
-  if (emailRegEx.test(body.email) === false) {
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 0,
-      csrfToken: csrfToken,
-      msg: "Your email is invalid!"
-    });
-  }
-
   if (phoneRegEx.test(body.phone) === false) {
     req.session.csrfToken = csrfToken;
     return res.json({
@@ -112,25 +100,20 @@ module.exports.postEditProfile = (req, res, next) => {
       msg: "Your date of birth is invalid!"
     });
   }
+  next();
+};
 
-  let data = {
-    fullname: body.fullname,
-    gender: body.gender,
-    email: body.email,
-    phone: body.phone,
-    birthday: new Date(body.birthday)
-  };
-
-  User.find({ email: body.email }, async (err, user) => {
-    if (err) next(err);
-    if (user != undefined) {
-      req.session.csrfToken = csrfToken;
-      return res.json({
-        type: 0,
-        csrfToken: csrfToken,
-        msg: "Your email already exists!"
-      });
-    }
+module.exports.postEditProfile = [
+  validateInput,
+  async (req, res, next) => {
+    let userId = req.session.userData._id;
+    let body = req.body;
+    let data = {
+      fullname: body.fullname,
+      gender: body.gender,
+      phone: body.phone,
+      birthday: new Date(body.birthday)
+    };
 
     if (await updateTransaction(userId, data)) {
       res.json({
@@ -143,5 +126,5 @@ module.exports.postEditProfile = (req, res, next) => {
         msg: "Update failed (DB)!"
       });
     }
-  });
-};
+  }
+];
