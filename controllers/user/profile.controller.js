@@ -1,50 +1,26 @@
 var express = require('express');
 var router = express.Router();
-//var User = require('../models/user.model');
+var User = require("../../models/user.model")
 
-// exports.UPLOAD_PATH = "/public/uploads";
-// var hidePassword = password => {
-//     return password.replace(/./g,'*');
-// };
-
-exports.getProfilePage = (req,res,next)=>{
-    
-    // let idUser = "5d363e391c773324acb081f1";
-
-    // User.findById(idUser,"username phone name email password birthday",(err,userData)=>{
-    //     if(err){
-    //         let error = new Error("ID of user not found.");
-    //         next(error);
-    //     }
-        
-    //     userData.password = hidePassword(userData.password);
-        
-        res.render('profile',{
-            title: "View your profile",
-           // userData: userData
-        });
-   // })
-
-
-    
+var removeEmptyField = function(json){
+    for(var field in json){
+        if(json.field == "") delete json.field
+    };
+    return json;
 }
-exports.getEditProfilePage = (req,res,next)=>{
-    // let idUser = "5d363e391c773324acb081f1";
 
-    // User.findById(idUser,"username phone name email password birthday",(err,userData)=>{
-    //     if(err){
-    //         let error = new Error("ID of user not found.");
-    //         next(error);
-    //     }
+exports.getUserPage = (req,res,next)=>{
+    var idUser = req.session.userData._id;
+    
+    User.findById(idUser,"-password",(err,userData)=>{
+        if(err) return next(err);
+        if(!userData) return next(new NotFound());
+        userData = removeEmptyField(userData);
         
-    //     userData.password = hidePassword(userData.password);
-        
-        res.render('profile_edit',{
-            title: "Edit your profile",
-            userData: userData
-        });
-    //})
-}
+        res.json(userData);
+    });
+    
+};
 
 exports.postEditProfile = (req,res,next)=>{
     
