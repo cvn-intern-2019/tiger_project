@@ -1,5 +1,4 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -14,7 +13,6 @@ const webpack = require('webpack');
  *
  */
 
-
 /*
  * We've enabled HtmlWebpackPlugin for you! This generates a html
  * page for you when you compile webpack, which will make you start
@@ -25,58 +23,66 @@ const webpack = require('webpack');
  */
 
 module.exports = {
-	mode: 'development',
+  mode: "development",
 
-	entry: {
-		pageOne: './pageOne.js',
-		pageTwo: './pageTwo.js'
-	},
+  entry: {
+    lounge: "./src/lounge.js",
+    login_main: [
+      "./src/user/main.js",
+      "./src/user/login.js",
+      "./src/user/register.js"
+    ]
+  },
 
-	output: {
-		filename: '[name].js',
-		path: path.resolve(__dirname, 'public/javascripts/')
-	},
+  output: {
+    filename: "[name].js",
+    path: path.resolve(__dirname, "public/javascripts/")
+  },
 
-	module: {
-		rules: [
-			{
-				test: /.(js|jsx)$/,
-				include: [],
-				loader: 'babel-loader',
+  module: {
+    rules: [
+      {
+        test: /.(js|jsx)$/,
+        include: [],
+        loader: "babel-loader",
 
-				options: {
-					plugins: ['syntax-dynamic-import'],
+        options: {
+          plugins: ["syntax-dynamic-import"],
 
-					presets: [
-						[
-							'@babel/preset-env',
-							{
-								modules: false
-							}
-						]
-					]
-				}
-			}
-		]
-	},
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                modules: false
+              }
+            ]
+          ]
+        }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
+      }
+    ]
+  },
 
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				vendors: {
-					priority: -10,
-					test: /[\\/]node_modules[\\/]/
-				}
-			},
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          priority: -10,
+          test: /[\\/]node_modules[\\/]/
+        }
+      },
 
-			chunks: 'async',
-			minChunks: 1,
-			minSize: 30000,
-			name: true
-		}
-	},
+      chunks: "async",
+      minChunks: 1,
+      minSize: 30000,
+      name: true
+    }
+  },
 
-	devServer: {
-		open: true
-	}
+  devServer: {
+    open: true
+  }
 };

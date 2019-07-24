@@ -1,0 +1,50 @@
+body {
+    padding-left: 6%;
+    padding-right: 6%;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+    
+    background-image: url('../images/logo.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: 700px 700px;
+    background : #343a40"
+}
+    
+    #navbar {
+    overflow: hidden;
+    padding: 90px 10px;
+    transition: 0.4s;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99;
+    }
+
+    #navbar h1 {
+    font-size: 35px;
+    font-weight: bold;
+    transition: 0.4s;
+    }
+
+    #navbar-right {
+    float: right;
+    }
+
+    #navbar-right {
+    float: none;
+    }
+
+    .contain{
+        overflow: auto;
+    }
+
+    footer {
+        position: absolute;
+        bottom: 0;
+        width: 90%;
+        border-top: solid black 1px;
+      }
+    
