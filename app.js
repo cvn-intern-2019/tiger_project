@@ -11,9 +11,9 @@ var userRouter = require("./routes/user");
 
 var app = express();
 
-
 // // database setup
 mongoose.set("useCreateIndex", true);
+mongoose.set("useFindAndModify", false);
 mongoose.connect(
   "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority",
   { useNewUrlParser: true }
@@ -23,7 +23,6 @@ mongoose.connection
   .once("open", () => {
     console.log("Database connected!");
   });
-
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

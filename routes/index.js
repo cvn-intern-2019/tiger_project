@@ -27,3 +27,4 @@ router.get("/logout", indexController.getLogout);
 router.get("/lounge", loginChecker, loungeController.getRoomPage);
 
 module.exports = router;
+module.exports.loginChecker = loginChecker;
