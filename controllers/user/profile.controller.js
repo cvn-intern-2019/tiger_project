@@ -51,17 +51,17 @@ module.exports.postEditProfile = (req, res, next) => {
   //   const addressRegEx = /^[0-9a-zA-Z\u00c0-\u1ef9 ,]*$/;
   const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
 
-  if (
-    req.session.csrfToken !== body.csrfToken ||
-    req.body.csrfToken === undefined
-  ) {
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 0,
-      csrfToken: csrfToken,
-      msg: "Session is invalid! Please try again or refresh this page!"
-    });
-  }
+  //   if (
+  //     req.session.csrfToken !== body.csrfToken ||
+  //     req.body.csrfToken === undefined
+  //   ) {
+  //     req.session.csrfToken = csrfToken;
+  //     return res.json({
+  //       type: 0,
+  //       csrfToken: csrfToken,
+  //       msg: "Session is invalid! Please try again or refresh this page!"
+  //     });
+  //   }
 
   if (fullnameRegEx.test(body.fullname) === false) {
     req.session.csrfToken = csrfToken;
@@ -69,18 +69,6 @@ module.exports.postEditProfile = (req, res, next) => {
       type: 0,
       csrfToken: csrfToken,
       msg: "Your fullname is invalid!"
-    });
-  }
-
-  if (
-    dobRegEx.test(body.birthday) === false ||
-    moment(new Date()).diff(moment(body.birthday), "days") < 1
-  ) {
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 0,
-      csrfToken: csrfToken,
-      msg: "Your date of birth is invalid!"
     });
   }
 
@@ -111,6 +99,18 @@ module.exports.postEditProfile = (req, res, next) => {
     });
   }
 
+  if (
+    dobRegEx.test(body.birthday) === false ||
+    moment(new Date()).diff(moment(body.birthday), "days") < 1
+  ) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your date of birth is invalid!"
+    });
+  }
+
   let data = {
     fullname: body.fullname,
     gender: body.gender,
@@ -138,7 +138,7 @@ module.exports.postEditProfile = (req, res, next) => {
     } else {
       res.json({
         type: 0,
-        msg: "Register error (DB)!"
+        msg: "Update failed (DB)!"
       });
     }
   });
