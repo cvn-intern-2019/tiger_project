@@ -7,8 +7,10 @@ var generateToken = () => {
 };
 
 module.exports.getProfilePage = (req, res, next) => {
-  res.render("profile", {
-    title: "View your profile"
+  let userData = req.session.userData;
+  userData.birthday = moment(userData.birthday).format("YYYY-MM-DD");
+  res.render("user/profile", {
+    userData: userData
   });
 };
 module.exports.getEditProfilePage = (req, res, next) => {

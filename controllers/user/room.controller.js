@@ -1,7 +1,5 @@
-var express = require('express');
-var router = express.Router();
 
-exports.getRoomPage = (req, res, next)=>{
+module.exports.getRoomPage = (req, res, next)=>{
   
     var players = [
         {

@@ -15,9 +15,4 @@ var userSchema = new Schema({
   friendId: [{ type: Schema.Types.ObjectId, ref: "User", required: false }]
 });
 
-// virtual attribute birthday to birthday_formatted
-userSchema.virtual("birthday_formatted").get(() => {
-  return moment(this.birthday).format("YYYY/mm/DD");
-});
-
 module.exports = mongoose.model("User", userSchema);
