@@ -8,11 +8,10 @@ var router = express.Router();
 //require check login for all routes.
 router.use(loginChecker);
 
-router.get('/', profileController.getUserPage);
+router.get('/', profileController.getProfilePage);
 
 router.post("/", profileController.postEditProfile);
 
 router.get("/room", roomController.getRoomPage);
-
 
 module.exports = router;
