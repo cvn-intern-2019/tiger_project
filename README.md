@@ -35,16 +35,16 @@ This is project of Tiger Team when we join the internship in Cybozu Vietnam comp
 
 ## **INITIALIZE:**
 
-- Step 1: Clone project from GitHub
+- **Step 1:** Clone project from GitHub
   Use`git clone https://github.com/cvn-intern-2019/tiger_project.git`
 
-- Step 2: Install dependencies:
+- **Step 2:** Install dependencies:
   Use `npm i` or `npm install`
-- Step 3: Build project:
+- **Step 3:** Build project:
   Use `npm run build`
-- Step 4: Run server:
+- **Step 4:** Run server:
   Use `npm start`
-- Step 5: Enjoy
+- **Step 5:** Enjoy
   Use browser (Chrome is a good choice) access to URL [http://localhost:3000](http://localhost:3000/)
 
 ## **TEAM MEMBER:**
