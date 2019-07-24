@@ -7,14 +7,20 @@ var generateToken = () => {
 };
 
 module.exports.getProfilePage = (req, res, next) => {
-    let userData = req.session.userData;
-    //let userData = "5d37ce883e8d5e1c70b35786";
-    console.log(userData);
-    userData.birthday = moment(userData.birthday).format("YYYY-MM-DD");
-    res.render("user/profile", {
-        title: "View user page",
-        userData: userData
-    });
+    let idUser = req.session.userData;
+    
+    User.findById(idUser, "username email avatar fullname phone gender birthday",(err,userData)=>{
+        if(err) return next(err);
+        if(!userData) return next(new NotFound);
+        
+        userData.birthday_formatted = moment(userData.birthday).format("DD-MM-YYYY");
+
+        res.render("user/profile", {
+            title: "View user page",
+            userData: userData,
+        });
+    })
+
 };
 
 module.exports.getEditProfilePage = (req, res, next) => {
