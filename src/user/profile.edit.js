@@ -7,7 +7,7 @@ module.exports.editBtnEvent = () => {
     fullname: $(`#edit input[name=fullname]`).val(),
     phone: $(`#edit input[name=phone]`).val(),
     birthday: $(`#edit input[name=birthday]`).val(),
-    gender: $(`#edit input[name=gender]`).val()
+    gender: $(`#edit input[name=gender]:checked`).val()
   };
 
   $.post("/user/edit", input)
@@ -27,12 +27,7 @@ module.exports.editBtnEvent = () => {
       }
 
       if (data.type === 1) {
-        msgTag
-          .empty()
-          .removeClass("alert-danger")
-          .addClass("alert-success")
-          .append(child);
-        $(`#edit #msg`).show();
+        window.location.reload();
       }
       $(`#edit #editSubmit`).attr("disabled", false);
     })

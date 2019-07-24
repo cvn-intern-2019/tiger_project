@@ -60,7 +60,7 @@ block content
                     label.custom-file.btn-outline-light
                         span.custom-file-control Change avatar
                         input#file.custom-file-input(type='file')
-                    img.mx-auto.img-fluid.img-circle.d-block(src='//placehold.it/250', alt='avatar')
+                    img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
                     h1.font-weight-light.mt-4  #{userData.username}
 
                 .col-lg-8.order-lg-2
@@ -85,10 +85,10 @@ block content
                                         |&nbsp;&nbsp;#{userData.fullname}
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Birthday:</b>
-                                        |&nbsp;&nbsp;#{userData.birthday}
+                                        |&nbsp;&nbsp;#{userData.birthday_formatted_view}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Gender:</b>
-                                        |&nbsp;&nbsp;#{userData.gender == true ? "Male" : "Female"}
+                                        |&nbsp;&nbsp;#{userData.gender === true ? "Male" : "Female"}
 
                                 .col-md-6
                                     h1.font-weight-light Contact details 
@@ -159,24 +159,24 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Birthday
                                     .col-lg-9
-                                        input.form-control(type='date', name="birthday", value=userData.birthday, placeholder='Birthday')
+                                        input.form-control(type='date', name="birthday", value=userData.birthday_formatted_edit, placeholder='Birthday')
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Gender
                                     .col-lg-9
-                                        if userData.gender == true
+                                        if userData.gender === true
                                             .form-check.form-check-inline.mr-2
-                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true', checked)
-                                                label.form-check-label(for='inlineRadio1') Male
+                                                input#inputGender1.form-check-input(type='radio', name='gender', value='true', checked)
+                                                label.form-check-label(for='inputGender') Male
                                             .form-check.form-check-inline
-                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false')
-                                                label.form-check-label(for='inlineRadio2') Female
-                                        else if userData.gender == false
+                                                input#inputGender2.form-check-input(type='radio', name='gender', value='false')
+                                                label.form-check-label(for='inputGender2') Female
+                                        else
                                             .form-check.form-check-inline.mr-2
-                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true')
-                                                label.form-check-label(for='inlineRadio1') Male
+                                                input#inputGender1.form-check-input(type='radio', name='gender', value='true')
+                                                label.form-check-label(for='inputGender1') Male
                                             .form-check.form-check-inline
-                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false', checked)
-                                                label.form-check-label(for='inlineRadio2') Female
+                                                input#inputGender2.form-check-input(type='radio', name='gender', value='false', checked)
+                                                label.form-check-label(for='inputGender2') Female
 
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label

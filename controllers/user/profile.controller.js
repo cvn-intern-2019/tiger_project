@@ -7,16 +7,13 @@ var generateToken = () => {
 };
 
 module.exports.getProfilePage = (req, res, next) => {
-  let userData = req.session.userData;
-  userData.birthday = moment(userData.birthday).format("YYYY-MM-DD");
-  res.render("user/profile", {
-    userData: userData
-  });
-};
-module.exports.getEditProfilePage = (req, res, next) => {
-  res.render("profile_edit", {
-    title: "Edit your profile",
-    userData: userData
+  let userId = req.session.userId;
+
+  User.findById(userId, (err, data) => {
+    if (err) next(err);
+    res.render("user/profile", {
+      userData: data
+    });
   });
 };
 
@@ -106,7 +103,7 @@ var validateInput = (req, res, next) => {
 module.exports.postEditProfile = [
   validateInput,
   async (req, res, next) => {
-    let userId = req.session.userData._id;
+    let userId = req.session.userId;
     let body = req.body;
     let data = {
       fullname: body.fullname,
@@ -114,11 +111,9 @@ module.exports.postEditProfile = [
       phone: body.phone,
       birthday: new Date(body.birthday)
     };
-
     if (await updateTransaction(userId, data)) {
       res.json({
-        type: 1,
-        msg: "Update profile successful!"
+        type: 1
       });
     } else {
       res.json({
