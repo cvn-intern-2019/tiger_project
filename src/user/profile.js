@@ -39,6 +39,7 @@ $(document).ready(() => {
     if (event.which == 1) {
       if (event.target.className.includes("container")) {
         $(`#changeAvatarModal`).modal("show");
+        $(`#changeAvatarModal #submitChange`).attr("disabled", true);
       } else {
         $(`#showAvatarModal`).modal("show");
       }
@@ -66,6 +67,7 @@ $(document).ready(() => {
 
   $(`#changeAvatarModal input[name=avatarFile]`).change(function() {
     readURL(this);
+    $(`#changeAvatarModal #submitChange`).attr("disabled", false);
     if ($(this).val() == "") $(`#changeAvatarModal #deleteAvatar`).hide();
     else $(`#changeAvatarModal #deleteAvatar`).show();
   });

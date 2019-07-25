@@ -12,4 +12,6 @@ router.post("/edit", profileController.postEditProfile);
 
 router.get("/room", roomController.getRoomPage);
 
+router.post("/change-avatar", profileController.changeAvatar);
+
 module.exports = router;

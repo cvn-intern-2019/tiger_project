@@ -7,7 +7,7 @@ block sessionCSS
 block content
     #showAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='showAvatar', aria-hidden='true')
         .modal-dialog.text-center.modal-lg
-            img.img-thumbnail(src=userData.avatar===undefined?"http://placehold.it/800":userData.avatar, width="800px", height="800px")
+            img.img-thumbnail(src=`${userData.avatar===undefined?"http://placehold.it/500":"/avatar/"+userData.avatar}`, style="width:75vh; height:75vh")
 
     #changeAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='changeAvatar', aria-hidden='true')
         .modal-dialog
@@ -17,17 +17,15 @@ block content
                     button.close(type='button', data-dismiss='modal', aria-label='Close')
                         span(aria-hidden='true') ×
 
-                .modal-body.text-center
-                    img(src=userData.avatar===undefined?"http://placehold.it/300":userData.avatar, width="300px", height="300px")
+                form.modal-body.text-center(method="POST", action="/user/change-avatar", enctype="multipart/form-data")
+                    img(src=`${userData.avatar===undefined?"http://placehold.it/300":"/avatar/"+userData.avatar}`, width="300px", height="300px")
                     .mt-3
                         button#browseFile.btn.btn-info.btn-file.mr-2 Browse
                             input.custom-file-input(type='file' accept="image/*" name="avatarFile")
                         button#deleteAvatar.btn.btn-danger Delete
                         p Maximum: 800KB
-
-
-                .modal-footer
-                    button#submitChange.btn.btn-dark(type='button') Save
+                        button#submitChange.btn.btn-dark(type='submit') Save
+                    
 
     .container-fluid.text-light
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow.sticky-top
@@ -81,7 +79,7 @@ block content
         .container.my-5
             .row
                 .col-lg-4.order-lg-1.text-center
-                    #changeAvatar.mx-auto.d-block(style=`background-image: url('${userData.avatar===undefined?"http://placehold.it/250":userData.avatar}'); background-size:cover; height:250px; width:250px`)
+                    #changeAvatar.mx-auto.d-block(style=`background-image: url('${userData.avatar===undefined?"http://placehold.it/250":"/avatar/"+userData.avatar}'); background-size:cover; height:250px; width:250px`)
                         .container.text-center.p-2(style="opacity:0.75")
                             i.fas.fa-camera.fa-lg
                             | &nbsp;Change avatar

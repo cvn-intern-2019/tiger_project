@@ -58,6 +58,10 @@ app.use((req, res, next) => {
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
+app.get(
+  "/avatar/:filename",
+  require("./controllers/user/profile.controller").urlAvatar
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
