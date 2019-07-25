@@ -6,7 +6,7 @@ var indexController = require("../controllers/index.controller");
 
 // middleware function to check for logged-in users
 var loginChecker = (req, res, next) => {
-  if (req.session.userData && req.cookies.user_sid) {
+  if (req.session.userId && req.cookies.user_sid) {
     next();
   } else {
     res.redirect("/login");
@@ -28,3 +28,4 @@ router.get("/lounge", loginChecker, loungeController.getRoomPage);
 
 module.exports = router;
 module.exports.loginChecker = loginChecker;
+

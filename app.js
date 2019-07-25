@@ -11,9 +11,9 @@ var userRouter = require("./routes/user");
 
 var app = express();
 
-
 // // database setup
 mongoose.set("useCreateIndex", true);
+mongoose.set("useFindAndModify", false);
 mongoose.connect(
   "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority",
   { useNewUrlParser: true }
@@ -23,7 +23,6 @@ mongoose.connection
   .once("open", () => {
     console.log("Database connected!");
   });
-
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -51,7 +50,7 @@ app.use(
 // This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
 app.use((req, res, next) => {
-  if (req.cookies.user_sid && !req.session.userData) {
+  if (req.cookies.user_sid && !req.session.userId) {
     res.clearCookie("user_sid");
   }
   next();

@@ -31,57 +31,89 @@ module.exports.getEditProfilePage = (req, res, next) => {
     });
 };
 
-var updateTransaction = async (userId, data) => {
-    //init session
-    let session = await User.startSession();
-    try {
-        //start transaction
-        session.startTransaction();
+var validateInput = (req, res, next) => {
+  let body = req.body;
+  let csrfToken = generateToken();
+  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{5,50}$/;
+  const genderRegEx = /^(true|false)$/;
+  const phoneRegEx = /^[0-9]{10,10}$/;
+  const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
 
-        //every action here
-        await User.findByIdAndUpdate(userId, data, session);
+  if (
+    req.session.csrfToken !== body.csrfToken ||
+    req.body.csrfToken === undefined
+  ) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Session is invalid! Please try again or refresh this page!"
+    });
+  }
 
-        //commit
-        await session.commitTransaction();
-        return true;
-    } catch (err) {
-        console.log(err);
-        //fail -> abort transaction and return false
-        await session.abortTransaction();
-        session.endSession();
-        return false;
-    }
+  if (fullnameRegEx.test(body.fullname) === false) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your fullname is invalid!"
+    });
+  }
+
+  if (genderRegEx.test(body.gender) === false) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your gender is invalid!"
+    });
+  }
+
+  if (phoneRegEx.test(body.phone) === false) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your phone number is invalid!"
+    });
+  }
+
+  if (
+    dobRegEx.test(body.birthday) === false ||
+    moment(new Date()).diff(moment(body.birthday), "days") < 1
+  ) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your birthday is invalid!"
+    });
+  }
+  next();
 };
 
-module.exports.postEditProfile = (req, res, next) => {
-    let userId = req.session.userData._id;
+module.exports.postEditProfile = [
+  validateInput,
+  async (req, res, next) => {
+    let userId = req.session.userId;
     let body = req.body;
-    let csrfToken = generateToken();
-    const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{5,50}$/;
-    const genderRegEx = /^(true|false)$/;
-    const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
-    const phoneRegEx = /^[0-9]{10,10}$/;
-    //   const addressRegEx = /^[0-9a-zA-Z\u00c0-\u1ef9 ,]*$/;
-    const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
-
-    //   if (
-    //     req.session.csrfToken !== body.csrfToken ||
-    //     req.body.csrfToken === undefined
-    //   ) {
-    //     req.session.csrfToken = csrfToken;
-    //     return res.json({
-    //       type: 0,
-    //       csrfToken: csrfToken,
-    //       msg: "Session is invalid! Please try again or refresh this page!"
-    //     });
-    //   }
-
-    if (fullnameRegEx.test(body.fullname) === false) {
-        req.session.csrfToken = csrfToken;
-        return res.json({
-            type: 0,
-            csrfToken: csrfToken,
-            msg: "Your fullname is invalid!"
-        });
+    let data = {
+      fullname: body.fullname,
+      gender: body.gender,
+      phone: body.phone,
+      birthday: new Date(body.birthday)
     };
-};
+
+    await User.findByIdAndUpdate(userId, data, err => {
+      if (err) {
+        res.json({
+          type: 0,
+          msg: "Update failed (DB)!"
+        });
+      }
+      res.json({
+        type: 1
+      });
+    });
+  }
+];

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npx webpack && node ./bin/www",
+    "start": "node ./bin/www",
     "build": "npx webpack",
     "test": "mocha --timeout 10000 --exit",
     "start-dev": "nodemon ./bin/www"
@@ -20,6 +20,7 @@
     "moment": "^2.24.0",
     "mongoose": "^5.6.5",
     "morgan": "~1.9.1",
+    "popper.js": "^1.15.0",
     "pug": "^2.0.4"
   },
   "devDependencies": {

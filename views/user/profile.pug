@@ -2,6 +2,7 @@ extends ../layout
 block sessionCSS
     title Profile | Werewolf Online - Tiger Team
     link(rel="stylesheet", href="/stylesheets/profile.css")
+
     link(rel="stylesheet",href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
     script(src="/javascripts/lounge.js")
     script(src="https://kit.fontawesome.com/3f47eb379d.js")
@@ -9,6 +10,9 @@ block sessionCSS
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+    
+    script(src="/javascripts/profile_main.js")
+
 block content
     .container-fluid.text-light
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow.sticky-top
@@ -65,7 +69,7 @@ block content
                     label.custom-file.btn-outline-light
                         span.custom-file-control Change avatar
                         input#file.custom-file-input(type='file')
-                    img.mx-auto.img-fluid.img-circle.d-block(src='//placehold.it/250', alt='avatar')
+                    img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
                     h1.font-weight-light.mt-4  #{userData.username}
 
                 .col-lg-8.order-lg-2
@@ -103,8 +107,7 @@ block content
                                         |&nbsp;&nbsp;#{userData.phone==null ? "No information": userData.phone}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Email:</b>
-                                        |&nbsp;&nbsp;#{userData.email==null ? "No information": userData.email}
-
+                                        |&nbsp;&nbsp;#{userData.email==null ? "No information": userData.email}                     
                         #history.tab-pane.p-4
                             h1.font-weight-light Play history
                             table.table.table-hover.table-striped
@@ -151,7 +154,10 @@ block content
                         #edit.tab-pane.p-4
                             h1.font-weight-light Edit profile
                             hr
+                            #msg.alert.alert-danger
                             form.form-group(role='form')
+                                input(type="hidden", name="csrfToken", value=csrfToken)
+
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Fullname
                                     .col-lg-9
@@ -181,14 +187,11 @@ block content
                                             .form-check.form-check-inline
                                                 input#inlineRadio2.form-check-input(type='radio', name='gender', value='false', checked)
                                                 label.form-check-label(for='inlineRadio2') Female
-
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
                                         input.btn.btn-dark.mr-2(type='reset', value='Reset')
                                         input.btn.btn-danger(type='button', value='Save Changes')
-
-
                         #changePassword.tab-pane.p-4
                             h1.font-weight-light Change password
                             hr
@@ -210,9 +213,6 @@ block content
                                     .col-lg-9
                                         input.btn.btn-dark.mr-2(type='reset', value='Reset')
                                         input.btn.btn-danger(type='button', value='Save Changes')
-
-
-
         footer.page-footer.font-small.dark
             .footer-copyright.py-3.text-center
                 | &copy; 2019 Internship's Cybozu 
