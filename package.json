@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "build": "npx webpack",
+    "start-dev": "npx webpack && node ./bin/www",
     "test": "mocha --timeout 10000 --exit"
   },
   "dependencies": {
