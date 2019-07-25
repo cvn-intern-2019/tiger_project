@@ -2,14 +2,10 @@ var User = require("../../models/user.model");
 var crypto = require("crypto");
 var moment = require("moment");
 
-var generateToken = () => {
-  return crypto.randomBytes(64).toString("hex");
-};
-
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
 
-  User.findById(userId, (err, data) => {
+  User.findById(userId,"username email avatar fullname phone gender birthday", (err, data) => {
     if (err) next(err);
 
     let csrfToken = generateToken();
@@ -25,9 +21,9 @@ module.exports.getProfilePage = (req, res, next) => {
 var validateInput = (req, res, next) => {
   let body = req.body;
   let csrfToken = generateToken();
-  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{5,50}$/;
+  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{1,50}$/;
   const genderRegEx = /^(true|false)$/;
-  const phoneRegEx = /^[0-9]{10,10}$/;
+  const phoneRegEx = /^[0-9]{4,13}$/;
   const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
 
   if (
@@ -105,6 +101,6 @@ module.exports.postEditProfile = [
       res.json({
         type: 1
       });
-    });
-  }
-];
+    }
+  );
+};

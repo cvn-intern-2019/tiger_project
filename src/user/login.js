@@ -7,7 +7,6 @@ module.exports.hideForm = () => {
 module.exports.showForm = () => {
   $(`#loginForm input[name=username]`).val("");
   $(`#loginForm input[name=password]`).val("");
-  $(`#loginForm form`).removeClass("was-validated");
   $(`#loginForm #msg`).hide();
   $(`#loginForm`).show();
 };
@@ -20,8 +19,6 @@ module.exports.loginBtnEvent = () => {
     password: $(`#loginForm input[name=password]`).val()
   };
 
-  $(`#loginForm input[name=password]`).val("");
-
   $.post("/login", input)
     .done(data => {
       let msgTag = $(`#loginForm #msg`);
@@ -31,13 +28,9 @@ module.exports.loginBtnEvent = () => {
       if (data.type === 0) {
         msgTag
           .empty()
-          .removeClass("alert-success")
-          .addClass("alert-danger")
-          .append(child);
-        $(`#loginForm #msg`).show();
-        $(`#loginForm form`).addClass("was-validated");
+          .append(child)
+          .show();
       }
-
       if (data.type === 1) {
         window.location.replace(`${window.origin}/lounge`);
       }
@@ -47,4 +40,6 @@ module.exports.loginBtnEvent = () => {
       alert("Error: Something wrong!");
       $(`#loginSubmit`).attr("disabled", false);
     });
+
+  $(`#loginForm input[name=password]`).val("");
 };
