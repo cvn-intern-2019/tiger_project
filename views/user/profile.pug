@@ -2,18 +2,33 @@ extends ../layout
 block sessionCSS
     title Profile | Werewolf Online - Tiger Team
     link(rel="stylesheet", href="/stylesheets/profile.css")
-
-    link(rel="stylesheet",href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-    script(src="/javascripts/lounge.js")
-    script(src="https://kit.fontawesome.com/3f47eb379d.js")
-
-    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
-    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
-    
     script(src="/javascripts/profile_main.js")
 
 block content
+    #showAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='showAvatar', aria-hidden='true')
+        .modal-dialog.text-center.modal-lg
+            img.img-thumbnail(src=userData.avatar===undefined?"http://placehold.it/800":userData.avatar, width="800px", height="800px")
+
+    #changeAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='changeAvatar', aria-hidden='true')
+        .modal-dialog
+            .modal-content.text-dark
+                .modal-header
+                    h1.font-weight-light Change avatar
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+
+                .modal-body.text-center
+                    img(src=userData.avatar===undefined?"http://placehold.it/300":userData.avatar, width="300px", height="300px")
+                    .mt-3
+                        button#browseFile.btn.btn-info.btn-file.mr-2 Browse
+                            input.custom-file-input(type='file' accept="image/*" name="avatarFile")
+                        button#deleteAvatar.btn.btn-danger Delete
+                        p Maximum: 800KB
+
+
+                .modal-footer
+                    button#submitChange.btn.btn-dark(type='button') Save
+
     .container-fluid.text-light
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow.sticky-top
             a.navbar-brand(href='/lounge')
@@ -66,10 +81,10 @@ block content
         .container.my-5
             .row
                 .col-lg-4.order-lg-1.text-center
-                    label.custom-file.btn-outline-light
-                        span.custom-file-control Change avatar
-                        input#file.custom-file-input(type='file')
-                    img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
+                    #changeAvatar.mx-auto.d-block(style=`background-image: url('${userData.avatar===undefined?"http://placehold.it/250":userData.avatar}'); background-size:cover; height:250px; width:250px`)
+                        .container.text-center.p-2(style="opacity:0.75")
+                            i.fas.fa-camera.fa-lg
+                            | &nbsp;Change avatar
                     h1.font-weight-light.mt-4  #{userData.username}
 
                 .col-lg-8.order-lg-2
@@ -220,7 +235,7 @@ block content
 
                                         input.btn.btn-dark.shadow.mr-2(type='button', value='Save Changes')
                                         input.btn.btn-secondary(type='reset', value='Reset')
-                                        
+
 
 
         footer.page-footer.font-small.dark

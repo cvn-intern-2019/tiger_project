@@ -2,20 +2,28 @@ var User = require("../../models/user.model");
 var crypto = require("crypto");
 var moment = require("moment");
 
+var generateToken = () => {
+  return crypto.randomBytes(64).toString("hex");
+};
+
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
 
-  User.findById(userId,"username email avatar fullname phone gender birthday", (err, data) => {
-    if (err) next(err);
+  User.findById(
+    userId,
+    "username email avatar fullname phone gender birthday",
+    (err, data) => {
+      if (err) next(err);
 
-    let csrfToken = generateToken();
-    req.session.csrfToken = csrfToken;
+      let csrfToken = generateToken();
+      req.session.csrfToken = csrfToken;
 
-    res.render("user/profile", {
-      userData: data,
-      csrfToken: csrfToken
-    });
-  });
+      res.render("user/profile", {
+        userData: data,
+        csrfToken: csrfToken
+      });
+    }
+  );
 };
 
 var validateInput = (req, res, next) => {
@@ -101,6 +109,6 @@ module.exports.postEditProfile = [
       res.json({
         type: 1
       });
-    }
-  );
-};
+    });
+  }
+];
