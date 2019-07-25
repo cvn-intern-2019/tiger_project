@@ -25,9 +25,9 @@ module.exports.getProfilePage = (req, res, next) => {
 var validateInput = (req, res, next) => {
   let body = req.body;
   let csrfToken = generateToken();
-  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{5,50}$/;
+  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{1,50}$/;
   const genderRegEx = /^(true|false)$/;
-  const phoneRegEx = /^[0-9]{10,10}$/;
+  const phoneRegEx = /^[0-9]{4,13}$/;
   const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
 
   if (
