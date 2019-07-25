@@ -76,14 +76,10 @@ module.exports.postRegister = (req, res, next) => {
     });
   }
 
-  if (
-    userRegEx.test(body.username) === false ||
-    userRegEx.test(body.password) === false ||
-    userRegEx.test(body.confirmPassword) === false
-  ) {
+  if (userRegEx.test(body.username) === false) {
     return res.json({
       type: 0,
-      msg: "Your input must alphabetic character or number!"
+      msg: "Your username "
     });
   }
 
@@ -105,6 +101,20 @@ module.exports.postRegister = (req, res, next) => {
     return res.json({
       type: 0,
       msg: "Your password must have length 5 - 20 characters!"
+    });
+  }
+
+  if (userRegEx.test(body.password) === false) {
+    return res.json({
+      type: 0,
+      msg: "Your password must only alphabetic character or number!"
+    });
+  }
+
+  if (userRegEx.test(body.confirmPassword) === false) {
+    return res.json({
+      type: 0,
+      msg: "Your confirm password must only alphabetic character or number!"
     });
   }
 

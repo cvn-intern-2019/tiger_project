@@ -75,13 +75,13 @@ block content
                 .col-lg-8.order-lg-2
                     ul.nav.nav-tabs.text-secondary
                         li.nav-item
-                            a.nav-link.active(data-target='#profile', data-toggle='tab') Profile
+                            a.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#profile', data-toggle='tab') Profile
                         li.nav-item
-                            a.nav-link( data-target='#history', data-toggle='tab') History
+                             a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#history', data-toggle='tab') History
                         li.nav-item
-                            a.nav-link( data-target='#edit', data-toggle='tab') Edit
+                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#edit', data-toggle='tab') Edit
                         li.nav-item
-                            a.nav-link( data-target='#changePassword', data-toggle='tab') Change Password
+                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#changePassword', data-toggle='tab') Change Password
 
                     .tab-content.bg-light.text-dark
                         #profile.tab-pane.active.p-4
@@ -94,7 +94,7 @@ block content
                                         |&nbsp;&nbsp;#{userData.fullname==null ? "No information": userData.fullname}
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Birthday:</b>
-                                        |&nbsp;&nbsp;#{userData.birthday_formatted_edit==null ? "No information": userData.birthday_formatted}
+                                        |&nbsp;&nbsp;#{userData.birthday_formatted_view==null ? "No information": userData.birthday_formatted_view}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Gender:</b>
                                         |&nbsp;&nbsp;
@@ -173,7 +173,7 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Birthday
                                     .col-lg-9
-                                        input.form-control(type='date', name="birthday", value=userData.birthday, placeholder='Birthday')
+                                        input.form-control(type='date', name="birthday", value=userData.birthday_formatted_edit, placeholder='Birthday')
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Gender
                                     .col-lg-9
@@ -194,8 +194,10 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
-                                        input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        input.btn.btn-danger(type='button', value='Save Changes')
+                                        button#editSubmit.btn.btn-dark.shadow.mr-2(type='button') Submit Change
+                                        input.btn.btn-secondary(type='reset', value='Reset')
+                                        
+
                         #changePassword.tab-pane.p-4
                             h1.font-weight-light Change password
                             hr
@@ -215,8 +217,12 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
-                                        input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        input.btn.btn-danger(type='button', value='Save Changes')
+
+                                        input.btn.btn-dark.shadow.mr-2(type='button', value='Save Changes')
+                                        input.btn.btn-secondary(type='reset', value='Reset')
+                                        
+
+
         footer.page-footer.font-small.dark
             .footer-copyright.py-3.text-center
                 | &copy; 2019 Internship's Cybozu 
