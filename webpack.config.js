@@ -27,6 +27,8 @@ module.exports = {
 
   entry: {
     lounge: "./src/lounge.js",
+    layout:"./src/layout.js",
+    room: "./src/user/room.js",
     login_main: [
       "./src/user/login.main.js",
       "./src/user/login.js",
