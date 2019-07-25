@@ -1,51 +1,110 @@
-var express = require('express');
-var router = express.Router();
-//var User = require('../models/user.model');
+var User = require("../../models/user.model");
+var crypto = require("crypto");
+var moment = require("moment");
 
-// exports.UPLOAD_PATH = "/public/uploads";
-// var hidePassword = password => {
-//     return password.replace(/./g,'*');
-// };
+var generateToken = () => {
+  return crypto.randomBytes(64).toString("hex");
+};
 
-exports.getProfilePage = (req,res,next)=>{
-    
-    // let idUser = "5d363e391c773324acb081f1";
+module.exports.getProfilePage = (req, res, next) => {
+  let userId = req.session.userId;
 
-    // User.findById(idUser,"username phone name email password birthday",(err,userData)=>{
-    //     if(err){
-    //         let error = new Error("ID of user not found.");
-    //         next(error);
-    //     }
-        
-    //     userData.password = hidePassword(userData.password);
-        
-        res.render('profile',{
-            title: "View your profile",
-           // userData: userData
+  User.findById(userId, (err, data) => {
+    if (err) next(err);
+
+    let csrfToken = generateToken();
+    req.session.csrfToken = csrfToken;
+
+    res.render("user/profile", {
+      userData: data,
+      csrfToken: csrfToken
+    });
+  });
+};
+
+var validateInput = (req, res, next) => {
+  let body = req.body;
+  let csrfToken = generateToken();
+  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{5,50}$/;
+  const genderRegEx = /^(true|false)$/;
+  const phoneRegEx = /^[0-9]{10,10}$/;
+  const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
+
+  if (
+    req.session.csrfToken !== body.csrfToken ||
+    req.body.csrfToken === undefined
+  ) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Session is invalid! Please try again or refresh this page!"
+    });
+  }
+
+  if (fullnameRegEx.test(body.fullname) === false) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your fullname is invalid!"
+    });
+  }
+
+  if (genderRegEx.test(body.gender) === false) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your gender is invalid!"
+    });
+  }
+
+  if (phoneRegEx.test(body.phone) === false) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your phone number is invalid!"
+    });
+  }
+
+  if (
+    dobRegEx.test(body.birthday) === false ||
+    moment(new Date()).diff(moment(body.birthday), "days") < 1
+  ) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your birthday is invalid!"
+    });
+  }
+  next();
+};
+
+module.exports.postEditProfile = [
+  validateInput,
+  async (req, res, next) => {
+    let userId = req.session.userId;
+    let body = req.body;
+    let data = {
+      fullname: body.fullname,
+      gender: body.gender,
+      phone: body.phone,
+      birthday: new Date(body.birthday)
+    };
+
+    await User.findByIdAndUpdate(userId, data, err => {
+      if (err) {
+        res.json({
+          type: 0,
+          msg: "Update failed (DB)!"
         });
-   // })
-
-
-    
-}
-exports.getEditProfilePage = (req,res,next)=>{
-    // let idUser = "5d363e391c773324acb081f1";
-
-    // User.findById(idUser,"username phone name email password birthday",(err,userData)=>{
-    //     if(err){
-    //         let error = new Error("ID of user not found.");
-    //         next(error);
-    //     }
-        
-    //     userData.password = hidePassword(userData.password);
-        
-        res.render('profile_edit',{
-            title: "Edit your profile",
-            userData: userData
-        });
-    //})
-}
-
-exports.postEditProfile = (req,res,next)=>{
-    
-}
+      }
+      res.json({
+        type: 1
+      });
+    });
+  }
+];
