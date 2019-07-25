@@ -2,6 +2,8 @@ var User = require("../../models/user.model");
 var crypto = require("crypto");
 var moment = require("moment");
 
+var hashPassword = require("../index.controller").hashPassword;
+
 var generateToken = () => {
   return crypto.randomBytes(64).toString("hex");
 };
@@ -108,3 +110,53 @@ module.exports.postEditProfile = [
     });
   }
 ];
+
+const passwordRegEx = /^.{5,20}$/g;
+
+module.exports.changePassword = (req, res, next) => {
+  let body = req.body;
+  let csrfToken = "123456789";
+  let idUser = req.session.idUser;
+
+  //check csrf token
+  if (body.csrfToken != req.session.csrfToken || body.csrfToken == undefined) {
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: " Session is invalid"
+    });
+  }
+
+  //check password and retype is match
+  if (body.newPassword != confirmPassword) {
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Your new password and comfirm password mismatch"
+    });
+  }
+
+  //test current password match
+  User.findById(idUser, "password", (err, password) => {
+    if (err) next(err);
+    if (hashPassword(password) == body.currentPassword) {
+      return res.json({
+        type: 0,
+        csrfToken: csrfToken,
+        msg: "Your current password is wrong."
+      });
+    }
+  });
+
+  User.findByIdAndUpdate(
+    idUser,
+    { password: hashPassword(body.currentPassword) },
+    err => {
+      if (err) return next(err);
+      return res.json({
+        type: 1,
+        msg: "Your password is changed."
+      });
+    }
+  );
+};
