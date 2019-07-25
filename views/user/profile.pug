@@ -66,13 +66,13 @@ block content
                 .col-lg-8.order-lg-2
                     ul.nav.nav-tabs.text-secondary
                         li.nav-item
-                            a.nav-link.active(data-target='#profile', data-toggle='tab') Profile
+                            a.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#profile', data-toggle='tab') Profile
                         li.nav-item
-                            a.nav-link( data-target='#history', data-toggle='tab') History
+                             a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#history', data-toggle='tab') History
                         li.nav-item
-                            a.nav-link( data-target='#edit', data-toggle='tab') Edit
+                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#edit', data-toggle='tab') Edit
                         li.nav-item
-                            a.nav-link( data-target='#changePassword', data-toggle='tab') Change Password
+                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#changePassword', data-toggle='tab') Change Password
 
                     .tab-content.bg-light.text-dark
                         #profile.tab-pane.active.p-4
@@ -181,8 +181,9 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
-                                        input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        button#editSubmit.btn.btn-danger(type='button') Submit Change
+                                        button#editSubmit.btn.btn-dark.shadow.mr-2(type='button') Submit Change
+                                        input.btn.btn-secondary(type='reset', value='Reset')
+                                        
 
 
                         #changePassword.tab-pane.p-4
@@ -204,8 +205,9 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
-                                        input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        input.btn.btn-danger(type='button', value='Save Changes')
+                                        input.btn.btn-dark.shadow.mr-2(type='button', value='Save Changes')
+                                        input.btn.btn-secondary(type='reset', value='Reset')
+                                        
 
 
 
