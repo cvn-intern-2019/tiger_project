@@ -15,6 +15,7 @@ var userSchema = new Schema({
   friendId: [{ type: Schema.Types.ObjectId, ref: "User", required: false }]
 });
 
+
 userSchema.virtual("birthday_formatted_view").get(function() {
   return moment(this.birthday).format("DD-MM-YYYY");
 });

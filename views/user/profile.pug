@@ -2,6 +2,15 @@ extends ../layout
 block sessionCSS
     title Profile | Werewolf Online - Tiger Team
     link(rel="stylesheet", href="/stylesheets/profile.css")
+
+    link(rel="stylesheet",href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+    script(src="/javascripts/lounge.js")
+    script(src="https://kit.fontawesome.com/3f47eb379d.js")
+
+    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+    
     script(src="/javascripts/profile_main.js")
 
 block content
@@ -82,24 +91,27 @@ block content
                                     hr
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Fullname:</b>
-                                        |&nbsp;&nbsp;#{userData.fullname}
+                                        |&nbsp;&nbsp;#{userData.fullname==null ? "No information": userData.fullname}
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Birthday:</b>
-                                        |&nbsp;&nbsp;#{userData.birthday_formatted_view}
+                                        |&nbsp;&nbsp;#{userData.birthday_formatted_view==null ? "No information": userData.birthday_formatted_view}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Gender:</b>
-                                        |&nbsp;&nbsp;#{userData.gender === true ? "Male" : "Female"}
+                                        |&nbsp;&nbsp;
+                                        if(userData.gender==null)
+                                            | No information
+                                        else
+                                            | #{userData.gender==true ? "Male":"Female"}        
 
                                 .col-md-6
                                     h1.font-weight-light Contact details 
                                     hr
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Phone:</b>
-                                        |&nbsp;&nbsp;#{userData.phone}
+                                        |&nbsp;&nbsp;#{userData.phone==null ? "No information": userData.phone}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Email:</b>
-                                        |&nbsp;&nbsp;#{userData.email}
-
+                                        |&nbsp;&nbsp;#{userData.email==null ? "No information": userData.email}                     
                         #history.tab-pane.p-4
                             h1.font-weight-light Play history
                             table.table.table-hover.table-striped
@@ -149,6 +161,7 @@ block content
                             #msg.alert.alert-danger
                             form.form-group(role='form')
                                 input(type="hidden", name="csrfToken", value=csrfToken)
+
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Fullname
                                     .col-lg-9
@@ -164,27 +177,26 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Gender
                                     .col-lg-9
-                                        if userData.gender === true
+                                        if userData.gender == true
                                             .form-check.form-check-inline.mr-2
-                                                input#inputGender1.form-check-input(type='radio', name='gender', value='true', checked)
-                                                label.form-check-label(for='inputGender') Male
+                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true', checked)
+                                                label.form-check-label(for='inlineRadio1') Male
                                             .form-check.form-check-inline
-                                                input#inputGender2.form-check-input(type='radio', name='gender', value='false')
-                                                label.form-check-label(for='inputGender2') Female
-                                        else
+                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false')
+                                                label.form-check-label(for='inlineRadio2') Female
+                                        else if userData.gender == false
                                             .form-check.form-check-inline.mr-2
-                                                input#inputGender1.form-check-input(type='radio', name='gender', value='true')
-                                                label.form-check-label(for='inputGender1') Male
+                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true')
+                                                label.form-check-label(for='inlineRadio1') Male
                                             .form-check.form-check-inline
-                                                input#inputGender2.form-check-input(type='radio', name='gender', value='false', checked)
-                                                label.form-check-label(for='inputGender2') Female
+                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false', checked)
+                                                label.form-check-label(for='inlineRadio2') Female
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
                                         button#editSubmit.btn.btn-dark.shadow.mr-2(type='button') Submit Change
                                         input.btn.btn-secondary(type='reset', value='Reset')
                                         
-
 
                         #changePassword.tab-pane.p-4
                             h1.font-weight-light Change password
@@ -205,10 +217,10 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
+
                                         input.btn.btn-dark.shadow.mr-2(type='button', value='Save Changes')
                                         input.btn.btn-secondary(type='reset', value='Reset')
                                         
-
 
 
         footer.page-footer.font-small.dark

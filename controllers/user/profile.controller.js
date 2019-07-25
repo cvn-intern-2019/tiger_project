@@ -2,14 +2,10 @@ var User = require("../../models/user.model");
 var crypto = require("crypto");
 var moment = require("moment");
 
-var generateToken = () => {
-  return crypto.randomBytes(64).toString("hex");
-};
-
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
 
-  User.findById(userId, (err, data) => {
+  User.findById(userId,"username email avatar fullname phone gender birthday", (err, data) => {
     if (err) next(err);
 
     let csrfToken = generateToken();
@@ -105,6 +101,6 @@ module.exports.postEditProfile = [
       res.json({
         type: 1
       });
-    });
-  }
-];
+    }
+  );
+};
