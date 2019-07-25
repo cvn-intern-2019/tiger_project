@@ -13,6 +13,7 @@ module.exports.getProfilePage = (req, res, next) => {
         if(err) return next(err);
         if(!userData) return next(new NotFound);
         
+        //convert date to string and display in format DD-MM-YYYY
         userData.birthday_formatted = moment(userData.birthday).format("DD-MM-YYYY");
 
         res.render("user/profile", {
