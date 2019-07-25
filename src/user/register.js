@@ -9,7 +9,6 @@ module.exports.showForm = () => {
   $(`#registerForm input[name=email]`).val("");
   $(`#registerForm input[name=password]`).val("");
   $(`#registerForm input[name=confirmPassword]`).val("");
-  $(`#registerForm form`).removeClass("was-validated");
   $(`#registerForm #msg`).hide();
   $(`#registerForm`).show();
 };
@@ -32,22 +31,12 @@ module.exports.registerBtnEvent = () => {
       if (data.type === 0) {
         msgTag
           .empty()
-          .removeClass("alert-success")
-          .addClass("alert-danger")
-          .append(child);
-        $(`#registerForm form`).addClass("was-validated");
+          .append(child)
+          .show();
+      } else if (data.type === 1) {
+        window.location.reload();
       }
-      if (data.type === 1) {
-        msgTag
-          .empty()
-          .removeClass("alert-danger")
-          .addClass("alert-success")
-          .append(child);
-      }
-      $(`#registerForm #msg`).show();
       $(`#registerSubmit`).attr("disabled", false);
-      $(`#registerForm input[name=password]`).val("");
-      $(`#registerForm input[name=confirmPassword]`).val("");
     })
     .fail(err => {
       alert("Error: Something wrong!");
