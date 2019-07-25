@@ -11,32 +11,15 @@ module.exports.getProfilePage = (req, res, next) => {
 
   User.findById(userId, (err, data) => {
     if (err) next(err);
+
+    let csrfToken = generateToken();
+    req.session.csrfToken = csrfToken;
+
     res.render("user/profile", {
-      userData: data
+      userData: data,
+      csrfToken: csrfToken
     });
   });
-};
-
-var updateTransaction = async (userId, data) => {
-  //init session
-  let session = await User.startSession();
-  try {
-    //start transaction
-    session.startTransaction();
-
-    //every action here
-    await User.findByIdAndUpdate(userId, data, session);
-
-    //commit
-    await session.commitTransaction();
-    return true;
-  } catch (err) {
-    console.log(err);
-    //fail -> abort transaction and return false
-    await session.abortTransaction();
-    session.endSession();
-    return false;
-  }
 };
 
 var validateInput = (req, res, next) => {
@@ -47,17 +30,17 @@ var validateInput = (req, res, next) => {
   const phoneRegEx = /^[0-9]{10,10}$/;
   const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
 
-  //   if (
-  //     req.session.csrfToken !== body.csrfToken ||
-  //     req.body.csrfToken === undefined
-  //   ) {
-  //     req.session.csrfToken = csrfToken;
-  //     return res.json({
-  //       type: 0,
-  //       csrfToken: csrfToken,
-  //       msg: "Session is invalid! Please try again or refresh this page!"
-  //     });
-  //   }
+  if (
+    req.session.csrfToken !== body.csrfToken ||
+    req.body.csrfToken === undefined
+  ) {
+    req.session.csrfToken = csrfToken;
+    return res.json({
+      type: 0,
+      csrfToken: csrfToken,
+      msg: "Session is invalid! Please try again or refresh this page!"
+    });
+  }
 
   if (fullnameRegEx.test(body.fullname) === false) {
     req.session.csrfToken = csrfToken;
@@ -94,7 +77,7 @@ var validateInput = (req, res, next) => {
     return res.json({
       type: 0,
       csrfToken: csrfToken,
-      msg: "Your date of birth is invalid!"
+      msg: "Your birthday is invalid!"
     });
   }
   next();
@@ -111,15 +94,17 @@ module.exports.postEditProfile = [
       phone: body.phone,
       birthday: new Date(body.birthday)
     };
-    if (await updateTransaction(userId, data)) {
+
+    await User.findByIdAndUpdate(userId, data, err => {
+      if (err) {
+        res.json({
+          type: 0,
+          msg: "Update failed (DB)!"
+        });
+      }
       res.json({
         type: 1
       });
-    } else {
-      res.json({
-        type: 0,
-        msg: "Update failed (DB)!"
-      });
-    }
+    });
   }
 ];

@@ -148,6 +148,7 @@ block content
                             hr
                             #msg.alert.alert-danger
                             form.form-group(role='form')
+                                input(type="hidden", name="csrfToken", value=csrfToken)
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Fullname
                                     .col-lg-9
@@ -177,7 +178,6 @@ block content
                                             .form-check.form-check-inline
                                                 input#inputGender2.form-check-input(type='radio', name='gender', value='false', checked)
                                                 label.form-check-label(for='inputGender2') Female
-
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9

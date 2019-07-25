@@ -7,7 +7,8 @@ module.exports.editBtnEvent = () => {
     fullname: $(`#edit input[name=fullname]`).val(),
     phone: $(`#edit input[name=phone]`).val(),
     birthday: $(`#edit input[name=birthday]`).val(),
-    gender: $(`#edit input[name=gender]:checked`).val()
+    gender: $(`#edit input[name=gender]:checked`).val(),
+    csrfToken: $(`#edit input[name=csrfToken]`).val()
   };
 
   $.post("/user/edit", input)
@@ -22,6 +23,7 @@ module.exports.editBtnEvent = () => {
           .removeClass("alert-success")
           .addClass("alert-danger")
           .append(child);
+        $(`#edit input[name=csrfToken]`).val(data.csrfToken);
         $(`#edit #msg`).show();
         $(`#edit form`).addClass("was-validated");
       }
