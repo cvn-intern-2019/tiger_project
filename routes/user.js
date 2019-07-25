@@ -14,10 +14,5 @@ router.use(loginChecker);
 
 router.get('/', profileController.getProfilePage);
 
-router.post("/edit", profileController.postEditProfile);
-
-router.post("/", profileController.postEditProfile);
-
-router.get("/room", roomController.getRoomPage);
 
 module.exports = router;

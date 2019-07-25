@@ -97,7 +97,11 @@ block content
                                         |&nbsp;&nbsp;#{userData.birthday_formatted==null ? "No information": userData.birthday_formatted}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Gender:</b>
-                                        |&nbsp;&nbsp;#{userData.gender == null ? "Male" : "Female"}
+                                        |&nbsp;&nbsp;
+                                        if(userData.gender==null)
+                                            | No information
+                                        else
+                                            | #{userData.gender==true ? "Male":"Female"}        
 
                                 .col-md-6
                                     h1.font-weight-light Contact details 
