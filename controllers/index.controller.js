@@ -23,7 +23,7 @@ module.exports.index = (req, res, next) => {
 };
 
 module.exports.getLogin = (req, res, next) => {
-  if (!req.session.userData || !req.cookies.user_sid)
+  if (!req.session.userId || !req.cookies.user_sid)
     return res.render("login", { errMsg: undefined });
   res.redirect("/lounge");
 };
@@ -57,7 +57,7 @@ module.exports.postLogin = (req, res, next) => {
         });
       }
 
-      req.session.userData = user;
+      req.session.userId = user._id;
 
       res.json({
         type: 1

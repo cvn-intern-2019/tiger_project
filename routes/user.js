@@ -1,15 +1,15 @@
 var express = require("express");
-var profileController = require("../controllers/user/profile.controller")
+var router = express.Router();
+var profileController = require("../controllers/user/profile.controller");
+var loginChecker = require("../routes/index").loginChecker;
 var roomController = require("../controllers/user/room.controller");
 
-var router = express.Router();
-
+router.use(loginChecker);
 
 router.get("/", profileController.getProfilePage);
-router.get("/edit", profileController.getEditProfilePage);
+
 router.post("/edit", profileController.postEditProfile);
 
 router.get("/room", roomController.getRoomPage);
-
 
 module.exports = router;
