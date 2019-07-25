@@ -8,6 +8,7 @@ import "@fortawesome/fontawesome-free/js/regular";
 import "@fortawesome/fontawesome-free/js/brands";
 const $ = require("jquery");
 const editProfile = require("./profile.edit");
+const profileController = require("../../controllers/user/profile.controller")
 
 $(document).ready(() => {
   $(`#edit #msg`).hide();
@@ -16,5 +17,10 @@ $(document).ready(() => {
     if (event.which == 1) {
       editProfile.editBtnEvent();
     }
+  });
+
+  $(`#addfriends`).mousedown(event => {
+     profileController.addFriends();
+     console.log("a");
   });
 });

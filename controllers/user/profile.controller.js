@@ -108,3 +108,22 @@ module.exports.postEditProfile = [
     });
   }
 ];
+
+module.exports.addFriends = async (res, req, next) =>{
+  let userId = req.session.userId;
+  let body = req.body;
+  let data = {
+    friendId: body.userId
+  };
+  await User.findByIdAndUpdate(userId, data, err => {
+    if (err) {
+      res.json({
+        type: 0,
+        msg: "Add friend successful"
+      });
+    }
+    res.json({
+      type: 1
+    });
+  });
+};

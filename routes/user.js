@@ -12,4 +12,6 @@ router.post("/edit", profileController.postEditProfile);
 
 router.get("/room", roomController.getRoomPage);
 
+router.post("/edit", profileController.addFriends);
+
 module.exports = router;
