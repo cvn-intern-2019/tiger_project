@@ -73,9 +73,12 @@ block content
                         span.custom-file-control Change avatar
                         input#file.custom-file-input(type='file')
                     img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
-                    h1.font-weight-light.mt-4  #{userData.username}
-                    button#addfriends.btn.btn-outline-primary.my-3(type='button') Add Friend
+                    h1.font-weight-light.mt-4#username  #{userData.username}
 
+                    form#frmAddfriends(action='/user/addfriends', method='POST')
+                        input(type="hidden", name="username", value=userData.username)
+                        button#addfriends.btn.btn-outline-primary.my-3(type='submit') Add Friend
+                    
                 .col-lg-8.order-lg-2
                     ul.nav.nav-tabs.text-secondary
                         li.nav-item

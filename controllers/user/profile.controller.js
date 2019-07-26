@@ -109,21 +109,24 @@ module.exports.postEditProfile = [
   }
 ];
 
-module.exports.addFriends = async (res, req, next) =>{
+module.exports.postAddFriends = (req, res, next) => {
   let userId = req.session.userId;
-  let body = req.body;
-  let data = {
-    friendId: body.userId
-  };
-  await User.findByIdAndUpdate(userId, data, err => {
-    if (err) {
-      res.json({
-        type: 0,
-        msg: "Add friend successful"
+  let friendUsername = req.body.username;
+
+  User.findOne({ username: friendUsername }, (err, friend) => {
+    if (err) next(err);
+    if (friend == undefined) res.json({ type: 0, msg: "Friend not exists" });
+    else
+      User.findById(userId, async (err, user) => {
+        if (err) next(err);
+        let index = user.friendId.findIndex(f => {
+          return f.toString() === friend._id.toString();
+        });
+        if (index < 0) {
+          user.friendId.push(friend._id);
+          await user.save();
+          res.redirect(friend.username);
+        } else res.json({ type: 0, msg: "Friend already!" });
       });
-    }
-    res.json({
-      type: 1
-    });
   });
 };

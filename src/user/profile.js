@@ -6,6 +6,7 @@ import "@fortawesome/fontawesome-free/js/fontawesome";
 import "@fortawesome/fontawesome-free/js/solid";
 import "@fortawesome/fontawesome-free/js/regular";
 import "@fortawesome/fontawesome-free/js/brands";
+import { addFriends } from "../../controllers/user/profile.controller";
 const $ = require("jquery");
 const editProfile = require("./profile.edit");
 
@@ -18,25 +19,16 @@ $(document).ready(() => {
     }
   });
 
-  $(`#addfriends`).mousedown(event => {
-    async (res, req, next) =>{
-      let userId = req.session.userId;
-      let body = req.body;
-      let data = {
-        friendId: body.userId
-      };
-      await User.findByIdAndUpdate(userId, data, err => {
-        if (err) {
-          res.json({
-            type: 0,
-            msg: "Add friend successful"
-          });
-        }
-        res.json({
-          type: 1
-        });
-      });
-    };
-    
-  });
+  // $(`#addfriends`).mousedown(event => {
+  //   if (event.which == 1) {
+  //     console.log("abc");
+  //     $(`#frmAddfriends #addfriends`).attr("disabled", true);
+  
+  //     let input = {
+  //       friendId: $(`#frmAddfriends input[name=username]`).val()
+  //     };
+      
+  //     $.post("/user/addfriends", input)
+  //   }
+  // });
 });
