@@ -34,8 +34,8 @@ module.exports = {
       "./src/user/login.js",
       "./src/user/register.js"
     ],
-    profile_main: "./src/user/profile.js",
-    profile_friend: "./src/user/profile.friend.js"
+    profile_friend: "./src/user/profile.friend.js",
+    profile_main: ["./src/user/profile.js", "./src/user/changePassword.js"]
   },
 
   output: {

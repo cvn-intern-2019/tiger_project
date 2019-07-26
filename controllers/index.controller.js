@@ -162,3 +162,5 @@ module.exports.getLogout = (req, res, next) => {
   res.clearCookie("user_sid");
   res.redirect("/");
 };
+
+module.exports.hashPassword = hashPassword;

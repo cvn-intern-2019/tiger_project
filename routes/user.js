@@ -17,4 +17,9 @@ router.get("/:username", profileController.getUserPage);
 
 router.post("/addfriends", profileController.postAddFriends);
 
+router.post("/password/update", profileController.changePassword);
+
+router.get("/room", roomController.getRoomPage);
+
+
 module.exports = router;
