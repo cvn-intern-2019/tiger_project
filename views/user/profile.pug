@@ -3,14 +3,6 @@ block sessionCSS
     title Profile | Werewolf Online - Tiger Team
     link(rel="stylesheet", href="/stylesheets/profile.css")
 
-    link(rel="stylesheet",href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-    script(src="/javascripts/lounge.js")
-    script(src="https://kit.fontawesome.com/3f47eb379d.js")
-
-    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
-    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
-    
     script(src="/javascripts/profile_main.js")
 
 block content
@@ -22,8 +14,9 @@ block content
                 label.custom-file.btn-outline-light
                     span.custom-file-control Change avatar
                     input#file.custom-file-input(type='file')
-                img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
-                h1.font-weight-light.mt-4  #{userData.username}
+                //- img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
+                h1.font-weight-light.mt-4#username  #{userData.username}
+                button#addfriends.btn.btn-outline-primary.my-3(type='button') Add Friend
 
             .col-lg-8.order-lg-2
                 ul.nav.nav-tabs.text-secondary
@@ -168,5 +161,3 @@ block content
                                 .col-lg-9
                                     input.btn.btn-dark.mr-2(type='reset', value='Reset')
                                     input.btn.btn-danger(type='button', value='Save Changes')
-=======
-  

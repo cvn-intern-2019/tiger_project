@@ -2,6 +2,10 @@ var User = require("../../models/user.model");
 var crypto = require("crypto");
 var moment = require("moment");
 
+var generateToken = () => {
+  return crypto.randomBytes(64).toString("hex");
+};
+
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
 
@@ -103,4 +107,18 @@ module.exports.postEditProfile = [
       });
     }
   );
+}]
+
+
+module.exports.getUserPage = (req, res, next) => {
+  let userName = req.params.username;
+
+  User.findOne({username:userName},"username email avatar fullname phone gender birthday", (err, data) => {
+    if (err) next(err);
+    console.log(data)
+    res.render("user/profile", {
+      userData: data
+    });
+  });
 };
+
