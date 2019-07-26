@@ -1,8 +1,56 @@
 doctype html
 html
   head
+    link(rel="stylesheet", href="/stylesheets/layout.css")
+    script(src="/javascripts/layout.js")
     block sessionCSS
-      
+
   body.bg-dark.text-light
+
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow.sticky-top
+      a.navbar-brand(href='/lounge')
+        h1 WereWolf Online
+
+      .search-box
+        input.search-txt(type='text', name='', placeholder='Type roomID')
+        a.search-btn(href='#')
+            i.fas.fa-search-plus
+
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse
+
+      a.btn.btn-outline-light.mr-3#createRoom(role="button", href='user/room') 
+        i.fas.fa-plus-circle(aria-hidden='true')
+        |                             CreateRoom
+
+   
+
+      form#frmSignout(action='/user/room', method='POST')
+      ul.navbar-nav
+        li.nav-item.dropdown
+          a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+            | Hi, 
+            b  PhanMai
+          .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
+            a.dropdown-item(href='/user')
+              i.fa.fa-user(aria-hidden='true')
+              |                             Profile
+            .dropdown-divider
+            a.dropdown-item(href="/logout")
+              i.fa.fa-sign-out-alt(aria-hidden='true')
+              |                             Sign Out
+
+
     block content
-    
+
+
+    footer.page-footer.font-weight-bold.text-light
+      .footer-copyright.py-3.text-center
+        | &copy; 2019 Internship's Cybozu 
+        a.ml-2.text-light(href='#')  Made by Tiger Team
+
+
+
+
+
