@@ -19,6 +19,21 @@ $(document).ready(() => {
     }
   });
 
+
+  $("#changePasswordForm").submit(function(e) {
+    e.preventDefault();
+    $("#changePasswordBtn").disable = true;
+
+    changePassword.ajaxChangePassword();
+  });
+
+  $("#changePasswordBtn").click(function(e) {
+    e.preventDefault();
+    $("#changePasswordBtn").disable = true;
+
+    editProfile.changePasswordEvent();
+  });
+
   $(`#changeAvatar`).mouseover(() => {
     $(`#changeAvatar .container`).addClass("bg-dark");
     $(`#changeAvatar`).css("cursor", "pointer");

@@ -285,7 +285,7 @@ module.exports.changePassword = (req, res, next) => {
     }
 
     //check if current password is right. password characters
-    if (/^[a-z0-9]*$/g.test(body.newPassword) == false) {
+    if (/^[a-z0-9]{5,20}$/g.test(body.newPassword) == false) {
       req.session.csrfToken = csrfToken;
       return res.json({
         type: 0,
