@@ -12,4 +12,6 @@ router.get('/room', roomController.getRoomPage);
 router.get('/:username', profileController.getUserPage);
 
 
+router.post("/addfriends", profileController.postAddFriends);
+
 module.exports = router;
