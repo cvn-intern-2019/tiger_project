@@ -20,12 +20,9 @@ module.exports.editBtnEvent = () => {
       if (data.type === 0) {
         msgTag
           .empty()
-          .removeClass("alert-success")
-          .addClass("alert-danger")
-          .append(child);
+          .append(child)
+          .show();
         $(`#edit input[name=csrfToken]`).val(data.csrfToken);
-        $(`#edit #msg`).show();
-        $(`#edit form`).addClass("was-validated");
       }
 
       if (data.type === 1) {
