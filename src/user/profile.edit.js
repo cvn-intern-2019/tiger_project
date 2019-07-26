@@ -21,10 +21,10 @@ module.exports.editBtnEvent = () => {
         msgTag
           .empty()
           .append(child)
-          .show();
+          .removeClass("d-none")
+          .addClass("d-block");
         $(`#edit input[name=csrfToken]`).val(data.csrfToken);
       }
-
       if (data.type === 1) {
         window.location.reload();
       }
@@ -34,8 +34,10 @@ module.exports.editBtnEvent = () => {
       alert("Error: Something wrong!");
       $(`#edit #editSubmit`).attr("disabled", false);
     });
+};
 
 module.exports.changePasswordEvent = function() {
+  $(`#changePassword #changePasswordBtn`).attr("disabled", true);
   let input = {
     csrfToken: $("#changePasswordForm input[name=csrfToken]").val(),
     currentPassword: $("#changePasswordForm input[name=currentPassword]").val(),
@@ -45,24 +47,23 @@ module.exports.changePasswordEvent = function() {
   $.post("/user/password/update", input)
     .done(data => {
       let msgTag = $("#changePasswordForm #msg");
-      msgTag.removeClass("d-none").addClass("d-block");
-      let child = "<span>" + data.msg + "</span>";
+      let icon = `<i class="fas fa-lg fa-exclamation-triangle mr-2"/>`;
+
+      let child = `<span>${icon}${data.msg}</span>`;
+
       $("#changePasswordForm input[name=csrfToken]").val(data.csrfToken);
       if (data.type == 0) {
         msgTag
           .empty()
-          .removeClass("alert-success")
-          .addClass("alert-danger")
-          .append(child);
+          .append(child)
+          .removeClass("d-none")
+          .addClass("d-block");
       }
       if (data.type == 1) {
-        msgTag
-          .empty()
-          .removeClass("alert-danger")
-          .addClass("alert-success")
-          .append(child);
+        window.location.reload();
       }
       $("#changePasswordForm").trigger("reset");
+      $(`#changePassword #changePasswordBtn`).attr("disabled", false);
     })
     .fail(() => {
       alert("Error: Something wrong!");
