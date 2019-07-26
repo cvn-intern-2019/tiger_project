@@ -2,26 +2,21 @@ var User = require("../../models/user.model");
 var crypto = require("crypto");
 var moment = require("moment");
 var multer = require("multer");
-var mongoose = require("mongoose");
 var GridFsStorage = require("multer-gridfs-storage");
 var Grid = require("gridfs-stream");
+var mongoose = require("mongoose");
 
-// Mongo URI
-const mongoURI =
+var gfs = null;
+let connStr =
   "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority";
-
-// Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
-// Init gfs
-var gfs;
-conn.once("open", () => {
-  // Init stream
-  gfs = Grid(conn.db, mongoose.mongo);
+mongoose.connect(connStr, { useNewUrlParser: true }, err => {
+  if (err) next(err);
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
   gfs.collection("avatars");
 });
-// Create storage engine
+
 const storage = new GridFsStorage({
-  url: mongoURI,
+  url: connStr,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       const filename = req.session.userId;
@@ -33,7 +28,7 @@ const storage = new GridFsStorage({
     });
   }
 });
-const upload = multer({ storage });
+let upload = multer({ storage });
 
 var generateToken = () => {
   return crypto.randomBytes(64).toString("hex");

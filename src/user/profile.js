@@ -79,4 +79,12 @@ $(document).ready(() => {
         .trigger("change");
     }
   });
+
+  $("#changeAvatarModal").on("hidden.bs.modal", function() {
+    $(`#changeAvatarModal img`).attr(
+      "src",
+      $(`#showAvatarModal img`).attr("src")
+    );
+    $(`#changeAvatarModal input`).val("");
+  });
 });
