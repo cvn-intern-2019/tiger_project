@@ -15,7 +15,7 @@ var app = express();
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
 mongoose.connect(
-  "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority",
+  "mongodb://tiger:tiger123@localhost/werewolf",
   { useNewUrlParser: true }
 );
 mongoose.connection
