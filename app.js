@@ -14,9 +14,12 @@ var app = express();
 // // database setup
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
-mongoose.connect("mongodb://tiger:tiger123@localhost/werewolf", {
-  useNewUrlParser: true
-});
+
+mongoose.connect(
+  "mongodb://tiger:tiger123@localhost/werewolf",
+  { useNewUrlParser: true }
+);
+
 mongoose.connection
   .on("error", console.error.bind(console, "connection error:"))
   .once("open", () => {
@@ -50,7 +53,7 @@ app.use(
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
 app.use((req, res, next) => {
   if (req.cookies.user_sid && !req.session.userId) {
-    res.clearCookie("user_sid");
+  res.clearCookie("user_sid");
   }
   next();
 });

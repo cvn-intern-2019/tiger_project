@@ -1,5 +1,4 @@
 import "../user/animate.css";
-
 const $ = require("jquery");
 const editProfile = require("./profile.edit");
 
