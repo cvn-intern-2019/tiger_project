@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
   username: { type: String, required: true, unique: true, max: 20, min: 5 },
   password: { type: String, required: true, max: 20, min: 5 },
-  avatar: { type: Schema.Types.ObjectId, rel: "fs.files", required: false },
+  avatar: { type: String, required: false },
   fullname: { type: String, required: false, max: 50, min: 5 },
   gender: { type: Boolean, required: false, enum: [true, false] },
   email: { type: String, required: false, unique: true, max: 100, min: 5 },
@@ -14,7 +14,6 @@ var userSchema = new Schema({
   birthday: { type: Date, required: false },
   friendId: [{ type: Schema.Types.ObjectId, ref: "User", required: false }]
 });
-
 
 userSchema.virtual("birthday_formatted_view").get(function() {
   return moment(this.birthday).format("DD-MM-YYYY");

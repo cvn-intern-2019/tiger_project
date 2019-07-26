@@ -21,5 +21,6 @@ router.post("/password/update", profileController.changePassword);
 
 router.get("/room", roomController.getRoomPage);
 
+router.post("/change-avatar", profileController.changeAvatar);
 
 module.exports = router;

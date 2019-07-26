@@ -34,7 +34,6 @@ module.exports.editBtnEvent = () => {
       alert("Error: Something wrong!");
       $(`#edit #editSubmit`).attr("disabled", false);
     });
-};
 
 module.exports.changePasswordEvent = function() {
   let input = {
