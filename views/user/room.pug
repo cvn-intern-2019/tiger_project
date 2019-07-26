@@ -1,36 +1,34 @@
 extends ../layout
 block sessionCSS
     title Lounge | Werewolf Online - Tiger Team
-    link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
     script(src="/javascripts/room.js")
 
+    link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
+
 block content
-    .container-fluid
-        .row
-                       
-            .col-3
-                .listPlayers
-                    ul.list-group.list-group-flush
-                        li.list-group-item.text-dark Number players :       #{players.length + 1}
-                        each player in players 
-                            li.list-group-item.text-dark
-                                a.btn.btn-outline-light(role="button")  
-                                    i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
+ 
+    .row
+        .col-2
+            .customSetting
+                i.fas.fa-user-cog       CustomSetting
+        .col-7
+            .messages
+                
+        .col-3
+            .listPlayers
+                ul.list-group.list-group-flush
+                    li.list-group-item.text-dark Number players :       #{players.length + 1}
+                    each player in players 
+                        li.list-group-item.text-dark
+                            a.btn.btn-outline-light(role="button")  
+                                i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
 
-                        form.form-inline
-                            input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
-                            a.btn.btn-outline-dark(role="button") 
-                                i.fa.fa-search-plus(aria-hidden='true')
-                                |                             Add
-                                
-                    button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
-                    a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
+                    form.form-inline
+                        input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
+                        a.btn.btn-outline-dark(role="button") 
+                            i.fa.fa-search-plus(aria-hidden='true')
+                            |                             Add
+                            
+                button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
+                a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
 
-
-            .col-7
-                .messages
-         
-            
-            .col-2
-                .customSetting
-                    i.fas.fa-user-cog       CustomSetting

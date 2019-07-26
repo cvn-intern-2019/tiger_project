@@ -1,163 +1,160 @@
 extends ../layout
 block sessionCSS
     title Profile | Werewolf Online - Tiger Team
+    link(rel="stylesheet", href="/stylesheets/profile.css")
+
     script(src="/javascripts/profile_main.js")
 
 block content
-    .container-fluid.text-light
-      
-        .container.my-5
-            .row
-                .col-lg-4.order-lg-1.text-center
-                    label.custom-file.btn-outline-light
-                        span.custom-file-control Change avatar
-                        input#file.custom-file-input(type='file')
-                    img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
-                    h1.font-weight-light.mt-4  #{userData.username}
+    .container.my-5
+        .row
+            .col-lg-4.order-lg-1.text-center
+                label.custom-file.btn-outline-light
+                    span.custom-file-control Change avatar
+                    input#file.custom-file-input(type='file')
+                img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
+                h1.font-weight-light.mt-4  #{userData.username}
 
-                .col-lg-8.order-lg-2
-                    ul.nav.nav-tabs.text-secondary
-                        li.nav-item
-                            a.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#profile', data-toggle='tab') Profile
-                        li.nav-item
-                             a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#history', data-toggle='tab') History
-                        li.nav-item
-                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#edit', data-toggle='tab') Edit
-                        li.nav-item
-                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#changePassword', data-toggle='tab') Change Password
+            .col-lg-8.order-lg-2
+                ul.nav.nav-tabs.text-secondary
+                    li.nav-item
+                        a.nav-link.active(data-target='#profile', data-toggle='tab') Profile
+                    li.nav-item
+                        a.nav-link( data-target='#history', data-toggle='tab') History
+                    li.nav-item
+                        a.nav-link( data-target='#edit', data-toggle='tab') Edit
+                    li.nav-item
+                        a.nav-link( data-target='#changePassword', data-toggle='tab') Change Password
 
-                    .tab-content.bg-light.text-dark
-                        #profile.tab-pane.active.p-4
-                            .row.py-2
-                                .col-md-6
-                                    h1.font-weight-light Basic information 
-                                    hr
-                                    h4.pb-3.font-weight-light
-                                        .badge.badge-dark <b>Fullname:</b>
-                                        |&nbsp;&nbsp;#{userData.fullname==null ? "No information": userData.fullname}
-                                    h4.pb-3.font-weight-light
-                                        .badge.badge-dark <b>Birthday:</b>
-                                        |&nbsp;&nbsp;#{userData.birthday_formatted_view==null ? "No information": userData.birthday_formatted_view}
-                                    h4.font-weight-light
-                                        .badge.badge-dark <b>Gender:</b>
-                                        |&nbsp;&nbsp;
-                                        if(userData.gender==null)
-                                            | No information
-                                        else
-                                            | #{userData.gender==true ? "Male":"Female"}        
+                .tab-content.bg-light.text-dark
+                    #profile.tab-pane.active.p-4
+                        .row.py-2
+                            .col-md-6
+                                h1.font-weight-light Basic information 
+                                hr
+                                h4.pb-3.font-weight-light
+                                    .badge.badge-dark <b>Fullname:</b>
+                                    |&nbsp;&nbsp;#{userData.fullname}
+                                h4.pb-3.font-weight-light
+                                    .badge.badge-dark <b>Birthday:</b>
+                                    |&nbsp;&nbsp;#{userData.birthday_formatted_view}
+                                h4.font-weight-light
+                                    .badge.badge-dark <b>Gender:</b>
+                                    |&nbsp;&nbsp;#{userData.gender === true ? "Male" : "Female"}
 
-                                .col-md-6
-                                    h1.font-weight-light Contact details 
-                                    hr
-                                    h4.pb-3.font-weight-light
-                                        .badge.badge-dark <b>Phone:</b>
-                                        |&nbsp;&nbsp;#{userData.phone==null ? "No information": userData.phone}
-                                    h4.font-weight-light
-                                        .badge.badge-dark <b>Email:</b>
-                                        |&nbsp;&nbsp;#{userData.email==null ? "No information": userData.email}                     
-                        #history.tab-pane.p-4
-                            h1.font-weight-light Play history
-                            table.table.table-hover.table-striped
-                                thead
-                                    tr
-                                        th(scope='col') #
-                                        th(scope='col') UserName
-                                        th(scope='col') StartGame
-                                        th(scope='col') EndGame
-                                        th(scope='col') ViewDetail
+                            .col-md-6
+                                h1.font-weight-light Contact details 
+                                hr
+                                h4.pb-3.font-weight-light
+                                    .badge.badge-dark <b>Phone:</b>
+                                    |&nbsp;&nbsp;#{userData.phone}
+                                h4.font-weight-light
+                                    .badge.badge-dark <b>Email:</b>
+                                    |&nbsp;&nbsp;#{userData.email}
 
-                                tbody
-                                    tr
-                                        th(scope='row') 1
-                                            td Mark
-                                            td Otto
-                                            td @mdo
-                                            td 
-                                                button.btn.btn-dark
-                                                    i.fas.fa-info-circle
+                    #history.tab-pane.p-4
+                        h1.font-weight-light Play history
+                        table.table.table-hover.table-striped
+                            thead
+                                tr
+                                    th(scope='col') #
+                                    th(scope='col') UserName
+                                    th(scope='col') StartGame
+                                    th(scope='col') EndGame
+                                    th(scope='col') ViewDetail
 
-                                    tr
-                                        th(scope='row') 2
-                                            td Jacob
-                                            td Thornton
-                                            td @fat
-                                            td 
-                                                i.fas.fa-info-circle view
-                                    tr
-                                        th(scope='row') 3
-                                            td Larry
-                                            td the Bird
-                                            td @twitter
-                                            td 
-                                                i.fas.fa-info-circle view
-                                    tr
-                                        th(scope='row') 3
-                                            td Larry
-                                            td the Bird
-                                            td @twitter
-                                            td 
-                                                i.fas.fa-info-circle view
-                        #edit.tab-pane.p-4
-                            h1.font-weight-light Edit profile
-                            hr
-                            #msg.alert.alert-danger
-                            form.form-group(role='form')
-                                input(type="hidden", name="csrfToken", value=csrfToken)
+                            tbody
+                                tr
+                                    th(scope='row') 1
+                                        td Mark
+                                        td Otto
+                                        td @mdo
+                                        td 
+                                            button.btn.btn-dark
+                                                i.fas.fa-info-circle
 
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label Fullname
-                                    .col-lg-9
-                                        input.form-control(type='text', name="fullname", value=userData.fullname, placeholder='Fullname')
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label Phone number
-                                    .col-lg-9
-                                        input.form-control(type='text', name="phone" value=userData.phone, placeholder='Phone number')
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label Birthday
-                                    .col-lg-9
-                                        input.form-control(type='date', name="birthday", value=userData.birthday_formatted_edit, placeholder='Birthday')
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label Gender
-                                    .col-lg-9
-                                        if userData.gender == true
-                                            .form-check.form-check-inline.mr-2
-                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true', checked)
-                                                label.form-check-label(for='inlineRadio1') Male
-                                            .form-check.form-check-inline
-                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false')
-                                                label.form-check-label(for='inlineRadio2') Female
-                                        else if userData.gender == false
-                                            .form-check.form-check-inline.mr-2
-                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true')
-                                                label.form-check-label(for='inlineRadio1') Male
-                                            .form-check.form-check-inline
-                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false', checked)
-                                                label.form-check-label(for='inlineRadio2') Female
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label
-                                    .col-lg-9
-                                        button#editSubmit.btn.btn-dark.shadow.mr-2(type='button') Submit Change
-                                        input.btn.btn-secondary(type='reset', value='Reset')
-                        #changePassword.tab-pane.p-4
-                            h1.font-weight-light Change password
-                            hr
-                            form.form-group(role='form')
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label Current Password
-                                    .col-lg-9
-                                        input.form-control(type='password',name="currentPassword", placeholder='Current password')  
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label New Password
-                                    .col-lg-9
-                                        input.form-control(type='password',name="newPassword", placeholder='New password')    
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label Confirm password
-                                    .col-lg-9
-                                        input.form-control(type='password',name="confirmPassword", placeholder='Confirm Password')
-                                .form-group.row
-                                    label.col-lg-3.col-form-label.form-control-label
-                                    .col-lg-9
+                                tr
+                                    th(scope='row') 2
+                                        td Jacob
+                                        td Thornton
+                                        td @fat
+                                        td 
+                                            i.fas.fa-info-circle view
+                                tr
+                                    th(scope='row') 3
+                                        td Larry
+                                        td the Bird
+                                        td @twitter
+                                        td 
+                                            i.fas.fa-info-circle view
+                                tr
+                                    th(scope='row') 3
+                                        td Larry
+                                        td the Bird
+                                        td @twitter
+                                        td 
+                                            i.fas.fa-info-circle view
 
-                                        input.btn.btn-dark.shadow.mr-2(type='button', value='Save Changes')
-                                        input.btn.btn-secondary(type='reset', value='Reset')
-                                        
+                    #edit.tab-pane.p-4
+                        h1.font-weight-light Edit profile
+                        hr
+                        #msg.alert.alert-danger
+                        form.form-group(role='form')
+                            input(type="hidden", name="csrfToken", value=csrfToken)
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label Fullname
+                                .col-lg-9
+                                    input.form-control(type='text', name="fullname", value=userData.fullname, placeholder='Fullname')
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label Phone number
+                                .col-lg-9
+                                    input.form-control(type='text', name="phone" value=userData.phone, placeholder='Phone number')
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label Birthday
+                                .col-lg-9
+                                    input.form-control(type='date', name="birthday", value=userData.birthday_formatted_edit, placeholder='Birthday')
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label Gender
+                                .col-lg-9
+                                    if userData.gender === true
+                                        .form-check.form-check-inline.mr-2
+                                            input#inputGender1.form-check-input(type='radio', name='gender', value='true', checked)
+                                            label.form-check-label(for='inputGender') Male
+                                        .form-check.form-check-inline
+                                            input#inputGender2.form-check-input(type='radio', name='gender', value='false')
+                                            label.form-check-label(for='inputGender2') Female
+                                    else
+                                        .form-check.form-check-inline.mr-2
+                                            input#inputGender1.form-check-input(type='radio', name='gender', value='true')
+                                            label.form-check-label(for='inputGender1') Male
+                                        .form-check.form-check-inline
+                                            input#inputGender2.form-check-input(type='radio', name='gender', value='false', checked)
+                                            label.form-check-label(for='inputGender2') Female
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label
+                                .col-lg-9
+                                    input.btn.btn-dark.mr-2(type='reset', value='Reset')
+                                    button#editSubmit.btn.btn-danger(type='button') Submit Change
+
+
+                    #changePassword.tab-pane.p-4
+                        h1.font-weight-light Change password
+                        hr
+                        form.form-group(role='form')
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label Current Password
+                                .col-lg-9
+                                    input.form-control(type='password',name="currentPassword", placeholder='Current password')  
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label New Password
+                                .col-lg-9
+                                    input.form-control(type='password',name="newPassword", placeholder='New password')    
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label Confirm password
+                                .col-lg-9
+                                    input.form-control(type='password',name="confirmPassword", placeholder='Confirm Password')
+                            .form-group.row
+                                label.col-lg-3.col-form-label.form-control-label
+                                .col-lg-9
+                                    input.btn.btn-dark.mr-2(type='reset', value='Reset')
+                                    input.btn.btn-danger(type='button', value='Save Changes')

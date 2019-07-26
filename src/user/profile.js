@@ -11,8 +11,6 @@ $(document).ready(() => {
     }
   });
 
-  $('#createRoom').hide();
-  $('.search-box ').hide();
-
-  
+  $("#createRoom").hide();
+  $(".search-box").hide();
 });
