@@ -163,7 +163,8 @@ module.exports.changePassword = (req, res, next) => {
       return res.json({
         type: 0,
         csrfToken: csrfToken,
-        msg: " Number of characters in password must be between 5 and 20."
+        msg:
+          " Number of characters in password must be between 5 and 20. Only allowed numbers, alphabe characters"
       });
     }
 
