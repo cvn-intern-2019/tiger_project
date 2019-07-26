@@ -126,6 +126,27 @@ module.exports.postEditProfile = [
   }
 ];
 
+module.exports.getUserPage = (req, res, next) => {
+  let friendUsername = req.params.username;
+  let userId = req.session.userId;
+
+  User.findOne({ username: friendUsername }, (err, friend) => {
+    if (err) next(err);
+
+    User.findById(userId, (err, user) => {
+      if (err) next(err);
+      let index = user.friendId.findIndex(f => {
+        return f.toString() === friend._id.toString();
+      });
+      if (index < 0) {
+        res.render("user/profileFriend", { userData: friend, isFriend: false });
+      } else {
+        res.render("user/profileFriend", { userData: friend, isFriend: true });
+      }
+    });
+  });
+}
+
 module.exports.changePassword = (req, res, next) => {
   let body = req.body;
   let csrfToken = generateToken();
@@ -229,7 +250,9 @@ module.exports.postAddFriends = (req, res, next) => {
           user.friendId.push(friend._id);
           await user.save();
           res.redirect(friend.username);
-        } else res.json({ type: 0, msg: "Friend already!" });
+        } else {
+          res.json({ type: 0, msg: "Friend already!" });
+        }
       });
   });
 };
