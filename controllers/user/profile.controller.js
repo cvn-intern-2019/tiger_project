@@ -158,7 +158,7 @@ module.exports.changePassword = (req, res, next) => {
     }
 
     //check if current password is right. password characters
-    if (/.{5,20}/g.test(body.newPassword) == false) {
+    if (/^[a-z0-9]*$/g.test(body.newPassword) == false) {
       req.session.csrfToken = csrfToken;
       return res.json({
         type: 0,
@@ -191,27 +191,4 @@ module.exports.changePassword = (req, res, next) => {
       });
     });
   });
-
-  // User.findById(idUser, "username password", (err, dataSavedInDB) => {
-  //   if (err) next(err);
-
-  //   var hashedNewPassword = hashPassword(
-  //     dataSavedInDB.username,
-  //     body.newPassword
-  //   );
-
-  //   User.findByIdAndUpdate(
-  //     idUser,
-  //     { password: hashedNewPassword },
-  //     function(err) {
-  //       if (err) next(err);
-  // req.session.csrfToken = csrfToken;
-  //       return res.json({
-  //         type: 1,
-  //         csrfToken: csrfToken,
-  //         msg: "Password is saved!."
-  //       });
-  //     }
-  //   );
-  // });
 };
