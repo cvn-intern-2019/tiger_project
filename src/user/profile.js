@@ -47,25 +47,29 @@ $(document).ready(() => {
   });
 
   var readURL = function(input) {
-    if (input.files.length > 0) {
-      if (input.files[0].size > 800000) {
-        alert("Size of file can't over 800KB");
-        return;
-      }
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          $(`#changeAvatarModal img`).attr("src", e.target.result);
-        };
+    if (input.files[0].size > 800000) {
+      alert("Size of file can't over 800KB");
+      return;
+    }
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $(`#changeAvatarModal img`).attr("src", e.target.result);
+      };
 
-        reader.readAsDataURL(input.files[0]);
-      }
+      reader.readAsDataURL(input.files[0]);
     } else {
-      $(`#changeAvatarModal img`).attr("src", "http://placehold.it/300");
+      $(`#changeAvatarModal img`).attr("src", "http://placehold.it/250");
     }
   };
 
-  $(`#changeAvatarModal input[name=avatarFile]`).change(function() {
+  var urlClone = null;
+  $(`#changeAvatarModal input[name=avatarFile]`).change(function(e) {
+    if ($(e.target).val() == "") {
+      $(e.target).replaceWith(urlClone);
+      return;
+    }
+    urlClone = $(e.target).clone();
     readURL(this);
     $(`#changeAvatarModal #submitChange`).attr("disabled", false);
     if ($(this).val() == "") $(`#changeAvatarModal #deleteAvatar`).hide();
@@ -74,9 +78,8 @@ $(document).ready(() => {
 
   $(`#changeAvatarModal #deleteAvatar`).mousedown(event => {
     if (event.which == 1) {
-      $(`#changeAvatarModal input[name=avatarFile]`)
-        .val("")
-        .trigger("change");
+      $(`#changeAvatarModal input[name=avatarFile]`).val("");
+      $(`#changeAvatarModal img`).attr("src", "http://placehold.it/250");
     }
   });
 

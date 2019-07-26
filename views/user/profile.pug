@@ -7,7 +7,7 @@ block sessionCSS
 block content
     #showAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='showAvatar', aria-hidden='true')
         .modal-dialog.text-center.modal-lg
-            img.img-thumbnail(src=`${userData.avatar===undefined?"http://placehold.it/500":"/avatar/"+userData.avatar}`, style="width:75vh; height:75vh")
+            img.img-thumbnail(src=`${userData.avatar===undefined?"http://placehold.it/250":"/avatar/"+userData.avatar}`, style="width:75vh; height:75vh")
 
     #changeAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='changeAvatar', aria-hidden='true')
         .modal-dialog
@@ -22,7 +22,7 @@ block content
                     .mt-3
                         button#browseFile.btn.btn-info.btn-file.mr-2 Browse
                             input.custom-file-input(type='file' accept="image/*" name="avatarFile")
-                        button#deleteAvatar.btn.btn-danger Delete
+                        button#deleteAvatar.btn.btn-danger(type="button") Delete
                         p Maximum: 800KB
                         button#submitChange.btn.btn-dark(type='submit') Save
                     
