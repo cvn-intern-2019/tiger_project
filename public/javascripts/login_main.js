@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/user/login.main.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -294,17 +294,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var boot
 /***/ (function(module, exports, __webpack_require__) {
 
 eval("const $ = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\");\r\n\r\nmodule.exports.hideForm = () => {\r\n  $(`#registerForm`).hide();\r\n};\r\n\r\nmodule.exports.showForm = () => {\r\n  $(`#registerForm input[name=username]`).val(\"\");\r\n  $(`#registerForm input[name=email]`).val(\"\");\r\n  $(`#registerForm input[name=password]`).val(\"\");\r\n  $(`#registerForm input[name=confirmPassword]`).val(\"\");\r\n  $(`#registerForm #msg`).hide();\r\n  $(`#registerForm`).show();\r\n};\r\n\r\nmodule.exports.registerBtnEvent = () => {\r\n  $(`#registerSubmit`).attr(\"disabled\", true);\r\n\r\n  let input = {\r\n    username: $(`#registerForm input[name=username]`).val(),\r\n    email: $(`#registerForm input[name=email]`).val(),\r\n    password: $(`#registerForm input[name=password]`).val(),\r\n    confirmPassword: $(`#registerForm input[name=confirmPassword]`).val()\r\n  };\r\n\r\n  $.post(\"/register\", input)\r\n    .done(data => {\r\n      let msgTag = $(`#registerForm #msg`);\r\n      let icon = `<i class=\"fas fa-lg fa-exclamation-triangle mr-2\"/>`;\r\n      let child = `<span>${icon}${data.msg}</span>`;\r\n      if (data.type === 0) {\r\n        msgTag\r\n          .empty()\r\n          .append(child)\r\n          .show();\r\n      } else if (data.type === 1) {\r\n        window.location.reload();\r\n      }\r\n      $(`#registerSubmit`).attr(\"disabled\", false);\r\n    })\r\n    .fail(err => {\r\n      alert(\"Error: Something wrong!\");\r\n      $(`#registerSubmit`).attr(\"disabled\", false);\r\n      $(`#registerForm input[name=password]`).val(\"\");\r\n      $(`#registerForm input[name=confirmPassword]`).val(\"\");\r\n    });\r\n};\r\n\n\n//# sourceURL=webpack:///./src/user/register.js?");
-
-/***/ }),
-
-/***/ 0:
-/*!*********************************************************************************!*\
-  !*** multi ./src/user/login.main.js ./src/user/login.js ./src/user/register.js ***!
-  \*********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("__webpack_require__(/*! ./src/user/login.main.js */\"./src/user/login.main.js\");\n__webpack_require__(/*! ./src/user/login.js */\"./src/user/login.js\");\nmodule.exports = __webpack_require__(/*! ./src/user/register.js */\"./src/user/register.js\");\n\n\n//# sourceURL=webpack:///multi_./src/user/login.main.js_./src/user/login.js_./src/user/register.js?");
 
 /***/ })
 
