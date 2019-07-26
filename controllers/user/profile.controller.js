@@ -125,7 +125,7 @@ module.exports.postEditProfile = [
     });
   }
 ];
-module.exports.changePassword = async (req, res, next) => {
+module.exports.changePassword = (req, res, next) => {
   let body = req.body;
   let csrfToken = generateToken();
   let idUser = req.session.userId;
@@ -140,16 +140,13 @@ module.exports.changePassword = async (req, res, next) => {
     });
   }
 
-  //check if current password is right. If so, update new password to the database
-  await User.findById(idUser, "username password", (err, dataSavedInDB) => {
+  User.findById(idUser, "username password", (err, dataSavedInDB) => {
     if (err) next(err);
 
-    let hashedCurrentPassword = hashPassword(
+    var hashedCurrentPassword = hashPassword(
       dataSavedInDB.username,
       body.currentPassword
     );
-
-    console.log(hashedCurrentPassword);
 
     if (hashedCurrentPassword !== dataSavedInDB.password) {
       req.session.csrfToken = csrfToken;
@@ -160,43 +157,61 @@ module.exports.changePassword = async (req, res, next) => {
       });
     }
 
-    let hashedNewPassword = hashPassword(
+    //check if current password is right. password characters
+    if (/.{5,20}/g.test(body.newPassword) == false) {
+      req.session.csrfToken = csrfToken;
+      return res.json({
+        type: 0,
+        csrfToken: csrfToken,
+        msg: " Number of characters in password must be between 5 and 20."
+      });
+    }
+
+    //check password and retype is match
+    if (body.newPassword !== body.confirmPassword) {
+      req.session.csrfToken = csrfToken;
+      return res.json({
+        type: 0,
+        csrfToken: csrfToken,
+        msg: "Your new password and comfirm password mismatch"
+      });
+    }
+
+    dataSavedInDB.password = hashPassword(
       dataSavedInDB.username,
       body.newPassword
     );
-
-    console.log(hashedNewPassword);
-  });
-
-  if (/.{5,20}/g.test(body.newPassword) == false) {
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 0,
-      csrfToken: csrfToken,
-      msg: " Number of characters in password must be between 5 and 20."
-    });
-  }
-
-  //check password and retype is match
-  if (body.newPassword !== body.confirmPassword) {
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 0,
-      csrfToken: csrfToken,
-      msg: "Your new password and comfirm password mismatch"
-    });
-  }
-
-  //Update new password
-  User.findByIdAndUpdate(idUser, { password: hashedNewPassword }, function(
-    err
-  ) {
-    if (err) next(err);
-    req.session.csrfToken = csrfToken;
-    return res.json({
-      type: 1,
-      csrfToken: csrfToken,
-      msg: "Password is saved!."
+    dataSavedInDB.save(err => {
+      if (err) return err;
+      req.session.csrfToken = csrfToken;
+      res.json({
+        type: 1,
+        csrfToken: csrfToken,
+        msg: "Password is saved!."
+      });
     });
   });
+
+  // User.findById(idUser, "username password", (err, dataSavedInDB) => {
+  //   if (err) next(err);
+
+  //   var hashedNewPassword = hashPassword(
+  //     dataSavedInDB.username,
+  //     body.newPassword
+  //   );
+
+  //   User.findByIdAndUpdate(
+  //     idUser,
+  //     { password: hashedNewPassword },
+  //     function(err) {
+  //       if (err) next(err);
+  // req.session.csrfToken = csrfToken;
+  //       return res.json({
+  //         type: 1,
+  //         csrfToken: csrfToken,
+  //         msg: "Password is saved!."
+  //       });
+  //     }
+  //   );
+  // });
 };
