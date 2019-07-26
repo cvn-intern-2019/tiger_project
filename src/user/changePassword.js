@@ -1,39 +1,41 @@
-const $ = require("jQuery");
+const $ = require("jquery");
 
-$("#changePasswordBtn").mousedown(function(e) {
-  if (event.which == 1) {
-    changePasswordEvent();
-  }
-});
-
-function changePasswordEvent() {
-  console.log("ok");
-
+var ajaxChangePassword = function(){
   let input = {
-    currentPassword: $(`#changePasswordForm input[name=currentPassword]`).val(),
-    password: $(`#changePasswordForm input[name=newPassword]`).val(),
-    comfirmPassword: $(`#changePasswordForm input[name=newPassword]`).val()
+    csrfToken:$("#changePasswordForm input[name=csrfToken]").val(),
+    currentPassword:$("#changePasswordForm input[name=currentPassword]").val(),
+    newPassword:$("#changePasswordForm input[name=newPassword]").val(),
+    confirmPassword:$("#changePasswordForm input[name=confirmPassword]").val()
   };
+  console.log(input);
 
-  $.post("/user/password/update", input).done(data => {
+  $.post("/user/password/update",input).done(data=>{
     let msgTag = $("#changePasswordForm #msg");
-    let icon = `<i class="fas fa-lg fa-exclamation-triangle mr-2"/>`;
-    let child = `<span>${icon}${data.msg}</span>`;
-
-    if (data.type == 0) {
+    let child = '<span>'+data.msg+'</span>';
+    
+    if(data.type==0){  
       msgTag
-        .empty()
-        .removeClass("alert-success")
-        .append(child);
-      $("#changePasswordForm #msg").show();
+      .empty()
+      .removeClass("alert-success")
+      .addClass("alert-danger")
+      .append(child);
     }
-    if (data.type == 1) {
+    if(data.type==1){
       msgTag
-        .empty()
-        .removeClass("alert-success")
-        .addClass("alert-success")
-        .append(child);
-      $("#changePasswordForm #msg").show();
+      .empty()
+      .removeClass("alert-danger")
+      .addClass("alert-success")
+      .append(child);
     }
-  });
+  }).fail(() => {
+    alert("Error: Something wrong!");
+    $(`#changePasswordBtn`).attr("disabled", false);
+  });;
 }
+
+$(document).ready(function(){
+  $("#changePasswordBtn").click(function(e){
+    e.preventDefault();
+    ajaxChangePassword();
+  })
+});

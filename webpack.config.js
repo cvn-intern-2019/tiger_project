@@ -32,7 +32,10 @@ module.exports = {
       "./src/user/login.js",
       "./src/user/register.js"
     ],
-    profile_main: ["./src/user/profile.js", "./src/user/changePassword.js"]
+    profile_main: [
+      "./src/user/profile.js",
+      "./src/user/changePassword.js"
+    ]
   },
 
   output: {

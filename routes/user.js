@@ -4,7 +4,7 @@ var profileController = require("../controllers/user/profile.controller");
 var loginChecker = require("../routes/index").loginChecker;
 var roomController = require("../controllers/user/room.controller");
 
-//router.use(loginChecker);
+router.use(loginChecker);
 
 router.get("/", profileController.getProfilePage);
 

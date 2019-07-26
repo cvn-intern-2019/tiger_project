@@ -9,6 +9,7 @@ var generateToken = () => {
 };
 
 module.exports.getProfilePage = (req, res, next) => {
+  console.log(req.session);
   let userId = req.session.userId;
 
   User.findById(userId, (err, data) => {
@@ -115,9 +116,12 @@ const passwordRegEx = /^.{5,20}$/g;
 
 module.exports.changePassword = (req, res, next) => {
   let body = req.body;
-  let csrfToken = "123456789";
-  let idUser = req.session.idUser;
+  let csrfToken = generateToken();
+  let idUser = req.session.userId;
+  console.log(req.body);
+  console.log(req.session);
 
+  
   //check csrf token
   if (body.csrfToken != req.session.csrfToken || body.csrfToken == undefined) {
     return res.json({
@@ -128,7 +132,7 @@ module.exports.changePassword = (req, res, next) => {
   }
 
   //check password and retype is match
-  if (body.newPassword != confirmPassword) {
+  if (body.newPassword != body.confirmPassword) {
     return res.json({
       type: 0,
       csrfToken: csrfToken,
@@ -136,10 +140,12 @@ module.exports.changePassword = (req, res, next) => {
     });
   }
 
+
   //test current password match
+  console.log(body.currentPassword);
   User.findById(idUser, "password", (err, password) => {
     if (err) next(err);
-    if (hashPassword(password) == body.currentPassword) {
+    if (hashPassword(body.currentPassword) !== password) {
       return res.json({
         type: 0,
         csrfToken: csrfToken,

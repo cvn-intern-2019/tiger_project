@@ -189,6 +189,8 @@ block content
                             h1.font-weight-light Change password
                             hr
                             form#changePasswordForm.form-group(role='form')
+                                #msg.alert.alert-danger
+                    
                                 input(type="hidden", name="csrfToken", value=csrfToken)
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Current Password
@@ -206,7 +208,7 @@ block content
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
                                         input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        input#changePasswordBtn.btn.btn-danger(value='Save Changes')
+                                        button#changePasswordBtn.btn.btn-danger Save Changes
 
 
 
