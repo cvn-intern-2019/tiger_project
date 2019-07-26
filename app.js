@@ -14,8 +14,7 @@ var app = express();
 //database setup
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
-let connStr =
-  "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority";
+let connStr = "mongodb://tiger:tiger123@localhost:27017/werewolf";
 mongoose.connect(connStr, { useNewUrlParser: true }, err => {
   if (err) return console.log("Error:" + err);
   console.log("Connected database!");

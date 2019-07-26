@@ -7,8 +7,7 @@ var Grid = require("gridfs-stream");
 var mongoose = require("mongoose");
 
 var gfs = null;
-let connStr =
-  "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority";
+let connStr = "mongodb://tiger:tiger123@localhost:27017/werewolf";
 mongoose.connect(connStr, { useNewUrlParser: true }, err => {
   if (err) next(err);
   gfs = Grid(mongoose.connection.db, mongoose.mongo);
@@ -45,6 +44,7 @@ module.exports.getProfilePage = (req, res, next) => {
 
       let csrfToken = generateToken();
       req.session.csrfToken = csrfToken;
+
       gfs.exist({ filename: data.avatar, root: "avatars" }, (err, found) => {
         if (err) return next(err);
         if (found)

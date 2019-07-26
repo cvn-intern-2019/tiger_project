@@ -151,7 +151,7 @@ module.exports.postRegister = (req, res, next) => {
   });
 
   newUser.save(err => {
-    if (err) next(err);
+    if (err) return err;
     return res.json({
       type: 1
     });
