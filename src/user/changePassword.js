@@ -7,8 +7,6 @@ var ajaxChangePassword = function() {
     newPassword: $("#changePasswordForm input[name=newPassword]").val(),
     confirmPassword: $("#changePasswordForm input[name=confirmPassword]").val()
   };
-  console.log(input);
-
   $.post("/user/password/update", input)
     .done(data => {
       let msgTag = $("#changePasswordForm #msg");
@@ -35,12 +33,18 @@ var ajaxChangePassword = function() {
       alert("Error: Something wrong!");
       $(`#changePasswordBtn`).attr("disabled", false);
     });
+  $(this).disable = false;
 };
 
 $(document).ready(function() {
+  $("#changePasswordForm").submit(function(e) {
+    e.preventDefault();
+    $("#changePasswordBtn").disable = true;
+    ajaxChangePassword();
+  });
   $("#changePasswordBtn").click(function(e) {
     e.preventDefault();
-
+    $("#changePasswordBtn").disable = true;
     ajaxChangePassword();
   });
 });
