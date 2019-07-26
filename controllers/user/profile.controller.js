@@ -116,7 +116,7 @@ module.exports.getUserPage = (req, res, next) => {
   User.findOne({username:userName},"username email avatar fullname phone gender birthday", (err, data) => {
     if (err) next(err);
     console.log(data)
-    res.render("user/profile", {
+    res.render("user/profileFriend", {
       userData: data
     });
   });

@@ -1,0 +1,93 @@
+extends ../layout
+block sessionCSS
+    title Profile | Werewolf Online - Tiger Team
+    link(rel="stylesheet", href="/stylesheets/profile.css")
+    script(src="/javascripts/profile_friend.js")
+
+block content
+    .container.my-5
+        .row
+            .col-lg-4.order-lg-1.text-center
+                label.custom-file.btn-outline-light#changeAvatar
+                    span.custom-file-control Change avatar
+                    input#file.custom-file-input(type='file')
+                img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
+                h1.font-weight-light.mt-4  #{userData.username}
+                button#addfriends.btn.btn-outline-primary.my-3(type='button')
+                    i.fas.fa-user-plus  Add Friend
+
+            .col-lg-8.order-lg-2
+                ul.nav.nav-tabs.text-secondary
+                    li.nav-item
+                        a.nav-link.active(data-target='#profile', data-toggle='tab') Profile
+                    li.nav-item
+                        a.nav-link( data-target='#history', data-toggle='tab') History
+
+                .tab-content.bg-light.text-dark
+                    #profile.tab-pane.active.p-4
+                        .row.py-2
+                            .col-md-6
+                                h1.font-weight-light Basic information 
+                                hr
+                                h4.pb-3.font-weight-light
+                                    .badge.badge-dark <b>Fullname:</b>
+                                    |&nbsp;&nbsp;#{userData.fullname}
+                                h4.pb-3.font-weight-light
+                                    .badge.badge-dark <b>Birthday:</b>
+                                    |&nbsp;&nbsp;#{userData.birthday_formatted_view}
+                                h4.font-weight-light
+                                    .badge.badge-dark <b>Gender:</b>
+                                    |&nbsp;&nbsp;#{userData.gender === true ? "Male" : "Female"}
+
+                            .col-md-6
+                                h1.font-weight-light Contact details 
+                                hr
+                                h4.pb-3.font-weight-light
+                                    .badge.badge-dark <b>Phone:</b>
+                                    |&nbsp;&nbsp;#{userData.phone}
+                                h4.font-weight-light
+                                    .badge.badge-dark <b>Email:</b>
+                                    |&nbsp;&nbsp;#{userData.email}
+
+                    #history.tab-pane.p-4
+                        h1.font-weight-light Play history
+                        table.table.table-hover.table-striped
+                            thead
+                                tr
+                                    th(scope='col') #
+                                    th(scope='col') UserName
+                                    th(scope='col') StartGame
+                                    th(scope='col') EndGame
+                                    th(scope='col') ViewDetail
+
+                            tbody
+                                tr
+                                    th(scope='row') 1
+                                        td Mark
+                                        td Otto
+                                        td @mdo
+                                        td 
+                                            button.btn.btn-dark
+                                                i.fas.fa-info-circle
+
+                                tr
+                                    th(scope='row') 2
+                                        td Jacob
+                                        td Thornton
+                                        td @fat
+                                        td 
+                                            i.fas.fa-info-circle view
+                                tr
+                                    th(scope='row') 3
+                                        td Larry
+                                        td the Bird
+                                        td @twitter
+                                        td 
+                                            i.fas.fa-info-circle view
+                                tr
+                                    th(scope='row') 3
+                                        td Larry
+                                        td the Bird
+                                        td @twitter
+                                        td 
+                                            i.fas.fa-info-circle view
