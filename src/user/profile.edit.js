@@ -35,5 +35,3 @@ module.exports.editBtnEvent = () => {
       $(`#edit #editSubmit`).attr("disabled", false);
     });
 };
-
-module.exports.changeAvatarEvent = () => {};
