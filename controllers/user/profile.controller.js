@@ -9,17 +9,21 @@ var generateToken = () => {
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
 
-  User.findById(userId,"username email avatar fullname phone gender birthday", (err, data) => {
-    if (err) next(err);
+  User.findById(
+    userId,
+    "username email avatar fullname phone gender birthday",
+    (err, data) => {
+      if (err) next(err);
 
-    let csrfToken = generateToken();
-    req.session.csrfToken = csrfToken;
+      let csrfToken = generateToken();
+      req.session.csrfToken = csrfToken;
 
-    res.render("user/profile", {
-      userData: data,
-      csrfToken: csrfToken
-    });
-  });
+      res.render("user/profile", {
+        userData: data,
+        csrfToken: csrfToken
+      });
+    }
+  );
 };
 
 var validateInput = (req, res, next) => {
@@ -105,23 +109,30 @@ module.exports.postEditProfile = [
       res.json({
         type: 1
       });
-    }
-  );
-}]
-
-
-module.exports.getUserPage = (req, res, next) => {
-  let userName = req.params.username;
-
-  User.findOne({username:userName},"username email avatar fullname phone gender birthday", (err, data) => {
-    if (err) next(err);
-    console.log(data)
-    res.render("user/profileFriend", {
-      userData: data
     });
-
   }
 ];
+
+module.exports.getUserPage = (req, res, next) => {
+  let friendUsername = req.params.username;
+  let userId = req.session.userId;
+
+  User.findOne({ username: friendUsername }, (err, friend) => {
+    if (err) next(err);
+
+    User.findById(userId, (err, user) => {
+      if (err) next(err);
+      let index = user.friendId.findIndex(f => {
+        return f.toString() === friend._id.toString();
+      });
+      if (index < 0) {
+        res.render("user/profileFriend", { userData: friend, isFriend: false });
+      } else {
+        res.render("user/profileFriend", { userData: friend, isFriend: true });
+      }
+    });
+  });
+};
 
 module.exports.postAddFriends = (req, res, next) => {
   let userId = req.session.userId;
@@ -140,8 +151,9 @@ module.exports.postAddFriends = (req, res, next) => {
           user.friendId.push(friend._id);
           await user.save();
           res.redirect(friend.username);
-        } else res.json({ type: 0, msg: "Friend already!" });
+        } else {
+          res.json({ type: 0, msg: "Friend already!" });
+        }
       });
   });
 };
-

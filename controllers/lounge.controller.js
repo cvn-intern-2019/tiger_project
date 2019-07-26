@@ -1,6 +1,4 @@
-
 module.exports.getRoomPage = (req, res, next) => {
-
   var rooms = [
     {
       roomID: 1,

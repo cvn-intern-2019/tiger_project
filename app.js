@@ -14,10 +14,9 @@ var app = express();
 // // database setup
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
-mongoose.connect(
-  "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority",
-  { useNewUrlParser: true }
-);
+mongoose.connect("mongodb://tiger:tiger123@localhost/werewolf", {
+  useNewUrlParser: true
+});
 mongoose.connection
   .on("error", console.error.bind(console, "connection error:"))
   .once("open", () => {

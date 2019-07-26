@@ -7,11 +7,9 @@ var roomController = require("../controllers/user/room.controller");
 //require check login for all routes.
 router.use(loginChecker);
 
-router.get('/', profileController.getProfilePage);
-router.get('/room', roomController.getRoomPage);
-router.get('/:username', profileController.getUserPage);
-
-
+router.get("/", profileController.getProfilePage);
+router.get("/room", roomController.getRoomPage);
+router.get("/:username", profileController.getUserPage);
 router.post("/addfriends", profileController.postAddFriends);
 
 module.exports = router;
