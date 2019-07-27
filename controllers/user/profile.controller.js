@@ -45,9 +45,6 @@ var hashPassword = (username, password) => {
     .digest("hex");
 };
 
-var generateToken = () => {
-  return crypto.randomBytes(64).toString("hex");
-};
 
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
@@ -66,12 +63,14 @@ module.exports.getProfilePage = (req, res, next) => {
         if (found)
           res.render("user/profile", {
             userData: data,
+            username: req.session.username,
             csrfToken: csrfToken
           });
         else {
           data.avatar = undefined;
           res.render("user/profile", {
             userData: data,
+            username: req.session.username,
             csrfToken: csrfToken
           });
         }
@@ -233,6 +232,7 @@ module.exports.postAddFriends = (req, res, next) => {
 
 module.exports.getUserPage = (req, res, next) => {
   let friendUsername = req.params.username;
+  if (friendUsername == req.session.username) return res.redirect("/user");
   let userId = req.session.userId;
 
   User.findOne({ username: friendUsername }, (err, friend) => {
@@ -244,9 +244,17 @@ module.exports.getUserPage = (req, res, next) => {
         return f.toString() === friend._id.toString();
       });
       if (index < 0) {
-        res.render("user/profileFriend", { userData: friend, isFriend: false });
+        res.render("user/profileFriend", {
+          userData: friend,
+          username: req.session.username,
+          isFriend: false
+        });
       } else {
-        res.render("user/profileFriend", { userData: friend, isFriend: true });
+        res.render("user/profileFriend", {
+          userData: friend,
+          username: req.session.username,
+          isFriend: true
+        });
       }
     });
   });
@@ -320,19 +328,4 @@ module.exports.changePassword = (req, res, next) => {
       });
     });
   });
-};
-
-module.exports.getUserPage = (req, res, next) => {
-  let userName = req.params.username;
-
-  User.findOne(
-    { username: userName },
-    "username email avatar fullname phone gender birthday",
-    (err, data) => {
-      if (err) next(err);
-      res.render("user/profileFriend", {
-        userData: data
-      });
-    }
-  );
 };

@@ -11,27 +11,16 @@ $(document).ready(() => {
     $(`#changeAvatarModal #deleteAvatar`).hide();
   else $(`#changeAvatarModal #deleteAvatar`).show();
 
-  $(`#edit #msg`).hide();
-
   $(`#edit #editSubmit`).mousedown(event => {
     if (event.which == 1) {
       editProfile.editBtnEvent();
     }
   });
 
-
-  $("#changePasswordForm").submit(function(e) {
-    e.preventDefault();
-    $("#changePasswordBtn").disable = true;
-
-    changePassword.ajaxChangePassword();
-  });
-
-  $("#changePasswordBtn").click(function(e) {
-    e.preventDefault();
-    $("#changePasswordBtn").disable = true;
-
-    editProfile.changePasswordEvent();
+  $("#changePasswordBtn").click(event => {
+    if (event.which == 1) {
+      editProfile.changePasswordEvent();
+    }
   });
 
   $(`#changeAvatar`).mouseover(() => {
@@ -98,6 +87,7 @@ $(document).ready(() => {
     );
     $(`#changeAvatarModal input`).val("");
   });
+
   $("#createRoom").hide();
   $(".search-box").hide();
 });

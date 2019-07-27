@@ -41,8 +41,8 @@ module.exports.getRoomPage = (req, res, next) => {
       roomNumPlayers: 8
     }
   ];
-
-  res.render("lounge", { title: "Lounge", rooms: rooms });
+  let username = req.session.username;
+  res.render("lounge", { title: "Lounge", username: username, rooms: rooms });
 };
 
 module.exports.index = (req, res, next) => {

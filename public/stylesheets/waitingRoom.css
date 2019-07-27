@@ -19,13 +19,13 @@
 .listPlayers{
     margin-top : 50px;
     position: fixed;
-    bottom: 15%;
-    
+    bottom: 10%;
 }
 
 .listPlayers a:hover{
     cursor: pointer;
 }
+
 .listPlayers button{
   
     margin-right: 5px;

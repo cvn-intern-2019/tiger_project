@@ -1,3 +1,4 @@
+import "../layout";
 const $ = require("jquery");
 
 $(document).ready(() => {

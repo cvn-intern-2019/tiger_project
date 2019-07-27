@@ -58,6 +58,7 @@ module.exports.postLogin = (req, res, next) => {
       }
 
       req.session.userId = user._id;
+      req.session.username = user.username;
 
       res.json({
         type: 1

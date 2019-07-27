@@ -2,18 +2,13 @@ extends ../layout
 block sessionCSS
     title Lounge | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
+    script(src="/javascripts/layout.js")
 
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
  
     .row
-        .col-2
-            .customSetting
-                i.fas.fa-user-cog       CustomSetting
-        .col-7
-            .messages
-                
         .col-3
             .listPlayers
                 ul.list-group.list-group-flush
@@ -32,3 +27,10 @@ block content
                 button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
                 a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
 
+
+        .col-7
+            .messages
+        
+        .col-2
+            .customSetting
+                i.fas.fa-user-cog       CustomSetting
