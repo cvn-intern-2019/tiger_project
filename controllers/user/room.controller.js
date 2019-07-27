@@ -24,7 +24,11 @@ module.exports.getRoomPage = (req, res, next)=>{
         }
     ]
     
-    res.render('user/room', { title: 'Room', players: players });
+    res.render('user/room', { 
+      title: 'Room', 
+      players: players ,
+      username: req.session.username
+    });
 
 }
 

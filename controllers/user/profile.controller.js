@@ -45,9 +45,6 @@ var hashPassword = (username, password) => {
     .digest("hex");
 };
 
-var generateToken = () => {
-  return crypto.randomBytes(64).toString("hex");
-};
 
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
