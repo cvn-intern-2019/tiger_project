@@ -45,7 +45,6 @@ var hashPassword = (username, password) => {
     .digest("hex");
 };
 
-
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
 
@@ -288,18 +287,19 @@ module.exports.changePassword = (req, res, next) => {
       return res.json({
         type: 0,
         csrfToken: csrfToken,
-        msg: "Password is wrong."
+        msg: "The current password is wrong!"
       });
     }
 
-    //check if current password is right. password characters
-    if (/^[a-z0-9]{5,20}$/g.test(body.newPassword) == false) {
+    if (
+      hashPassword(dataSavedInDB.username, body.newPassword) ==
+      hashedCurrentPassword
+    ) {
       req.session.csrfToken = csrfToken;
       return res.json({
         type: 0,
         csrfToken: csrfToken,
-        msg:
-          " Number of characters in password must be between 5 and 20. Only allowed numbers, alphabe characters"
+        msg: "The new password is not the same as the old password!"
       });
     }
 
@@ -309,7 +309,7 @@ module.exports.changePassword = (req, res, next) => {
       return res.json({
         type: 0,
         csrfToken: csrfToken,
-        msg: "Your new password and comfirm password mismatch"
+        msg: "Your new password and comfirm password mismatch!"
       });
     }
 
