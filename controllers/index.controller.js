@@ -143,8 +143,10 @@ module.exports.postRegister = (req, res, next) => {
 };
 
 module.exports.getLogout = (req, res, next) => {
-  res.clearCookie("user_sid");
-  res.redirect("/");
+  req.session.destroy(err => {
+    if (err) next(err);
+    res.clearCookie("user_sid").redirect("/");
+  });
 };
 
 module.exports.hashPassword = hashPassword;
