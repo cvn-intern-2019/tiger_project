@@ -12,12 +12,23 @@ $(document).ready(() => {
   $("#createRoom").hide();
   $(".search-box").hide();
 
-  
- 
   $("#close-sidebar").click(function() {
     $(".page-wrapper").removeClass("toggled");
   });
   $("#show-sidebar").click(function() {
-    $("#listPlayers").toggle('slow');
+    $("#listPlayers").toggle("slow");
+  });
+
+  const option = {
+    // reconnection: false
+  };
+  var socket = io("/room", option);
+  var idRoom = $(`#idRoom`).text();
+  var username = $(`#username`).text();
+
+  socket.emit("joinRoom", { idRoom: idRoom, username: username });
+
+  socket.on("joinRoom", data => {
+    console.table(data);
   });
 });

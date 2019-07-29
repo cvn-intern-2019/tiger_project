@@ -1,34 +1,31 @@
 extends ../layout
 block sessionCSS
-    title Lounge | Werewolf Online - Tiger Team
+    title Room | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
     script(src="/javascripts/layout.js")
-
+    script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
- 
     .row
         .col-2
-
-
             .component
                 a#show-sidebar.btn.btn-lg.btn-dark(href='#')
                     i.fas.fa-bars
 
                 #listPlayers.listPlayers
-                    .sidebar-brand.mb-2.text-light
-                            a(href='#').text-light Author : #{username}
-                            a#close-sidebar.float-right(href='javascript:;')
-                                i.fas.fa-times.fa-2x
+                    //- .sidebar-brand.mb-2.text-light
+                    //-         a(href='#').text-light Author : #{username}
+                    //-         a#close-sidebar.float-right(href='javascript:;')
+                    //-             i.fas.fa-times.fa-2x
 
-                    ul.list-group.list-group-flush
-                        li.list-group-item.text-dark Number players :       #{players.length + 1}
-                        each player in players 
-                            li.list-group-item.text-dark
-                                a.btn.btn-outline-light(role="button")  
-                                    i.float-left.my-1.ml-0.fa.fa-user.mr-2(aria-hidden='true')
-                                    |                            #{player.username}
+                    //- ul.list-group.list-group-flush
+                    //-     li.list-group-item.text-dark Number players :       #{players.length + 1}
+                    //-     each player in players 
+                    //-         li.list-group-item.text-dark
+                    //-             a.btn.btn-outline-light(role="button")  
+                    //-                 i.float-left.my-1.ml-0.fa.fa-user.mr-2(aria-hidden='true')
+                    //-                 |                            #{player.username}
                                 
 
                         form.form-inline
@@ -51,6 +48,7 @@ block content
         .col-6
 
         .col-4
+            #idRoom.badge.badge-light=idRoom
             .messageChat.mx-5
                 .messageBox#messageBox
                     div.message.my-2

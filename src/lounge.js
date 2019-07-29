@@ -34,10 +34,11 @@ $(document).ready(() => {
                               <a href="/user/${r.host}">${r.host}</a>
                           </h5>
                           <p class="card-text text-dark">
-                            <strong>Players:</strong> ${r.numPlayer}/${r.amount}
+                            <strong>Players:</strong> 
+                            ${r.player.length}/${r.amount}
                           </p>
                           <a class="btn btn-dark ${
-                            r.numPlayer == r.amount || r.status == true
+                            r.player.length == r.amount || r.status == true
                               ? "disabled"
                               : ""
                           }" href="/room/${r.id}"> Join 

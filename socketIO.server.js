@@ -6,10 +6,9 @@ var roomList = new Array();
 function createRoom(username, socketRoomId) {
   let room = {
     id: null,
-    socketRoomId: socketRoomId,
     name: `Game of ${username}`,
     host: username,
-    numPlayer: 1,
+    player: [],
     amount: AMOUNT_PLAYER,
     status: false
   };
@@ -32,6 +31,34 @@ function createRoom(username, socketRoomId) {
   });
   return room;
 }
+
+module.exports.isFull = function isFull(id) {
+  let result = false;
+  roomList.forEach(r => {
+    if (r.id == id && r.player.length == r.amount) result = true;
+  });
+  return result;
+};
+
+module.exports.isExist = function isExist(id) {
+  let index = roomList.findIndex(r => {
+    return r.id == id;
+  });
+  if (index >= 0) return true;
+  return false;
+};
+
+module.exports.joinRoom = function joinRoom(id, username) {
+  let index = roomList.findIndex(r => {
+    return r.id == id && r.host == username;
+  });
+  let player = {
+    idSocket: null,
+    username: username,
+    isHost: index >= 0 ? true : false
+  };
+  roomList.find(r => r.id == id).player.push(player);
+};
 
 module.exports.init = server => {
   var io = require("socket.io")(server);
@@ -60,6 +87,15 @@ module.exports.init = server => {
   // Handle for ROOM namespace
   roomNsp.on("connection", socket => {
     console.log(`=> Someone just connected: ${socket.id}`);
+
+    socket.on("joinRoom", data => {
+      let room = roomList.find(r => r.id == data.idRoom);
+      socket.join(data.idRoom);
+      room.player.forEach(p => {
+        if (p.username == data.username) p.idSocket = socket.id;
+      });
+      roomNsp.to(data.idRoom).emit("joinRoom", room);
+    });
     socket.on("disconnect", () => {
       console.log(`=> Someone just disconnected: ${socket.id}`);
     });
