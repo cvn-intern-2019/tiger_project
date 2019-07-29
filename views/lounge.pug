@@ -5,16 +5,32 @@ block sessionCSS
     script(src="/javascripts/lounge.js")
 
 block content
-    .row.room
-        each room in rooms 
-            .col-sm-6.col-md-4.col-lg-4.mt-3
-                .card
-                    h5.card-header.text-dark RoomID :  #{room.roomID}
-                    .card-body
-                        h5.card-title.text-dark Room's author :  
-                            a(href=`/user/${room.roomAuthor}`)  #{room.roomAuthor}
-                        p.card-text.text-dark Number players : #{room.roomNumPlayers}
-                        a.btn.btn-dark(href='/user/room') Join
+    .container-fluid.py-5
+        .row.bg-dark.px-3.py-2.justify-content-between
+            h2.d-none.d-sm-block Active rooms
+            div.col-sm-4.position-relative
+                input#search_input.form-control(type="text" placeholder="Enter host username or room name...")
+                i.fas.fa-search.position-absolute
+
+        .row#room_area
+            each room in rooms
+                .col-sm-3.mt-3
+                    .card
+                        h5.card-header.text-dark
+                            .badge.badge-dark.room_name ID: #{room.roomID}
+                            |  Game of #{room.roomAuthor}
+                            .card-body
+                        h5.card-title.text-dark.room_author.px-3
+                            strong Host:
+                            |  #{room.roomAuthor}
+                            a(href='/user/test1')
+                        p.card-text.text-dark.px-3
+                            strong Players:
+                            |  #{room.roomNumPlayers} / #{room.totalPlayers}
+                        a.btn.btn-dark(href='/room/000') Join
+
+    
+
                         
 
                         
