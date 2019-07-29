@@ -42,7 +42,6 @@ $(document).ready(() => {
                               : ""
                           }" href="/room/${r.id}"> Join 
                           </a>
-                          <input type="hidden" value=${r.socketRoomId}/>
                         </div>
                       </div>
                     </div>`;
@@ -61,5 +60,11 @@ $(document).ready(() => {
       let username = $(`#navbarDropdown #username`).text();
       socket.emit("createRoom", username);
     }
+  });
+
+  //disconnect event listen
+  socket.on("disconnect", () => {
+    alert("Disconnect with server!");
+    window.location.href = `/`;
   });
 });

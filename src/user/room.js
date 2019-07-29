@@ -1,3 +1,11 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap";
+import "jquery/dist/jquery.slim";
+import "@fortawesome/fontawesome-free/js/fontawesome";
+import "@fortawesome/fontawesome-free/js/solid";
+import "@fortawesome/fontawesome-free/js/regular";
+import "@fortawesome/fontawesome-free/js/brands";
+import "./animate.css";
 const $ = require("jquery");
 
 $(document).ready(() => {
@@ -5,12 +13,11 @@ $(document).ready(() => {
   $(".search-box").hide();
 
   
-  // $("#close-sidebar").click(function() {
-  //   $(".component").removeClass("toggled");
-  // });
+ 
+  $("#close-sidebar").click(function() {
+    $(".page-wrapper").removeClass("toggled");
+  });
   $("#show-sidebar").click(function() {
     $("#listPlayers").toggle('slow');
   });
-
-  
 });
