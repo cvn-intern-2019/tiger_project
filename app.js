@@ -8,6 +8,8 @@ var mongoose = require("mongoose");
 
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
+var loungeRouter = require("./routes/lounge");
+var roomRouter = require("./routes/room");
 
 var app = express();
 
@@ -52,8 +54,19 @@ app.use((req, res, next) => {
   next();
 });
 
+// middleware function to check for logged-in users
+var loginChecker = (req, res, next) => {
+  if (req.session.userId && req.cookies.user_sid) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+
 app.use("/", indexRouter);
-app.use("/user", userRouter);
+app.use("/user", loginChecker, userRouter);
+app.use("/lounge", loginChecker, loungeRouter);
+app.use("/room", loginChecker, roomRouter);
 app.get(
   "/avatar/:filename",
   require("./controllers/user/profile.controller").urlAvatar
