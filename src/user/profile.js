@@ -77,6 +77,7 @@ $(document).ready(() => {
     if (event.which == 1) {
       $(`#changeAvatarModal input[name=avatarFile]`).val("");
       $(`#changeAvatarModal img`).attr("src", "http://placehold.it/250");
+      $(`#changeAvatarModal #submitChange`).attr("disabled", false);
     }
   });
 
