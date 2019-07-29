@@ -1,30 +1,37 @@
 // var roomList = new Array();
-var roomList = [
-  {
-    id: "000",
-    name: "Game of test1",
-    host: "test1",
-    numPlayer: 7,
-    amount: 7,
-    status: true
-  },
-  {
-    id: "001",
-    name: "Game of test2",
-    host: "test2",
+const AMOUNT_PLAYER = 7;
+
+var roomList = new Array();
+
+function createRoom(username, socketRoomId) {
+  let room = {
+    id: null,
+    socketRoomId: socketRoomId,
+    name: `Game of ${username}`,
+    host: username,
     numPlayer: 1,
-    amount: 7,
+    amount: AMOUNT_PLAYER,
     status: false
-  },
-  {
-    id: "002",
-    name: "Game of test3",
-    host: "test3",
-    numPlayer: 7,
-    amount: 7,
-    status: true
-  }
-];
+  };
+
+  let flag = false;
+  let count = 0;
+  if (roomList.length == 0) room.id = 0;
+  else
+    while (!flag) {
+      roomList.forEach(r => {
+        if (r.id != count) {
+          room.id = count;
+          flag = true;
+        } else count++;
+      });
+    }
+  roomList.push(room);
+  roomList.sort((a, b) => {
+    return a.id - b.id;
+  });
+  return room;
+}
 
 module.exports.init = server => {
   var io = require("socket.io")(server);
@@ -34,7 +41,16 @@ module.exports.init = server => {
   // Handle for LOUNGE namespace
   loungeNsp.on("connection", socket => {
     console.log(`=> Someone just connected: ${socket.id}`);
+
+    //send event show list room
     socket.emit("listRoom", roomList);
+
+    //create room event listen
+    socket.on("createRoom", username => {
+      let room = createRoom(username, socket.id);
+      socket.emit("createRoom", room);
+      socket.broadcast.emit("listRoom", roomList);
+    });
 
     socket.on("disconnect", () => {
       console.log(`=> Someone just disconnected: ${socket.id}`);

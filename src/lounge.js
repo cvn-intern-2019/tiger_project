@@ -7,6 +7,7 @@ $(document).ready(() => {
   };
   var socket = io("/lounge", option);
 
+  //list room event listen
   socket.on("listRoom", listRoom => {
     let roomListTag = $(`#roomList`);
     roomListTag.empty();
@@ -41,10 +42,24 @@ $(document).ready(() => {
                               : ""
                           }" href="/room/${r.id}"> Join 
                           </a>
+                          <input type="hidden" value=${r.socketRoomId}/>
                         </div>
                       </div>
                     </div>`;
       roomListTag.append(cardTag);
     });
+  });
+
+  //create room event listen
+  socket.on("createRoom", room => {
+    if (room) window.location.href = `/room/${room.id}`;
+    else alert("Something wrong!");
+  });
+
+  $(`#createRoom`).mousedown(event => {
+    if (event.which == 1) {
+      let username = $(`#navbarDropdown #username`).text();
+      socket.emit("createRoom", username);
+    }
   });
 });
