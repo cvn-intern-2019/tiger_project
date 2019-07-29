@@ -237,6 +237,8 @@ module.exports.getUserPage = (req, res, next) => {
   User.findOne({ username: friendUsername }, (err, friend) => {
     if (err) next(err);
 
+    if (!friend) return res.render("error");
+
     User.findById(userId, (err, user) => {
       if (err) next(err);
       let index = user.friendId.findIndex(f => {
