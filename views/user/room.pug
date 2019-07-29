@@ -9,28 +9,84 @@ block sessionCSS
 block content
  
     .row
-        .col-3
-            .listPlayers
-                ul.list-group.list-group-flush
-                    li.list-group-item.text-dark Number players :       #{players.length + 1}
-                    each player in players 
-                        li.list-group-item.text-dark
-                            a.btn.btn-outline-light(role="button")  
-                                i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
-
-                    form.form-inline
-                        input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
-                        a.btn.btn-outline-dark(role="button") 
-                            i.fa.fa-search-plus(aria-hidden='true')
-                            |                             Add
-                            
-                button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
-                a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
-
-
-        .col-7
-            .messages
-        
         .col-2
-            .customSetting
-                i.fas.fa-user-cog       CustomSetting
+            .page-wrapper.chiller-theme.toggled
+                a#show-sidebar.btn.btn-lg.btn-dark(href='#')
+                  i.fas.fa-bars
+                nav#sidebar.sidebar-wrapper
+                    .slidebar-content
+                        .sidebar-brand
+                            a(href='#') Room : 
+                            
+                            i.fas.fa-times#close-sidebar
+
+                        .badge.badge-light.text-dark.font-weight-bold Number players :       #{players.length + 1}
+                        .sidebar-search
+                            div
+                                .input-group
+                                    input.form-control.search-menu(type='text', placeholder='add user')
+                                    .input-group-append
+                                    span.input-group-text
+                                        i.fa.fa-search-plus(aria-hidden='true')
+
+                        .sidebar-menu
+                            ul
+                                 each player in players 
+                                    li.list-group-item.text-dark
+                                        a.btn.btn-outline-light(role="button")  
+                                            i.float-left.my-1.ml-0.fa.fa-user.mr-2(aria-hidden='true')
+                                            |                            #{player.username}
+
+                    .sidebar-footer
+                        button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
+                        a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
+
+                        .customSetting
+                            i.fas.fa-user-cog.mr-2      
+                            | CustomSetting      
+
+
+               
+               
+                //- .listPlayers
+                //-     ul.list-group.list-group-flush
+                //-         li.list-group-item.text-dark Number players :       #{players.length + 1}
+                //-         each player in players 
+                //-             li.list-group-item.text-dark
+                //-                 a.btn.btn-outline-light(role="button")  
+                //-                     i.float-left.my-1.ml-0.fa.fa-user.mr-2(aria-hidden='true')
+                //-                     |                            #{player.username}
+                                
+
+                //-         form.form-inline
+                //-             input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
+                //-             a.btn.btn-outline-dark(role="button") 
+                //-                 i.fa.fa-search-plus(aria-hidden='true')
+                //-                 |                             Add
+                                
+                //-     button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
+                //-     a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
+               
+               
+                //- .customSetting
+                //-     i.fas.fa-user-cog.mr-2      
+                //-     | CustomSetting
+        
+
+
+        .col-6
+
+        .col-4
+            .messageChat.mx-5
+                .messageBox#messageBox
+                    div.message.my-2
+                        i#avatar.fa.fa-user.mr-2(aria-hidden='true')
+                        | #{username}
+                        | hello
+
+                .input-group.mb-3
+                    input#messageText.form-control(type='text', placeholder="Type something")
+                    .input-group-append
+                        button#addMessage.btn.btn-secondary(type='button') send
+        
+            

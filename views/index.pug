@@ -9,27 +9,139 @@ html
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
 
   body.bg-dark.text-light
-    .container-fluid
-    -   var username = "PhanMai"
-      nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow.sticky-top
-        a.navbar-brand(href='/') WereWolf Online
-        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
-          span.navbar-toggler-icon
-        #navbarSupportedContent.collapse.navbar-collapse
-        form.form-inline.my-2.my-lg-0
-          input.form-control.mr-sm-2(type='search', placeholder="ID's Room", aria-label='Search')
-          button.btn.btn-outline-light.my-2.my-sm-0(type='submit') Search
-        form#frmSignout(action='/user/room', method='POST')
-        ul.navbar-nav
-          li.nav-item.dropdown
-            a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-              | Hi, 
-              b  #{username}
-            .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
-              a.dropdown-item(href='/account/profile')
-                i.fa.fa-user(aria-hidden='true')
-                |                             Profile
-              .dropdown-divider
-              a.dropdown-item(href="/")
-                i.fal.fa-sign-out-alt(aria-hidden='true')
-                |                             Sign Out
+    .page-wrapper.chiller-theme.toggled
+      a#show-sidebar.btn.btn-sm.btn-dark(href='#')
+        i.fas.fa-bars
+
+      nav#sidebar.sidebar-wrapper
+        .sidebar-content
+          .sidebar-brand
+            a(href='#') pro sidebar
+            #close-sidebar
+              i.fas.fa-times
+
+          .sidebar-header
+            .user-pic
+              img.img-responsive.img-rounded(src='https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg', alt='User picture')
+            .user-info
+              span.user-name
+                | Jhon
+                strong Smith
+              span.user-role Administrator
+              span.user-status
+                i.fa.fa-circle
+                span Online
+          
+          
+          
+          // sidebar-header
+          .sidebar-search
+            div
+              .input-group
+                input.form-control.search-menu(type='text', placeholder='Search...')
+                .input-group-append
+                  span.input-group-text
+                    i.fa.fa-search(aria-hidden='true')
+          // sidebar-search
+          .sidebar-menu
+            ul
+              li.header-menu
+                span General
+              li.sidebar-dropdown
+                a(href='#')
+                  i.fa.fa-tachometer-alt
+                  span Dashboard
+                  span.badge.badge-pill.badge-warning New
+                .sidebar-submenu
+                  ul
+                    li
+                      a(href='#')
+                        | Dashboard 1
+                        span.badge.badge-pill.badge-success Pro
+                    li
+                      a(href='#') Dashboard 2
+                    li
+                      a(href='#') Dashboard 3
+              li.sidebar-dropdown
+                a(href='#')
+                  i.fa.fa-shopping-cart
+                  span E-commerce
+                  span.badge.badge-pill.badge-danger 3
+                .sidebar-submenu
+                  ul
+                    li
+                      a(href='#')
+                        | Products
+                    li
+                      a(href='#') Orders
+                    li
+                      a(href='#') Credit cart
+              li.sidebar-dropdown
+                a(href='#')
+                  i.far.fa-gem
+                  span Components
+                .sidebar-submenu
+                  ul
+                    li
+                      a(href='#') General
+                    li
+                      a(href='#') Panels
+                    li
+                      a(href='#') Tables
+                    li
+                      a(href='#') Icons
+                    li
+                      a(href='#') Forms
+              li.sidebar-dropdown
+                a(href='#')
+                  i.fa.fa-chart-line
+                  span Charts
+                .sidebar-submenu
+                  ul
+                    li
+                      a(href='#') Pie chart
+                    li
+                      a(href='#') Line chart
+                    li
+                      a(href='#') Bar chart
+                    li
+                      a(href='#') Histogram
+              li.sidebar-dropdown
+                a(href='#')
+                  i.fa.fa-globe
+                  span Maps
+                .sidebar-submenu
+                  ul
+                    li
+                      a(href='#') Google maps
+                    li
+                      a(href='#') Open street map
+              li.header-menu
+                span Extra
+              li
+                a(href='#')
+                  i.fa.fa-book
+                  span Documentation
+                  span.badge.badge-pill.badge-primary Beta
+              li
+                a(href='#')
+                  i.fa.fa-calendar
+                  span Calendar
+              li
+                a(href='#')
+                  i.fa.fa-folder
+                  span Examples
+          // sidebar-menu
+        // sidebar-content
+        .sidebar-footer
+          a(href='#')
+            i.fa.fa-bell
+            span.badge.badge-pill.badge-warning.notification 3
+          a(href='#')
+            i.fa.fa-envelope
+            span.badge.badge-pill.badge-success.notification 7
+          a(href='#')
+            i.fa.fa-cog
+            span.badge-sonar
+          a(href='#')
+            i.fa.fa-power-off
