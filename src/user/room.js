@@ -5,11 +5,11 @@ $(document).ready(() => {
   $(".search-box").hide();
 
   
-  $("#close-sidebar").click(function() {
-    $(".page-wrapper").removeClass("toggled");
-  });
+  // $("#close-sidebar").click(function() {
+  //   $(".component").removeClass("toggled");
+  // });
   $("#show-sidebar").click(function() {
-    $(".page-wrapper").addClass("toggled");
+    $("#listPlayers").toggle('slow');
   });
 
   
