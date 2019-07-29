@@ -11,7 +11,7 @@ block content
                 label.custom-file.btn-outline-light#changeAvatar
                     span.custom-file-control Change avatar
                     input#file.custom-file-input(type='file')
-                img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':"/avatar/"+userData.avatar, alt='avatar', style="background-size:cover; height:250px; width:250px;background-repeat:no-repeat`")
+                img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':"/avatar/"+userData.avatar, style="background-size:cover; height:250px; width:250px;background-repeat:no-repeat`")
                 h1.font-weight-light.mt-4#username  #{userData.username}
                 if isFriend==false
                     form#frmAddfriends(action='/user/addfriends', method='POST')
@@ -19,11 +19,11 @@ block content
                         button#addfriends.btn.btn-outline-light.btn-lg.my-3(type='submit') Add Friend
 
             .col-lg-8.order-lg-2
-                ul.nav.nav-tabs.text-secondary
+                ul.nav.nav-tabs.text-secondary#tab
                     li.nav-item
-                        a.nav-link.active(data-target='#profile', data-toggle='tab') Profile
+                        a.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#profile', data-toggle='tab') Profile
                     li.nav-item
-                        a.nav-link( data-target='#history', data-toggle='tab') History
+                        a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#history', data-toggle='tab') History
 
                 .tab-content.bg-light.text-dark
                     #profile.tab-pane.active.p-4

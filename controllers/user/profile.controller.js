@@ -305,6 +305,14 @@ module.exports.changePassword = (req, res, next) => {
       });
     }
 
+    if (body.password.length < 5 || body.password.length > 20) {
+      return res.json({
+        type: 0,
+        csrfToken: csrfToken,
+        msg: "Your password must have length 5 - 20 characters!"
+      });
+    }
+
     //check password and retype is match
     if (body.newPassword !== body.confirmPassword) {
       req.session.csrfToken = csrfToken;
