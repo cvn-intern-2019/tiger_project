@@ -32,7 +32,12 @@ footer {
     bottom: 0;
     width: 90%;
     border-top: solid black 1px;
-  }
+}
+
+
+#tab li  :hover{
+    cursor: pointer;
+}
 
 .btn-file {
     position: relative;
@@ -52,3 +57,4 @@ footer {
     cursor: inherit;
     display: block;
 }  
+
