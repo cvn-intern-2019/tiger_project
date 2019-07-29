@@ -20,7 +20,7 @@ block content
                 form.modal-body.text-center(method="POST", action="/user/change-avatar", enctype="multipart/form-data")
                     img(src=`${userData.avatar===undefined?"http://placehold.it/300":"/avatar/"+userData.avatar}`, width="300px", height="300px")
                     .mt-3
-                        button#browseFile.btn.btn-info.btn-file.mr-2 Browse
+                        button#browseFile.btn.btn-info.btn-file.mr-2(type="button") Browse
                             input.custom-file-input(type='file' accept="image/*" name="avatarFile")
                         button#deleteAvatar.btn.btn-danger(type="button") Delete
                         p Maximum: 800KB

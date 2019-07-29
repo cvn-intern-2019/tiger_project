@@ -11,7 +11,7 @@ block content
                 label.custom-file.btn-outline-light#changeAvatar
                     span.custom-file-control Change avatar
                     input#file.custom-file-input(type='file')
-                img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
+                img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':"/avatar/"+userData.avatar, alt='avatar', style="background-size:cover; height:250px; width:250px;background-repeat:no-repeat`")
                 h1.font-weight-light.mt-4#username  #{userData.username}
                 if isFriend==false
                     form#frmAddfriends(action='/user/addfriends', method='POST')
