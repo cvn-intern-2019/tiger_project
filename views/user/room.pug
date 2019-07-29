@@ -3,7 +3,7 @@ block sessionCSS
     title Lounge | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
     script(src="/javascripts/layout.js")
-
+    script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
@@ -28,9 +28,28 @@ block content
                 a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
 
 
-        .col-7
-            .messages
-        
-        .col-2
-            .customSetting
-                i.fas.fa-user-cog       CustomSetting
+        .col-lg-8.col-sm-8
+                .messageChat.mx-5
+                    .messageBox#messageBox
+                        div.message
+                            i#avatar.fa.fa-user.mr-2(aria-hidden='true')
+                            | #{username}
+                            p.float-right hello
+
+                    //- .input-group.mb-3
+                    //-     input#messageText.form-control(type='text', placeholder="Type something")
+                    //-     .input-group-append
+                    //-         button#addMessage.btn.btn-outline-secondary(type='submit') Add
+                    //- ul#thread
+                    form
+                        input#message(type='text', placeholder='Type Something')
+                        input(type='submit', value='Send')
+                    ul#thread
+
+
+        .col-lg-1.col-sm-1
+                .customSetting
+                    a.btn.btn-outline-dark(role="button") 
+                        i.fa.fa-user-cog.mr-1(aria-hidden='true')
+                        |                             Custom Setting
+

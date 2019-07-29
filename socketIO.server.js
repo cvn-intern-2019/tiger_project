@@ -47,5 +47,10 @@ module.exports.init = server => {
     socket.on("disconnect", () => {
       console.log(`=> Someone just disconnected: ${socket.id}`);
     });
+
+    socket.on('messages', function(data){
+      socket.emit('thread',data);
+      socket.broadcast.emit('thread',data);
+    });
   });
 };
