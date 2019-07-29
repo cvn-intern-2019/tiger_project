@@ -3,26 +3,22 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var mongoose = require("mongoose");
 var session = require("express-session");
+var mongoose = require("mongoose");
 
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 
 var app = express();
 
-// // database setup
+//database setup
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
-mongoose.connect(
-  "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority",
-  { useNewUrlParser: true }
-);
-mongoose.connection
-  .on("error", console.error.bind(console, "connection error:"))
-  .once("open", () => {
-    console.log("Database connected!");
-  });
+let connStr = "mongodb://tiger:tiger123@localhost:27017/werewolf";
+mongoose.connect(connStr, { useNewUrlParser: true }, err => {
+  if (err) return console.log("Error:" + err);
+  console.log("Connected database!");
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -58,6 +54,10 @@ app.use((req, res, next) => {
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
+app.get(
+  "/avatar/:filename",
+  require("./controllers/user/profile.controller").urlAvatar
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

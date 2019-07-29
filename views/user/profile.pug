@@ -5,74 +5,48 @@ block sessionCSS
     script(src="/javascripts/profile_main.js")
 
 block content
+    #showAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='showAvatar', aria-hidden='true')
+        .modal-dialog.text-center.modal-lg
+            img.img-thumbnail(src=`${userData.avatar===undefined?"http://placehold.it/250":"/avatar/"+userData.avatar}`, style="width:75vh; height:75vh")
+
+    #changeAvatarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='changeAvatar', aria-hidden='true')
+        .modal-dialog
+            .modal-content.text-dark
+                .modal-header
+                    h1.font-weight-light Change avatar
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+
+                form.modal-body.text-center(method="POST", action="/user/change-avatar", enctype="multipart/form-data")
+                    img(src=`${userData.avatar===undefined?"http://placehold.it/300":"/avatar/"+userData.avatar}`, width="300px", height="300px")
+                    .mt-3
+                        button#browseFile.btn.btn-info.btn-file.mr-2 Browse
+                            input.custom-file-input(type='file' accept="image/*" name="avatarFile")
+                        button#deleteAvatar.btn.btn-danger(type="button") Delete
+                        p Maximum: 800KB
+                        button#submitChange.btn.btn-dark(type='submit') Save
+                    
+
     .container-fluid.text-light
-        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow.sticky-top
-            a.navbar-brand(href='/lounge')
-                h1 WereWolf Online
-
-            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
-                span.navbar-toggler-icon
-            #navbarSupportedContent.collapse.navbar-collapse
-
-            ul.navbar-nav
-                li.nav-item.dropdown
-                    a#navbarDropdown.nav-link.dropdown-toggle.mr-3(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                        span.badge.badge-danger.float-left.mr-1  3
-                        i.fas.fa-user-plus
-
-
-                    .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
-                        a.dropdown-item(href="#")
-                            i.fa.fa-user(aria-hidden='true')
-                            |                            HoangNhi
-                        .dropdown-divider
-                        a.dropdown-item(href="#")
-                            i.fa.fa-user(aria-hidden='true')
-                            |                            HongMo
-                        .dropdown-divider
-                        a.dropdown-item(href="#")
-                            i.fa.fa-user(aria-hidden='true')
-                            |                            TuPhi
-
-
-            form#frmSignout(action='/user/room', method='POST')
-            ul.navbar-nav
-                li.nav-item.dropdown
-                    a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                        | Hi, 
-                        b  #{userData.username}
-                    .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
-                        a.dropdown-item(href='/user')
-                            i.fa.fa-user(aria-hidden='true')
-                            |                             Profile
-                        .dropdown-divider
-                        a.dropdown-item(href='/')
-                            i.fa.fa-history(aria-hidden='true')
-                            |                             History
-                        .dropdown-divider
-                        a.dropdown-item(href="/logout")
-                            i.fa.fa-sign-out-alt(aria-hidden='true')
-                            |                             Sign Out
-
         .container.my-5
             .row
                 .col-lg-4.order-lg-1.text-center
-                    label.custom-file.btn-outline-light
-                        span.custom-file-control Change avatar
-                        input#file.custom-file-input(type='file')
-                    img.mx-auto.img-fluid.img-circle.d-block(src=userData.avatar===undefined?'//placehold.it/250':userData.avatar, alt='avatar')
+                    #changeAvatar.mx-auto.d-block(style=`background-image: url('${userData.avatar===undefined?"http://placehold.it/250":"/avatar/"+userData.avatar}'); background-size:cover; height:250px; width:250px;background-repeat:no-repeat`)
+                        .container.text-center.p-2(style="opacity:0.75")
+                            i.fas.fa-camera.fa-lg
+                            | &nbsp;Change avatar
                     h1.font-weight-light.mt-4  #{userData.username}
 
                 .col-lg-8.order-lg-2
                     ul.nav.nav-tabs.text-secondary
                         li.nav-item
-                            a.nav-link.active(data-target='#profile', data-toggle='tab') Profile
+                            a.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#profile', data-toggle='tab') Profile
                         li.nav-item
-                            a.nav-link( data-target='#history', data-toggle='tab') History
+                             a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#history', data-toggle='tab') History
                         li.nav-item
-                            a.nav-link( data-target='#edit', data-toggle='tab') Edit
+                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#edit', data-toggle='tab') Edit
                         li.nav-item
-                            a.nav-link( data-target='#changePassword', data-toggle='tab') Change Password
+                            a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#changePassword', data-toggle='tab') Change Password
 
                     .tab-content.bg-light.text-dark
                         #profile.tab-pane.active.p-4
@@ -82,24 +56,27 @@ block content
                                     hr
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Fullname:</b>
-                                        |&nbsp;&nbsp;#{userData.fullname}
+                                        |&nbsp;&nbsp;#{userData.fullname==null ? "No information": userData.fullname}
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Birthday:</b>
-                                        |&nbsp;&nbsp;#{userData.birthday_formatted_view}
+                                        |&nbsp;&nbsp;#{userData.birthday_formatted_view==null ? "No information": userData.birthday_formatted_view}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Gender:</b>
-                                        |&nbsp;&nbsp;#{userData.gender === true ? "Male" : "Female"}
+                                        |&nbsp;&nbsp;
+                                        if(userData.gender==null)
+                                            | No information
+                                        else
+                                            | #{userData.gender==true ? "Male":"Female"}        
 
                                 .col-md-6
                                     h1.font-weight-light Contact details 
                                     hr
                                     h4.pb-3.font-weight-light
                                         .badge.badge-dark <b>Phone:</b>
-                                        |&nbsp;&nbsp;#{userData.phone}
+                                        |&nbsp;&nbsp;#{userData.phone==null ? "No information": userData.phone}
                                     h4.font-weight-light
                                         .badge.badge-dark <b>Email:</b>
-                                        |&nbsp;&nbsp;#{userData.email}
-
+                                        |&nbsp;&nbsp;#{userData.email==null ? "No information": userData.email}                     
                         #history.tab-pane.p-4
                             h1.font-weight-light Play history
                             table.table.table-hover.table-striped
@@ -146,9 +123,10 @@ block content
                         #edit.tab-pane.p-4
                             h1.font-weight-light Edit profile
                             hr
-                            #msg.alert.alert-danger
+                            #msg.alert.alert-danger.d-none
                             form.form-group(role='form')
                                 input(type="hidden", name="csrfToken", value=csrfToken)
+
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Fullname
                                     .col-lg-9
@@ -164,31 +142,35 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Gender
                                     .col-lg-9
-                                        if userData.gender === true
+                                        if userData.gender == true
                                             .form-check.form-check-inline.mr-2
-                                                input#inputGender1.form-check-input(type='radio', name='gender', value='true', checked)
-                                                label.form-check-label(for='inputGender') Male
+                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true', checked)
+                                                label.form-check-label(for='inlineRadio1') Male
                                             .form-check.form-check-inline
-                                                input#inputGender2.form-check-input(type='radio', name='gender', value='false')
-                                                label.form-check-label(for='inputGender2') Female
-                                        else
+                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false')
+                                                label.form-check-label(for='inlineRadio2') Female
+                                        else 
                                             .form-check.form-check-inline.mr-2
-                                                input#inputGender1.form-check-input(type='radio', name='gender', value='true')
-                                                label.form-check-label(for='inputGender1') Male
+                                                input#inlineRadio1.form-check-input(type='radio', name='gender', value='true')
+                                                label.form-check-label(for='inlineRadio1') Male
                                             .form-check.form-check-inline
-                                                input#inputGender2.form-check-input(type='radio', name='gender', value='false', checked)
-                                                label.form-check-label(for='inputGender2') Female
+                                                input#inlineRadio2.form-check-input(type='radio', name='gender', value='false', checked)
+                                                label.form-check-label(for='inlineRadio2') Female
+
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
-                                        input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        button#editSubmit.btn.btn-danger(type='button') Submit Change
-
+                                        button#editSubmit.btn.btn-dark.shadow.mr-2(type='button') Submit Change
+                                        input.btn.btn-secondary(type='reset', value='Reset')
+                                        
 
                         #changePassword.tab-pane.p-4
                             h1.font-weight-light Change password
                             hr
-                            form.form-group(role='form')
+                            form#changePasswordForm.form-group(role='form')
+                                #msg.alert.alert-danger.d-none
+                    
+                                input(type="hidden", name="csrfToken", value=csrfToken)
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label Current Password
                                     .col-lg-9
@@ -204,18 +186,7 @@ block content
                                 .form-group.row
                                     label.col-lg-3.col-form-label.form-control-label
                                     .col-lg-9
-                                        input.btn.btn-dark.mr-2(type='reset', value='Reset')
-                                        input.btn.btn-danger(type='button', value='Save Changes')
+                                        button#changePasswordBtn.btn.btn-dark.shadow.mr-2(type='button') Save Changes
+                                        input.btn.btn-secondary(type='reset', value='Reset')
 
-
-
-        footer.page-footer.font-small.dark
-            .footer-copyright.py-3.text-center
-                | &copy; 2019 Internship's Cybozu 
-                a(href='#')  Made by Tiger Team
-
-
-
-
-
-
+                                    

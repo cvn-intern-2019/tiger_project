@@ -27,11 +27,10 @@ module.exports = {
 
   entry: {
     lounge: "./src/lounge.js",
-    login_main: [
-      "./src/user/login.main.js",
-      "./src/user/login.js",
-      "./src/user/register.js"
-    ],
+    // layout: "./src/layout.js",
+    room: "./src/user/room.js",
+    login_main: "./src/user/login.main.js",
+    profile_friend: "./src/user/profile.friend.js",
     profile_main: "./src/user/profile.js"
   },
 

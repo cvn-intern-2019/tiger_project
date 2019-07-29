@@ -1,73 +1,36 @@
 extends ../layout
 block sessionCSS
     title Lounge | Werewolf Online - Tiger Team
-    link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
-    link(rel="stylesheet",href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-    script(src="/javascripts/lounge.js")
-    script(src="https://kit.fontawesome.com/3f47eb379d.js")
+    script(src="/javascripts/room.js")
+    script(src="/javascripts/layout.js")
 
-    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
-    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+    link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
-    .container-fluid
-        -   var username = "PhanMai"
-        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.shadow.sticky-top
-            a.navbar-brand(href='/lounge')
-                h1 WereWolf Online
-            
-            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
-                span.navbar-toggler-icon
-            #navbarSupportedContent.collapse.navbar-collapse
+ 
+    .row
+        .col-3
+            .listPlayers
+                ul.list-group.list-group-flush
+                    li.list-group-item.text-dark Number players :       #{players.length + 1}
+                    each player in players 
+                        li.list-group-item.text-dark
+                            a.btn.btn-outline-light(role="button")  
+                                i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
 
-            form#frmSignout(action='/user/room', method='POST')
-            ul.navbar-nav
-                li.nav-item.dropdown
-                    a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                        | Hi, 
-                        b  #{username}
-                    .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
-                        a.dropdown-item(href='/user')
-                            i.fa.fa-user(aria-hidden='true')
-                            |                             Profile
-                        .dropdown-divider
-                        a.dropdown-item(href='/')
-                            i.fa.fa-history(aria-hidden='true')
-                            |                             History
-                        .dropdown-divider
-                        a.dropdown-item(href="/logout")
-                            i.fa.fa-sign-out-alt(aria-hidden='true')
-                            |                             Sign Out
-
-        .row
-            .col-2
-                .customSetting
-                    i.fas.fa-user-cog       CustomSetting
-            .col-7
-                .messages
-                    
-            .col-3
-                .listPlayers
-                    ul.list-group.list-group-flush
-                        li.list-group-item.text-dark Number players :       #{players.length + 1}
-                        each player in players 
-                            li.list-group-item.text-dark
-                                a.btn.btn-outline-light(role="button")  
-                                    i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
-
-                        form.form-inline
-                            input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
-                            a.btn.btn-outline-dark(role="button") 
-                                i.fa.fa-search-plus(aria-hidden='true')
-                                |                             Add
-                                
-                    button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
-                    a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
+                    form.form-inline
+                        input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
+                        a.btn.btn-outline-dark(role="button") 
+                            i.fa.fa-search-plus(aria-hidden='true')
+                            |                             Add
+                            
+                button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
+                a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
 
 
-
-        footer.page-footer.font-small.dark
-            .footer-copyright.py-3.text-center
-                | &copy; 2019 Internship's Cybozu 
-                a(href='#')  Made by Tiger Team
+        .col-7
+            .messages
+        
+        .col-2
+            .customSetting
+                i.fas.fa-user-cog       CustomSetting

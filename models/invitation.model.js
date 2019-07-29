@@ -14,7 +14,8 @@ var invitationSchema = new Schema({
     rel: "User",
     required: true
   },
-  time: { type: Date, required: true }
+  time: { type: Date, required: true },
+  isAccept: { type: Boolean, enum: [0,1]}
 });
 
 invitationSchema.virtual("time_formatted").get(() => {

@@ -30,10 +30,7 @@ module.exports.getLogin = (req, res, next) => {
 
 module.exports.postLogin = (req, res, next) => {
   let body = req.body;
-  if (
-    userRegEx.test(body.username) === false ||
-    userRegEx.test(body.password) === false
-  ) {
+  if (userRegEx.test(body.username) === false) {
     return res.json({
       type: 0,
       msg: "Your input must alphabetic character or number!"
@@ -58,35 +55,13 @@ module.exports.postLogin = (req, res, next) => {
       }
 
       req.session.userId = user._id;
+      req.session.username = user.username;
 
       res.json({
         type: 1
       });
     }
   });
-};
-
-// Transaction register account
-var registerTransaction = async user => {
-  //init session
-  let session = await User.startSession();
-  try {
-    //start transaction
-    session.startTransaction();
-
-    //every action here
-    await user.save({ session });
-
-    //commit
-    await session.commitTransaction();
-    return true;
-  } catch (err) {
-    console.log(err);
-    //fail -> abort transaction and return false
-    await session.abortTransaction();
-    session.endSession();
-    return false;
-  }
 };
 
 module.exports.postRegister = (req, res, next) => {
@@ -99,14 +74,10 @@ module.exports.postRegister = (req, res, next) => {
     });
   }
 
-  if (
-    userRegEx.test(body.username) === false ||
-    userRegEx.test(body.password) === false ||
-    userRegEx.test(body.confirmPassword) === false
-  ) {
+  if (userRegEx.test(body.username) === false) {
     return res.json({
       type: 0,
-      msg: "Your input must alphabetic character or number!"
+      msg: "Your username "
     });
   }
 
@@ -148,32 +119,26 @@ module.exports.postRegister = (req, res, next) => {
     }
   });
 
-  User.findOne({ email: body.email }, async (err, user) => {
+  User.findOne({ email: body.email }, (err, user) => {
     if (err) next(err);
     if (user != undefined) {
       return res.json({
         type: 0,
         msg: "Your email already exists!"
       });
-    } else {
-      let newUser = new User({
-        username: body.username,
-        email: body.email,
-        password: hashPassword(body.username, body.password)
-      });
-
-      if (await registerTransaction(newUser)) {
-        res.json({
-          type: 1,
-          msg: "Register successful! You can login now"
-        });
-      } else {
-        res.json({
-          type: 0,
-          msg: "Register error (DB)!"
-        });
-      }
     }
+  });
+  let newUser = new User({
+    username: body.username,
+    email: body.email,
+    password: hashPassword(body.username, body.password)
+  });
+
+  newUser.save(err => {
+    if (err) return err;
+    return res.json({
+      type: 1
+    });
   });
 };
 
@@ -181,3 +146,5 @@ module.exports.getLogout = (req, res, next) => {
   res.clearCookie("user_sid");
   res.redirect("/");
 };
+
+module.exports.hashPassword = hashPassword;
