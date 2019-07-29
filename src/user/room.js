@@ -11,6 +11,7 @@ const $ = require("jquery");
 $(document).ready(() => {
   $("#createRoom").hide();
   $(".search-box").hide();
+ 
 
   $("#close-sidebar").click(function() {
     $(".page-wrapper").removeClass("toggled");
@@ -31,4 +32,21 @@ $(document).ready(() => {
   socket.on("joinRoom", data => {
     console.table(data);
   });
+
+  $('#messageText').keypress(function(event) {
+    if (event.keyCode == 13 || event.which == 13) {
+     
+      var $newMessage = $("#messageBox"),
+      newMessageText = $('#messageText').val();
+
+      $newMessage.append("<i class='fa fa-user mr-2' id='avatar' aria-hidden='true'></i>");
+      $newMessage.append(username);
+      $newMessage.append("   ");
+      $newMessage.append(newMessageText);
+     
+      $("#messageText").val("");
+       }
+   });
+
+
 });

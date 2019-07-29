@@ -2,7 +2,7 @@ extends ../layout
 block sessionCSS
     title Room | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
-    script(src="/javascripts/layout.js")
+         // script(src="/javascripts/layout.js")
     script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
@@ -53,8 +53,9 @@ block content
                 .messageBox#messageBox
                     div.message.my-2
                         i#avatar.fa.fa-user.mr-2(aria-hidden='true')
-                        | #{username}
-                        | hello
+                        | #{username} 
+                        |&nbsp;&nbsp;&nbsp;&nbsp; 
+                        | #{message}
 
                 .input-group.mb-3
                     input#messageText.form-control(type='text', placeholder="Type something")
