@@ -10,14 +10,12 @@ block content
             h2.d-none.d-sm-block Active rooms
             div.col-sm-4.position-relative
                 input#search_input.form-control(type="text" placeholder="Enter host username or room name...")
-                i.fas.fa-search.position-absolute
-
         .row#room_area
             each room in rooms
                 .col-sm-3.mt-3
                     .card
-                        h5.card-header.text-dark
-                            .badge.badge-dark.room_name ID: #{room.roomID}
+                        h5.card-header.text-dark.room_name_id
+                            .badge.badge-dark ID: #{room.roomID}
                             |  Game of #{room.roomAuthor}
                             .card-body
                         h5.card-title.text-dark.room_author.px-3
