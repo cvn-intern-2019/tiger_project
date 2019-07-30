@@ -1,55 +1,62 @@
 extends ../layout
 block sessionCSS
-    title Lounge | Werewolf Online - Tiger Team
+    title Room | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
     script(src="/javascripts/layout.js")
     script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
- 
     .row
+        .col-2
+            .component.p-2
+                button#show-sidebar.btn.btn-lg.btn-light
+                    i.fas.fa-user-friends
+                    |&nbsp;Players
+
+                #listPlayers.listPlayers.list-group.mt-2
+                    //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
+                   
+        .col-7
+
         .col-3
-            .listPlayers
-                ul.list-group.list-group-flush
-                    li.list-group-item.text-dark Number players :       #{players.length + 1}
-                    each player in players 
-                        li.list-group-item.text-dark
-                            a.btn.btn-outline-light(role="button")  
-                                i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
+            b ID's Room : 
+            |
+            #idRoom.m-3.badge.badge-light=idRoom
 
-                    form.form-inline
-                        input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
-                        a.btn.btn-outline-dark(role="button") 
-                            i.fa.fa-search-plus(aria-hidden='true')
-                            |                             Add
-                            
-                button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
-                a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
-
-
-        .col-lg-8.col-sm-8
-                .messageChat.mx-5
-                    .messageBox#messageBox
-                        div.message
+        
+            ul.nav.nav-tabs.text-secondary#tab
+                    li.nav-item
+                        a.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#room', data-toggle='tab') Room
+                    li.nav-item
+                        a.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#private', data-toggle='tab') Private
+                    
+            .tab-content.d-flex.align-items-end.flex-column
+                #room.active.tab-pane.p-2.mb-auto
+                    .messageBoxRoom#messageBoxRoom
+                        div.message.my-2
                             i#avatar.fa.fa-user.mr-2(aria-hidden='true')
-                            | #{username}
-                            p.float-right hello
-
-                    //- .input-group.mb-3
-                    //-     input#messageText.form-control(type='text', placeholder="Type something")
-                    //-     .input-group-append
-                    //-         button#addMessage.btn.btn-outline-secondary(type='submit') Add
-                    //- ul#thread
-                    form#frmText
-                        input#message(type='text', placeholder='Type Something')
-                        button#addMessage.btn.btn-outline-secondary(type='submit') Send
-                    ul#thread
-
-
-        .col-lg-1.col-sm-1
-                .customSetting
-                    a.btn.btn-outline-dark(role="button") 
-                        i.fa.fa-user-cog.mr-1(aria-hidden='true')
-                        |                             Custom Setting
-
+                            | #{username} 
+                            |&nbsp;&nbsp;&nbsp;&nbsp; 
+                            | #{message}
+    
+                            
+                #private.tab-pane.p-2.mb-auto
+                    .messageBoxPrivate#messageBoxPrivate
+                        div.message.my-2
+                            i#avatar.fa.fa-user.mr-2(aria-hidden='true')
+                            | #{username} 
+                            |&nbsp;&nbsp;&nbsp;&nbsp; 
+                            | #{message}
+                
+                .input-group
+                    .input-group-prepend
+                        select#receiverSelect.custom-select.bg-secondary.text-light(name="receiver")
+                            option(value="all") All
+                    input#messageText.form-control(type='text', placeholder="Type something")
+                    .input-group-append
+                        button#sendMessage.btn.btn-secondary(type='button') Send
+                
+                    
+                
+                            

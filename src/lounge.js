@@ -7,6 +7,7 @@ $(document).ready(() => {
   };
   var socket = io("/lounge", option);
 
+  //list room event listen
   socket.on("listRoom", listRoom => {
     let roomListTag = $(`#roomList`);
     roomListTag.empty();
@@ -33,10 +34,11 @@ $(document).ready(() => {
                               <a href="/user/${r.host}">${r.host}</a>
                           </h5>
                           <p class="card-text text-dark">
-                            <strong>Players:</strong> ${r.numPlayer}/${r.amount}
+                            <strong>Players:</strong> 
+                            ${r.player.length}/${r.amount}
                           </p>
                           <a class="btn btn-dark ${
-                            r.numPlayer == r.amount || r.status == true
+                            r.player.length == r.amount || r.status == true
                               ? "disabled"
                               : ""
                           }" href="/room/${r.id}"> Join 
@@ -47,4 +49,23 @@ $(document).ready(() => {
       roomListTag.append(cardTag);
     });
   });
+
+  //create room event listen
+  socket.on("createRoom", room => {
+    if (room) window.location.href = `/room/${room.id}`;
+    else alert("Something wrong!");
+  });
+
+  $(`#createRoom`).mousedown(event => {
+    if (event.which == 1) {
+      let username = $(`#navbarDropdown #username`).text();
+      socket.emit("createRoom", username);
+    }
+  });
+
+  //disconnect event listen
+  // socket.on("disconnect", () => {
+  //   alert("Disconnect with server!");
+  //   window.location.href = `/`;
+  // });
 });
