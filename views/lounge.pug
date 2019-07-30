@@ -3,18 +3,18 @@ block sessionCSS
     title Lounge | Werewolf Online - Tiger Team
     link(rel="stylesheet", href="/stylesheets/lounge.css")
     script(src="/javascripts/lounge.js")
+    script(src="/socket.io/socket.io.js")
 
 block content
-    .row.room
-        each room in rooms 
-            .col-sm-6.col-md-4.col-lg-4.mt-3
-                .card
-                    h5.card-header.text-dark RoomID :  #{room.roomID}
-                    .card-body
-                        h5.card-title.text-dark Room's author :  
-                            a(href=`/user/${room.roomAuthor}`)  #{room.roomAuthor}
-                        p.card-text.text-dark Number players : #{room.roomNumPlayers}
-                        a.btn.btn-dark(href='/user/room') Join
+    #roomList.row.room
+        //- .col-sm-4.mt-3
+        //-     .card
+        //-         h5.card-header.text-dark RoomID : 
+        //-         .card-body
+        //-             h5.card-title.text-dark Room's author :  
+        //-                 a(href=`/user/`)  
+        //-             p.card-text.text-dark Number players : 
+        //-             a.btn.btn-dark(href='/user/room') Join
                         
 
                         
