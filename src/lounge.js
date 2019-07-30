@@ -1,5 +1,32 @@
 import "./layout";
+
+import { restProperty } from "babel-types";
+
 const $ = require("jquery");
+
+let searchRoomEvent = function() {
+  let keyword = $("#search_input")
+    .val()
+    .toLowerCase();
+
+  $("#roomList>div")
+    .hide()
+    .each(function(index, element) {
+      let roomName = $(element)
+        .find(".room_name")
+        .text()
+        .toLowerCase();
+
+      let roomAuthor = $(element)
+        .find(".room_author")
+        .text()
+        .toLowerCase();
+
+      if (roomName.search(keyword) != -1 || roomAuthor.search(keyword) != -1) {
+        $(element).fadeIn(200);
+      }
+    });
+};
 
 $(document).ready(() => {
   const option = {
@@ -18,7 +45,7 @@ $(document).ready(() => {
     listRoom.forEach(r => {
       let cardTag = `<div class="col-sm-3 mt-3">
                       <div class="card">
-                        <h5 class="card-header text-dark">
+                        <h5 class="card-header text-dark room_name">
                           <div class="badge badge-dark">ID: ${r.id}
                           </div> ${r.name}
                           ${
@@ -28,9 +55,9 @@ $(document).ready(() => {
                           }
                         </h5>
                         <div class="card-body">
-                          <h5 class="card-title text-dark">
+                          <h5 class="card-title text-dark room_author">
                             <strong>Host:</strong>
-                              <a href="/user/${r.host}">${r.host}</a>
+                              <a href="/user/${r.host}" >${r.host}</a>
                           </h5>
                           <p class="card-text text-dark">
                             <strong>Players:</strong> ${r.numPlayer}/${r.amount}
@@ -47,4 +74,6 @@ $(document).ready(() => {
       roomListTag.append(cardTag);
     });
   });
+
+  $("#search_input").keyup(searchRoomEvent);
 });
