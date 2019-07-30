@@ -48,8 +48,8 @@ $(document).ready(() => {
 
   function sendMessage() {
     let msgTag = $(`#messageText`);
-    let pattern = /^[a-zA-Z0-9\u00c0-\u1ef9 \@\~\(\)\[\]\:\^\?\=\'\"\%\*\#\!\_\-\+\;\.\,\/\\\{\}]*$/;
-    if (pattern.test(msgTag.val()) == false) {
+    let pattern = /^[/</>]*$/;
+    if (pattern.test(msgTag.val()) == true) {
       alert("The message contains invalid characters!");
       return;
     }
@@ -109,7 +109,7 @@ $(document).ready(() => {
 
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
-  socket.on("joinRoom", data => {
+  socket.on("initRoom", data => {
     let listPlayerTag = $(`#listPlayers`);
     let receiverTag = $(`#receiverSelect`);
     let isHost = null;
@@ -118,7 +118,10 @@ $(document).ready(() => {
     listPlayerTag.empty();
     receiverTag.empty();
     data.player.forEach(p => {
-      isHost = p.isHost ? true : false;
+      if (p.username == username) {
+        console.log(p);
+        isHost = p.isHost ? true : false;
+      }
       //   playerChild += `<h5 class="list-group-item list-group-item-action">
       //                 <img src="/avatar/${p.username}"
       //                   alt=""
@@ -128,8 +131,9 @@ $(document).ready(() => {
       //                 </a>`;
       if (p.username != username)
         optionChild += `<option value="${p.idSocket}">${p.username}</option>`;
-      if (!isHost) $(`#startGame`).addClass("d-none");
     });
+    if (!isHost) $(`#startGame`).addClass("d-none");
+    else $(`#startGame`).removeClass("d-none");
     // listPlayerTag.append(playerChild);
     receiverTag.append(optionChild);
   });

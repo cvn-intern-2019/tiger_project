@@ -94,12 +94,29 @@ module.exports.init = server => {
       room.player.forEach(p => {
         if (p.username == data.username) p.idSocket = socket.id;
       });
-      roomNsp.to(data.idRoom).emit("joinRoom", room);
+      roomNsp.to(data.idRoom).emit("initRoom", room);
       loungeNsp.emit("listRoom", roomList);
     });
 
     socket.on("disconnect", () => {
       console.log(`=> Someone just disconnected: ${socket.id}`);
+
+      roomList.forEach((r, indexRoom) => {
+        r.player.forEach((p, indexPlayer) => {
+          if (p.idSocket == socket.id) {
+            r.player.splice(indexPlayer, 1);
+            socket.leave(r.id);
+
+            if (r.player.length == 0) roomList.splice(indexRoom, 1);
+            else if (r.host == p.username) {
+              r.host = r.player[0].username;
+              r.player[0].isHost = true;
+              roomNsp.to(r.id).emit("initRoom", r);
+            }
+            loungeNsp.emit("listRoom", roomList);
+          }
+        });
+      });
     });
 
     socket.on("sendMsg", data => {
