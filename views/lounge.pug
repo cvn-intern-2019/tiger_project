@@ -3,6 +3,7 @@ block sessionCSS
     title Lounge | Werewolf Online - Tiger Team
     link(rel="stylesheet", href="/stylesheets/lounge.css")
     script(src="/javascripts/lounge.js")
+    script(src="/socket.io/socket.io.js")
 
 block content
     .container-fluid.py-5
@@ -10,22 +11,7 @@ block content
             h2.d-none.d-sm-block Active rooms
             div.col-sm-4.position-relative
                 input#search_input.form-control(type="text" placeholder="Enter host username or room name...")
-        .row#room_area
-            each room in rooms
-                .col-sm-3.mt-3
-                    .card
-                        h5.card-header.text-dark.room_name_id
-                            .badge.badge-dark ID: #{room.roomID}
-                            |  Game of #{room.roomAuthor}
-                            .card-body
-                        h5.card-title.text-dark.room_author.px-3
-                            strong Host:
-                            |  #{room.roomAuthor}
-                            a(href='/user/test1')
-                        p.card-text.text-dark.px-3
-                            strong Players:
-                            |  #{room.roomNumPlayers} / #{room.totalPlayers}
-                        a.btn.btn-dark(href='/room/000') Join
+        #roomList.row.room
 
     
 

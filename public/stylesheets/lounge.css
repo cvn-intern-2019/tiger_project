@@ -1,13 +1,12 @@
-.room{
-    padding-top : 3%;
-    padding-bottom: 10%;
-
+.room {
+  padding-top: 3%;
+  padding-bottom: 10%;
 }
-.room a:hover{
-    text-decoration: none;
+.room a:hover {
+  text-decoration: none;
 }
 
-#search_input{
-    border-radius: 20px;
-    padding: 5px 15px;
+#search_input {
+  border-radius: 20px;
+  padding: 5px 15px;
 }
