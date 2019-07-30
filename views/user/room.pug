@@ -1,36 +1,68 @@
 extends ../layout
 block sessionCSS
-    title Lounge | Werewolf Online - Tiger Team
+    title Room | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
     script(src="/javascripts/layout.js")
-
+    script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
- 
     .row
+        //- .col-2
+        //-     .component.p-2
+        //-         button#show-sidebar.btn.btn-lg.btn-light
+        //-             i.fas.fa-user-friends
+        //-             |&nbsp;Players
+
+        //-         #listPlayers.listPlayers.list-group.mt-2
+                    //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
+                   
+        .col-9
+            .row.py-3.d-flex.align-items-end
+                button#startGame.btn.btn-light.mr-3
+                    i.fas.fa-play
+                    |&nbsp;Start
+                a#leaveRoom.text-light.font-italic(href='#')
+                    i.fas.fa-sign-out-alt
+                    |&nbsp;Leave
+    
         .col-3
-            .listPlayers
-                ul.list-group.list-group-flush
-                    li.list-group-item.text-dark Number players :       #{players.length + 1}
-                    each player in players 
-                        li.list-group-item.text-dark
-                            a.btn.btn-outline-light(role="button")  
-                                i.fas.fa-user.float-left.my-1.ml-0.mr-2  #{player.username}
+            b ID: 
+                #idRoom.m-3.badge.badge-light=idRoom
 
-                    form.form-inline
-                        input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
-                        a.btn.btn-outline-dark(role="button") 
-                            i.fa.fa-search-plus(aria-hidden='true')
-                            |                             Add
-                            
-                button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
-                a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
-
-
-        .col-7
-            .messages
         
-        .col-2
-            .customSetting
-                i.fas.fa-user-cog       CustomSetting
+            ul.nav.nav-tabs.text-secondary#tab
+                    li.nav-item
+                        a#roomTab.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#room', data-toggle='tab') Room
+                    li.nav-item
+                        a#privateTab.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#private', data-toggle='tab') Private
+                    
+            .tab-content
+                #room.active.tab-pane.p-2.mb-auto
+                    .messageBoxRoom#messageBoxRoom
+                        //- div.message.my-2
+                        //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
+                        //-     | #{username} 
+                        //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
+                        //-     | #{message}
+    
+                            
+                #private.tab-pane.p-2.mb-auto
+                    .messageBoxPrivate#messageBoxPrivate
+                        //- div.message.my-2
+                        //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
+                        //-     | #{username} 
+                        //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
+                        //-     | #{message}
+                
+                .input-group
+                    .input-group-prepend
+                        select#receiverSelect.custom-select.bg-secondary.text-light(name="receiver")
+                            option(value="all") All
+                    input#messageText.form-control(name="msg" type='text', placeholder="Type something")
+                    .input-group-append
+                        button#sendMessage.btn.btn-secondary(type='button') Send
+                
+                    
+                
+                            

@@ -1,40 +1,44 @@
-
-.customSetting{
-    position: fixed;
-    bottom: 10%;
+.customSetting {
+  position: fixed;
+  bottom: 10%;
 }
 
-
-.customSetting :hover{
-    cursor: pointer;
+.customSetting :hover {
+  cursor: pointer;
 }
 
-.searchForm{
-    padding-right : 22%;
-    padding-top : 5px;
-    
-    
+.searchForm {
+  padding-right: 22%;
+  padding-top: 5px;
 }
 
-.listPlayers{
-    margin-top : 50px;
-    position: fixed;
-    bottom: 10%;
+.messageChat {
+  position: fixed;
+  bottom: 10%;
+  width: 25%;
 }
 
-.listPlayers a:hover{
-    cursor: pointer;
+#tab li:hover {
+  cursor: pointer;
 }
 
-.listPlayers button{
-  
-    margin-right: 5px;
+.col-3 {
+  position: fixed;
+  bottom: 10%;
+  top: 10%;
+  right: 3%;
 
+  border-radius: 3%;
 }
 
+.tab-content {
+  background: rgb(43, 42, 42);
+  height: 65vh;
+}
 
-
-
-.messages{
-    border: 1px solid white;
+#room,
+#private {
+  overflow-y: scroll;
+  height: 65vh;
+  word-wrap: break-word;
 }
