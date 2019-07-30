@@ -111,8 +111,8 @@ module.exports.init = server => {
             else if (r.host == p.username) {
               r.host = r.player[0].username;
               r.player[0].isHost = true;
-              roomNsp.to(r.id).emit("initRoom", r);
             }
+            roomNsp.to(r.id).emit("initRoom", r);
             loungeNsp.emit("listRoom", roomList);
           }
         });

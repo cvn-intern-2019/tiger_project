@@ -49,12 +49,12 @@ $(document).ready(() => {
   function sendMessage() {
     let msgTag = $(`#messageText`);
     let pattern = /^[/</>]*$/;
-    if (pattern.test(msgTag.val()) == true) {
-      alert("The message contains invalid characters!");
-      return;
-    }
     if (msgTag.val().length == 0 || msgTag.val().length > 255) {
       alert("Message length must be 1-255 characters!");
+      return;
+    }
+    if (pattern.test(msgTag.val()) == true) {
+      alert("The message contains invalid characters!");
       return;
     }
     let receiver = idRoom;
@@ -109,7 +109,7 @@ $(document).ready(() => {
 
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
-  socket.on("initRoom", data => {
+  socket.on("initRoom", room => {
     let listPlayerTag = $(`#listPlayers`);
     let receiverTag = $(`#receiverSelect`);
     let isHost = null;
@@ -117,9 +117,8 @@ $(document).ready(() => {
     let optionChild = `<option value="all">All</option>`;
     listPlayerTag.empty();
     receiverTag.empty();
-    data.player.forEach(p => {
+    room.player.forEach(p => {
       if (p.username == username) {
-        console.log(p);
         isHost = p.isHost ? true : false;
       }
       //   playerChild += `<h5 class="list-group-item list-group-item-action">
@@ -136,5 +135,11 @@ $(document).ready(() => {
     else $(`#startGame`).removeClass("d-none");
     // listPlayerTag.append(playerChild);
     receiverTag.append(optionChild);
+  });
+
+  //disconnect event listen
+  socket.on("disconnect", () => {
+    alert("Disconnect with server!");
+    window.location.href = `/`;
   });
 });
