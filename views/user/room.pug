@@ -42,19 +42,17 @@ block content
     
                             
                 #private.tab-pane.p-2.mb-auto
-                    .messageChat
-                        .messageBoxPrivate#messageBoxPrivate
-                            div.message.my-2
-                                i#avatar.fa.fa-user.mr-2(aria-hidden='true')
-                                | #{username} 
-                                |&nbsp;&nbsp;&nbsp;&nbsp; 
-                                | #{message}
-                hr
+                    .messageBoxPrivate#messageBoxPrivate
+                        div.message.my-2
+                            i#avatar.fa.fa-user.mr-2(aria-hidden='true')
+                            | #{username} 
+                            |&nbsp;&nbsp;&nbsp;&nbsp; 
+                            | #{message}
+                
                 .input-group
                     .input-group-prepend
-                        select.custom-select.bg-secondary.text-light
+                        select#receiverSelect.custom-select.bg-secondary.text-light(name="receiver")
                             option(value="all") All
-                            option(value="test1") test1
                     input#messageText.form-control(type='text', placeholder="Type something")
                     .input-group-append
                         button#sendMessage.btn.btn-secondary(type='button') Send

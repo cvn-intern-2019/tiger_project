@@ -30,10 +30,13 @@ $(document).ready(() => {
 
   socket.on("joinRoom", data => {
     let listPlayerTag = $(`#listPlayers`);
-    let child = ``;
+    let receiverTag = $(`#receiverSelect`);
+    let playerChild = ``;
+    let optionChild = `<option value="all">All</option>`;
     listPlayerTag.empty();
+    receiverTag.empty();
     data.player.forEach(p => {
-      child += `<h5 class="list-group-item list-group-item-action">
+      playerChild += `<h5 class="list-group-item list-group-item-action">
                     <img src="${
                       p.avatar == undefined
                         ? "http://placehold.it/30"
@@ -42,8 +45,11 @@ $(document).ready(() => {
                     ${p.username}
                     ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
                     </a>`;
+      if (p.username != $(`#username`).text())
+        optionChild += `<option value="${p.username}">${p.username}</option>`;
     });
-    listPlayerTag.append(child);
+    listPlayerTag.append(playerChild);
+    receiverTag.append(optionChild);
     console.log(data);
   });
 
