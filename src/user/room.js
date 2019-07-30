@@ -34,7 +34,11 @@ $(document).ready(() => {
     listPlayerTag.empty();
     data.player.forEach(p => {
       child += `<h5 class="list-group-item list-group-item-action">
-                    <img src="/avatar/${p.avatar}" width="30px"/>
+                    <img src="${
+                      p.avatar == undefined
+                        ? "http://placehold.it/30"
+                        : `/avatar/${p.avatar}`
+                    }" width="30px" height="30px"/>
                     ${p.username}
                     ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
                     </a>`;
