@@ -9,7 +9,7 @@ let searchRoomEvent = function() {
     .val()
     .toLowerCase();
 
-  $("#room_area>div")
+  $("#roomList>div")
     .hide()
     .each(function(index, element) {
       let roomName = $(element)
@@ -45,9 +45,9 @@ $(document).ready(() => {
     listRoom.forEach(r => {
       let cardTag = `<div class="col-sm-3 mt-3">
                       <div class="card">
-                        <h5 class="card-header text-dark">
+                        <h5 class="card-header text-dark room_name">
                           <div class="badge badge-dark">ID: ${r.id}
-                          </div class="room_name"> ${r.name}
+                          </div> ${r.name}
                           ${
                             r.status == false
                               ? `<div class="badge badge-warning float-right">Waiting</div>`
