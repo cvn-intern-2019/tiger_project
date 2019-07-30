@@ -2,12 +2,11 @@ extends ../layout
 block sessionCSS
     title Room | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
-    script(src="/javascripts/layout.js")
     script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
-    .row
+    .container-fluid
         //- .col-2
         //-     .component.p-2
         //-         button#show-sidebar.btn.btn-lg.btn-light

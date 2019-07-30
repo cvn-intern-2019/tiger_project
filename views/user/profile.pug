@@ -31,7 +31,7 @@ block content
         .container.my-5
             .row
                 .col-lg-4.order-lg-1.text-center
-                    #changeAvatar.mx-auto.d-block(style=`background-image: url('${userData.avatar==undefined?"http://placehold.it/250":"/avatar/"+userData.avatar}'); background-size:cover; height:250px; width:250px;background-repeat:no-repeat`)
+                    #changeAvatar.mx-auto.d-block(style=`background-image: url('${userData.avatar===undefined?"http://placehold.it/250":"/avatar/"+userData.avatar}'); background-size:cover; height:250px; width:250px;background-repeat:no-repeat`)
                         .container.text-center.p-2(style="opacity:0.75")
                             i.fas.fa-camera.fa-lg
                             | &nbsp;Change avatar

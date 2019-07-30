@@ -1,6 +1,5 @@
 import "./layout";
-
-import { restProperty } from "babel-types";
+import "./user/animate.css";
 
 const $ = require("jquery");
 
