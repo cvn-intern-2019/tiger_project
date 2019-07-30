@@ -28,9 +28,21 @@
     margin-right: 5px;
 }
 
-.messageChat{
+#tab li:hover{
+    cursor: pointer;
+}
+
+.col-3{
     position: fixed;
     bottom: 10%;
-    width: 25%;
+    top: 10%;
+    right : 3%;
+ 
+    border-radius: 3%;
     
+}
+
+.tab-content{
+    background: rgb(43, 42, 42);
+    height:65vh;
 }

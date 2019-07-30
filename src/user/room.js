@@ -33,18 +33,18 @@ $(document).ready(() => {
     console.table(data);
   });
 
-  $('#messageText').keypress(function(event) {
+  $('#messageTextRoom').keypress(function(event) {
     if (event.keyCode == 13 || event.which == 13) {
      
-      var $newMessage = $("#messageBox"),
-      newMessageText = $('#messageText').val();
+      var $newMessage = $("#messageBoxRoom"),
+      newMessageText = $('#messageTextRoom').val();
 
       $newMessage.append("<i class='fa fa-user mr-2' id='avatar' aria-hidden='true'></i>");
       $newMessage.append(username);
       $newMessage.append("   ");
       $newMessage.append(newMessageText);
      
-      $("#messageText").val("");
+      $("#messageTextRoom").val("");
        }
    });
 
