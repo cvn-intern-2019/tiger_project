@@ -8,17 +8,24 @@ block sessionCSS
 
 block content
     .row
-        .col-2
-            .component.p-2
-                button#show-sidebar.btn.btn-lg.btn-light
-                    i.fas.fa-user-friends
-                    |&nbsp;Players
+        //- .col-2
+        //-     .component.p-2
+        //-         button#show-sidebar.btn.btn-lg.btn-light
+        //-             i.fas.fa-user-friends
+        //-             |&nbsp;Players
 
-                #listPlayers.listPlayers.list-group.mt-2
+        //-         #listPlayers.listPlayers.list-group.mt-2
                     //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
                    
-        .col-7
-
+        .col-9
+            .row.py-3.d-flex.align-items-end
+                button#startGame.btn.btn-light.mr-3
+                    i.fas.fa-play
+                    |&nbsp;Start
+                a#leaveRoom.text-light.font-italic(href='#')
+                    i.fas.fa-sign-out-alt
+                    |&nbsp;Leave
+    
         .col-3
             b ID: 
                 #idRoom.m-3.badge.badge-light=idRoom

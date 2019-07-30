@@ -48,7 +48,7 @@ $(document).ready(() => {
 
   function sendMessage() {
     let msgTag = $(`#messageText`);
-    let pattern = /^[a-zA-Z0-9\u00c0-\u1ef9 ]*$/;
+    let pattern = /^[a-zA-Z0-9\u00c0-\u1ef9 \@\~\(\)\[\]\:\^\?\=\'\"\%\*\#\!\_\-\+\;\.\,\/\\\{\}]*$/;
     if (pattern.test(msgTag.val()) == false) {
       alert("The message contains invalid characters!");
       return;
@@ -107,34 +107,30 @@ $(document).ready(() => {
   $("#createRoom").hide();
   $(".search-box").hide();
 
-  $("#close-sidebar").click(function() {
-    $(".page-wrapper").removeClass("toggled");
-  });
-  $("#show-sidebar").click(function() {
-    $("#listPlayers").toggle("fast");
-  });
-
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
   socket.on("joinRoom", data => {
     let listPlayerTag = $(`#listPlayers`);
     let receiverTag = $(`#receiverSelect`);
+    let isHost = null;
     let playerChild = ``;
     let optionChild = `<option value="all">All</option>`;
     listPlayerTag.empty();
     receiverTag.empty();
     data.player.forEach(p => {
-      playerChild += `<h5 class="list-group-item list-group-item-action">
-                    <img src="/avatar/${p.username}" 
-                      alt=""
-                      width="30px" height="30px"/>
-                    ${p.username}
-                    ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
-                    </a>`;
+      isHost = p.isHost ? true : false;
+      //   playerChild += `<h5 class="list-group-item list-group-item-action">
+      //                 <img src="/avatar/${p.username}"
+      //                   alt=""
+      //                   width="30px" height="30px"/>
+      //                 ${p.username}
+      //                 ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
+      //                 </a>`;
       if (p.username != username)
         optionChild += `<option value="${p.idSocket}">${p.username}</option>`;
+      if (!isHost) $(`#startGame`).addClass("d-none");
     });
-    listPlayerTag.append(playerChild);
+    // listPlayerTag.append(playerChild);
     receiverTag.append(optionChild);
   });
 });
