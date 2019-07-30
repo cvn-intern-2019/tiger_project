@@ -9,42 +9,14 @@ block sessionCSS
 block content
     .row
         .col-2
-            .component
-                a#show-sidebar.btn.btn-lg.btn-dark(href='#')
-                    i.fas.fa-bars
+            .component.p-2
+                button#show-sidebar.btn.btn-lg.btn-light
+                    i.fas.fa-user-friends
+                    |&nbsp;Players
 
-                #listPlayers.listPlayers
-                    //- .sidebar-brand.mb-2.text-light
-                    //-         a(href='#').text-light Author : #{username}
-                    //-         a#close-sidebar.float-right(href='javascript:;')
-                    //-             i.fas.fa-times.fa-2x
-
-                    //- ul.list-group.list-group-flush
-                    //-     li.list-group-item.text-dark Number players :       #{players.length + 1}
-                    //-     each player in players 
-                    //-         li.list-group-item.text-dark
-                    //-             a.btn.btn-outline-light(role="button")  
-                    //-                 i.float-left.my-1.ml-0.fa.fa-user.mr-2(aria-hidden='true')
-                    //-                 |                            #{player.username}
-                                
-
-                        form.form-inline
-                            input.form-control.mr-sm-2(type='search', placeholder="ID's User", aria-label='Search')
-                            a.btn.btn-outline-dark(role="button") 
-                                i.fa.fa-search-plus(aria-hidden='true')
-                                |                             Add
-
-                       
-                                
-                    button.btn.btn-secondary.btn-lg.my-2(type='click')    Start
-                    a(class='btn btn-secondary btn-lg my-2',href='/lounge')    Out
-                
-                    .customSetting
-                        i.fas.fa-user-cog.mr-2      
-                        | CustomSetting
-            
-
-
+                #listPlayers.listPlayers.list-group.mt-2
+                    //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
+                   
         .col-6
 
         .col-4

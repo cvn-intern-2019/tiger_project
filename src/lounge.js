@@ -64,8 +64,8 @@ $(document).ready(() => {
   });
 
   //disconnect event listen
-  socket.on("disconnect", () => {
-    alert("Disconnect with server!");
-    window.location.href = `/`;
-  });
+  // socket.on("disconnect", () => {
+  //   alert("Disconnect with server!");
+  //   window.location.href = `/`;
+  // });
 });

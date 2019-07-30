@@ -48,13 +48,14 @@ module.exports.isExist = function isExist(id) {
   return false;
 };
 
-module.exports.joinRoom = function joinRoom(id, username) {
+module.exports.joinRoom = function joinRoom(id, username, avatar) {
   let index = roomList.findIndex(r => {
     return r.id == id && r.host == username;
   });
   let player = {
     idSocket: null,
     username: username,
+    avatar: avatar,
     isHost: index >= 0 ? true : false
   };
   roomList.find(r => r.id == id).player.push(player);
