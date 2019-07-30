@@ -18,21 +18,27 @@
   width: 25%;
 }
 
-#tab li:hover{
-    cursor: pointer;
+#tab li:hover {
+  cursor: pointer;
 }
 
-.col-3{
-    position: fixed;
-    bottom: 10%;
-    top: 10%;
-    right : 3%;
- 
-    border-radius: 3%;
-    
+.col-3 {
+  position: fixed;
+  bottom: 10%;
+  top: 10%;
+  right: 3%;
+
+  border-radius: 3%;
 }
 
-.tab-content{
-    background: rgb(43, 42, 42);
-    height:65vh;
+.tab-content {
+  background: rgb(43, 42, 42);
+  height: 65vh;
+}
+
+#room,
+#private {
+  overflow-y: scroll;
+  height: 65vh;
+  word-wrap: break-word;
 }

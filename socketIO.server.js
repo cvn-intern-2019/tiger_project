@@ -48,14 +48,13 @@ module.exports.isExist = function isExist(id) {
   return false;
 };
 
-module.exports.joinRoom = function joinRoom(id, username, avatar) {
+module.exports.joinRoom = function joinRoom(id, username) {
   let index = roomList.findIndex(r => {
     return r.id == id && r.host == username;
   });
   let player = {
     idSocket: null,
     username: username,
-    avatar: avatar,
     isHost: index >= 0 ? true : false
   };
   roomList.find(r => r.id == id).player.push(player);
@@ -98,18 +97,13 @@ module.exports.init = server => {
       roomNsp.to(data.idRoom).emit("joinRoom", room);
       loungeNsp.emit("listRoom", roomList);
     });
+
     socket.on("disconnect", () => {
       console.log(`=> Someone just disconnected: ${socket.id}`);
     });
 
-    socket.on("messages", function(data) {
-      socket.emit("thread", data);
-      socket.broadcast.emit("thread", data);
-    });
-
-    socket.on("messages", function(data) {
-      socket.emit("thread", data);
-      roomNsp.to(`${socket.id}`).emit("thread", data);
+    socket.on("sendMsg", data => {
+      roomNsp.to(data.receiver).emit("recMsg", data);
     });
   });
 };
