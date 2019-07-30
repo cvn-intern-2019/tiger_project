@@ -1,31 +1,21 @@
-.customSetting{
-    position: fixed;
-    bottom: 10%;
+.customSetting {
+  position: fixed;
+  bottom: 10%;
 }
 
-
-.customSetting :hover{
-    cursor: pointer;
+.customSetting :hover {
+  cursor: pointer;
 }
 
-.searchForm{
-    padding-right : 22%;
-    padding-top : 5px;
-
+.searchForm {
+  padding-right: 22%;
+  padding-top: 5px;
 }
 
-.listPlayers{
-    position: fixed;
-   top: 15%;
-
-}
-
-.listPlayers a:hover{
-    cursor: pointer;
-}
-
-.listPlayers button{
-    margin-right: 5px;
+.messageChat {
+  position: fixed;
+  bottom: 10%;
+  width: 25%;
 }
 
 #tab li:hover{
