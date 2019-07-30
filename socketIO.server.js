@@ -96,6 +96,7 @@ module.exports.init = server => {
         if (p.username == data.username) p.idSocket = socket.id;
       });
       roomNsp.to(data.idRoom).emit("joinRoom", room);
+      loungeNsp.emit("listRoom", roomList);
     });
     socket.on("disconnect", () => {
       console.log(`=> Someone just disconnected: ${socket.id}`);
