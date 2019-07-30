@@ -5,31 +5,30 @@ $(document).ready(() => {
     // reconnection: false
   };
   var socket = io("/room", option);
-  socket.on('chat-message', data =>{
+  socket.on("chat-message", data => {
     console.log(data);
   });
 
-  socket.on('thread', function(data){
-    $('#thread').append('<p>'+'ducduy say: '+data+'</p>');
+  socket.on("thread", function(data) {
+    $("#thread").append("<p>" + data + "</p>");
   });
 
-  $('form').submit(function(){
-    var message = $('#message').val();
-    socket.emit('messages', message);
+  $("#frmText").submit(function() {
+    var message = $("#message").val();
+    if (message == null) {
+      return false;
+    }
+    socket.emit("messages", message);
     this.reset();
     return false;
   });
   $("#createRoom").hide();
   $(".search-box").hide();
 
-  // $("#addMessage").click(function(){
-
+  // $("#addMessage").click(function() {
   //   var $newElement = $("<p></p>"),
-  //   newMessage = $("#messageText").val();
+  //     newMessage = $("#message").val();
   //   $newElement.append(newMessage);
   //   $newElement.addClass("float-right");
-  //   $("#messageBox").append($newElement);
   // });
 });
-
-

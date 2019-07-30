@@ -48,9 +48,14 @@ module.exports.init = server => {
       console.log(`=> Someone just disconnected: ${socket.id}`);
     });
 
-    socket.on('messages', function(data){
-      socket.emit('thread',data);
-      socket.broadcast.emit('thread',data);
+    socket.on("messages", function(data) {
+      socket.emit("thread", data);
+      socket.broadcast.emit("thread", data);
+    });
+
+    socket.on("messages", function(data) {
+      socket.emit("thread", data);
+      roomNsp.to(`${socket.id}`).emit("thread", data);
     });
   });
 };
