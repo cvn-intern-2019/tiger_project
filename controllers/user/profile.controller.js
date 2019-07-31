@@ -7,7 +7,9 @@ var Grid = require("gridfs-stream");
 var mongoose = require("mongoose");
 
 var gfs = null;
+//let connStr = "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority";
 let connStr = "mongodb://tiger:tiger123@localhost:27017/werewolf";
+
 mongoose.connect(connStr, { useNewUrlParser: true }, err => {
   if (err) next(err);
   gfs = Grid(mongoose.connection.db, mongoose.mongo);
@@ -18,7 +20,7 @@ const storage = new GridFsStorage({
   url: connStr,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
-      const filename = req.session.userId;
+      const filename = req.session.username;
       const fileInfo = {
         filename: filename,
         bucketName: "avatars"
@@ -53,7 +55,6 @@ module.exports.getProfilePage = (req, res, next) => {
     "username email avatar fullname phone gender birthday",
     (err, data) => {
       if (err) next(err);
-
       let csrfToken = generateToken();
       req.session.csrfToken = csrfToken;
 
@@ -166,7 +167,7 @@ module.exports.postEditProfile = [
 ];
 
 var deleteOldAvatar = (req, res, next) => {
-  gfs.remove({ filename: req.session.userId, root: "avatars" }, err => {
+  gfs.remove({ filename: req.session.username, root: "avatars" }, err => {
     if (err) next(err);
     next();
   });
@@ -175,8 +176,9 @@ module.exports.changeAvatar = [
   deleteOldAvatar,
   upload.single("avatarFile"),
   (req, res, next) => {
+    let username = req.session.username;
     let userId = req.session.userId;
-    User.findByIdAndUpdate(userId, { avatar: userId }, err => {
+    User.findByIdAndUpdate(userId, { avatar: username }, err => {
       if (err) next(err);
       res.redirect("/user");
     });

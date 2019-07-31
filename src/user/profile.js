@@ -1,4 +1,5 @@
 import "../layout";
+
 const $ = require("jquery");
 const editProfile = require("./profile.edit");
 
