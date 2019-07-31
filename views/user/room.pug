@@ -17,13 +17,73 @@ block content
                     //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
                    
         .col-9
-            .row.py-3.d-flex.align-items-end
+            .row.py-3.d-flex.mb-3
                 button#startGame.btn.btn-light.mr-3
                     i.fas.fa-play
                     |&nbsp;Start
-                a#leaveRoom.text-light.font-italic(href='/lounge')
-                    i.fas.fa-sign-out-alt
+                a#leaveRoom.btn.btn-outline-secondary.text-light.font-italic(href='/lounge')
+                    i.fas.fa-sign-out-alt.align-middle
                     |&nbsp;Leave
+               
+            #phase
+                h1.float-right
+                    .badge.badge-lg.badge-light Night
+
+            #notification.row
+                p.border.border-danger.text-light.float-center.p-1 It is midnight. Please go to sleep 
+                    span.fa.fa-bullhorn.float-left.mr-5.fa-2x
+
+            .row.my-3.d-flex.justify-content-center
+                .player.d-flex.flex-column.mr-5.align-items-center
+                    img(src='http://placehold.it/250' width="100px").my-2
+                    button.btn.btn-light Player1
+                        span.badge.badge-danger.float-right.ml-4  3
+                .player.d-flex.flex-column.mr-5.align-items-center
+                    img(src='http://placehold.it/250' width="100px").my-2
+                    button.btn.btn-light Player1
+                        span.badge.badge-danger.float-right.ml-4  3
+                .player.d-flex.flex-column.mr-5.align-items-center
+                    img(src='http://placehold.it/250' width="100px").my-2
+                    button.btn.btn-light Player1
+                        span.badge.badge-danger.float-right.ml-4  3
+                .player.d-flex.flex-column.mr-5.align-items-center
+                    img(src='http://placehold.it/250' width="100px").my-2
+                    button.btn.btn-light Player1
+                        span.badge.badge-danger.float-right.ml-4  3
+
+            .row.pt-4.d-flex.justify-content-center
+                .player.d-flex.flex-column.mr-5.align-items-center
+                    img(src='http://placehold.it/250' width="100px").my-2
+                    button.btn.btn-light Player1
+                        span.badge.badge-danger.float-right.ml-4  3
+                .player.d-flex.flex-column.mr-5.align-items-center
+                    img(src='http://placehold.it/250' width="100px").my-2
+                    button.btn.btn-light Player1
+                        span.badge.badge-danger.float-right.ml-4  3
+                .player.d-flex.flex-column.mr-5.align-items-center
+                    img(src='http://placehold.it/250' width="100px").my-2
+                    button.btn.btn-light Player1
+                        span.badge.badge-danger.float-right.ml-4  3
+               
+            
+            .row.m-5 
+                .col-2.border
+                    h3
+                        .badge.badge-light.text-dark 00 : 30
+                    p Character
+                   
+                .col-5.border
+                    p Description
+                .col-2.border
+                    p Result 
+                    p.font-weight-bold Player1
+                    button.btn.btn-light.mb-2 Choose
+                    
+                    
+               
+
+
+            
     
         .col-3
             b ID: 
