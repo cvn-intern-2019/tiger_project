@@ -55,7 +55,6 @@ module.exports.getProfilePage = (req, res, next) => {
     "username email avatar fullname phone gender birthday",
     (err, data) => {
       if (err) next(err);
-
       let csrfToken = generateToken();
       req.session.csrfToken = csrfToken;
 
@@ -178,7 +177,8 @@ module.exports.changeAvatar = [
   upload.single("avatarFile"),
   (req, res, next) => {
     let username = req.session.username;
-    User.findByIdAndUpdate(username, { avatar: username }, err => {
+    let userId = req.session.userId;
+    User.findByIdAndUpdate(userId, { avatar: username }, err => {
       if (err) next(err);
       res.redirect("/user");
     });
