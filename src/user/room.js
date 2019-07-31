@@ -24,7 +24,7 @@ $(document).ready(() => {
                         <img onerror="javascript:this.src='http://placehold.it/30'"
                           src="/avatar/${data.sender}"
                           width="30px" height="30px"/>
-                        ${data.sender}
+                        ${data.receiver != idRoom ? `From: ` : ``}${data.sender}
                       </h5>
                       <span class="badge badge-light float-right">
                         ${moment(new Date()).format("LTS")}</span>
@@ -44,6 +44,7 @@ $(document).ready(() => {
         if (target.text() != username) {
           let receiver = $(target)
             .text()
+            .replace("From: ", "")
             .trim();
           $(`#receiverSelect option`).removeAttr("selected");
           $(`#receiverSelect`)
@@ -72,15 +73,17 @@ $(document).ready(() => {
       return;
     }
     let receiver = idRoom;
+
     if ($(`#receiverSelect`).val() != "all") {
       receiver = $(`#receiverSelect`).val();
+      $(`#privateTab`).trigger("click");
       let messageBoxTag = $(`#messageBoxPrivate`);
       let child = `<div class="my-2">
                     <h5>
                       <img onerror="javascript:this.src='http://placehold.it/30'"
                       src="/avatar/${username}"
                       width="30px" height="30px"/>
-                      ${username}
+                      To: ${$(`#receiverSelect option:selected`).text()}
                     </h5>
                     <span class="badge badge-light float-right">
                       ${moment(new Date()).format("LTS")}
@@ -90,6 +93,8 @@ $(document).ready(() => {
                     </p>
                 </div>`;
       messageBoxTag.append(child);
+    } else {
+      $(`#roomTab`).trigger("click");
     }
 
     socket.emit("sendMsg", {
@@ -130,25 +135,35 @@ $(document).ready(() => {
     let isHost = null;
     let playerChild = ``;
     let optionChild = `<option value="all">All</option>`;
+    let currentReceiver = receiverTag.val();
+
     listPlayerTag.empty();
     receiverTag.empty();
+
     room.player.forEach(p => {
       if (p.username == username) {
         isHost = p.isHost ? true : false;
       }
-      //   playerChild += `<h5 class="list-group-item list-group-item-action">
-      //                 <img src="/avatar/${p.username}"
-      //                   alt=""
-      //                   width="30px" height="30px"/>
-      //                 ${p.username}
-      //                 ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
-      //                 </a>`;
       if (p.username != username)
         optionChild += `<option value="${p.idSocket}">${p.username}</option>`;
     });
+
     if (!isHost) $(`#startGame`).addClass("d-none");
     else $(`#startGame`).removeClass("d-none");
-    // listPlayerTag.append(playerChild);
+
     receiverTag.append(optionChild);
+
+    $(`#receiverSelect option`).removeAttr("selected");
+    $(`#receiverSelect option[value="${currentReceiver}"]`).prop(
+      "selected",
+      true
+    );
+  });
+
+  $(`#roomTab`).click(event => {
+    if (event.which == 1) {
+      $(`#receiverSelect option`).removeAttr("selected");
+      $(`#receiverSelect option[value=all]`).prop("selected", true);
+    }
   });
 });
