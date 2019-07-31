@@ -6,7 +6,9 @@ const moment = require("moment");
 
 $(document).ready(() => {
   const option = {
-    reconnection: false
+    reconnection: false,
+    transports: ["websocket"],
+    upgrade: false
   };
   var socket = io("/room", option);
   var idRoom = $(`#idRoom`).text();
@@ -147,6 +149,7 @@ $(document).ready(() => {
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
   socket.on("initRoom", room => {
+    console.log(room);
     let listPlayerTag = $(`#listPlayers`);
     let receiverTag = $(`#receiverSelect`);
     let isHost = null;
