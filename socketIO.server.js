@@ -57,7 +57,10 @@ module.exports.joinRoom = function joinRoom(id, username) {
     username: username,
     isHost: index >= 0 ? true : false
   };
-  roomList.find(r => r.id == id).player.push(player);
+  let room = roomList.find(r => r.id == id);
+  if (room.player.findIndex(p => p.username == username) < 0) {
+    room.player.push(player);
+  }
 };
 
 module.exports.init = server => {
