@@ -76,8 +76,6 @@ $(document).ready(() => {
     });
   });
 
-  $("#search_input").keyup(searchRoomEvent);
-
   //create room event listen
   socket.on("createRoom", room => {
     if (room) window.location.href = `/room/${room.id}`;
@@ -96,4 +94,5 @@ $(document).ready(() => {
   //   alert("Disconnect with server!");
   //   window.location.href = `/`;
   // });
+  $("#search_input").keyup(searchRoomEvent);
 });
