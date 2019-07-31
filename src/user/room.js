@@ -6,7 +6,7 @@ const moment = require("moment");
 
 $(document).ready(() => {
   const option = {
-    // reconnection: false
+    reconnection: false
   };
   var socket = io("/room", option);
   var idRoom = $(`#idRoom`).text();

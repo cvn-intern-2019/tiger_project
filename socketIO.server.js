@@ -3,7 +3,7 @@ const AMOUNT_PLAYER = 7;
 
 var roomList = new Array();
 
-function createRoom(username, socketRoomId) {
+function createRoom(username) {
   let room = {
     id: null,
     name: `Game of ${username}`,
@@ -49,15 +49,17 @@ module.exports.isExist = function isExist(id) {
 };
 
 module.exports.joinRoom = function joinRoom(id, username) {
-  let index = roomList.findIndex(r => {
-    return r.id == id && r.host == username;
-  });
+  let room = roomList.find(r => r.id == id);
+
   let player = {
     idSocket: null,
     username: username,
-    isHost: index >= 0 ? true : false
+    isHost: room.host == username ? true : false
   };
-  roomList.find(r => r.id == id).player.push(player);
+
+  if (room.player.findIndex(p => p.username == username) < 0) {
+    room.player.push(player);
+  }
 };
 
 module.exports.init = server => {
@@ -90,35 +92,55 @@ module.exports.init = server => {
 
     socket.on("joinRoom", data => {
       let room = roomList.find(r => r.id == data.idRoom);
-      socket.join(data.idRoom);
-      room.player.forEach(p => {
-        if (p.username == data.username) p.idSocket = socket.id;
-      });
-      roomNsp.to(data.idRoom).emit("initRoom", room);
-      loungeNsp.emit("listRoom", roomList);
+
+      if (room != undefined) {
+        socket.join(data.idRoom);
+        let player = room.player.find(p => p.username == data.username);
+        if (player != undefined) {
+          console.log(player);
+          player.idSocket = socket.id;
+          roomNsp.to(data.idRoom).emit("initRoom", room);
+          loungeNsp.emit("listRoom", roomList);
+        }
+        // room.player.forEach(p => {
+        //   if (p.username == data.username) p.idSocket = socket.id;
+        // });
+      }
     });
 
     socket.on("disconnect", () => {
       console.log(`=> Someone just disconnected: ${socket.id}`);
-
-      roomList.forEach((r, indexRoom) => {
-        r.player.forEach((p, indexPlayer) => {
-          if (p.idSocket == socket.id) {
-            r.player.splice(indexPlayer, 1);
-            socket.leave(r.id);
-
-            if (r.player.length == 0) roomList.splice(indexRoom, 1);
-            else {
-              if (r.host == p.username) {
-                r.host = r.player[0].username;
-                r.player[0].isHost = true;
-              }
-              roomNsp.to(r.id).emit("initRoom", r);
-            }
-            loungeNsp.emit("listRoom", roomList);
-          }
+      let room = undefined;
+      let indexRoom = undefined;
+      let player = undefined;
+      for (let i = 0; i < roomList.length; i++) {
+        player = roomList[i].player.find(p => {
+          return p.idSocket == socket.id;
         });
-      });
+        if (player != undefined) {
+          room = roomList[i];
+          indexRoom = i;
+          break;
+        }
+      }
+      if (room != undefined && player != undefined) {
+        let indexPlayer = room.player.findIndex(p => {
+          return p.username == player.username;
+        });
+
+        room.player.splice(indexPlayer, 1);
+        socket.leave(room.id);
+        if (room.player.length == 0) {
+          roomList.splice(indexRoom, 1);
+        } else {
+          if (room.host == player.username) {
+            room.host = room.player[0].username;
+            room.player[0].isHost = true;
+          }
+          roomNsp.to(room.id).emit("initRoom", room);
+        }
+        loungeNsp.emit("listRoom", roomList);
+      }
     });
 
     socket.on("sendMsg", data => {
