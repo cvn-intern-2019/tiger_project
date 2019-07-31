@@ -77,7 +77,7 @@ module.exports.postRegister = (req, res, next) => {
   if (userRegEx.test(body.username) === false) {
     return res.json({
       type: 0,
-      msg: "Your username "
+      msg: "Your username is invalid!"
     });
   }
 
