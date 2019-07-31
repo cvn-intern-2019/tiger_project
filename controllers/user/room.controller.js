@@ -2,6 +2,7 @@ var socketIOServer = require("../../socketIO.server");
 var User = require("../../models/user.model");
 
 module.exports.getRoomPage = (req, res, next) => {
+  console.log(req.headers);
   let idRoom = req.params.idRoom;
 
   if (!socketIOServer.isExist(idRoom)) return res.redirect("/lounge");
