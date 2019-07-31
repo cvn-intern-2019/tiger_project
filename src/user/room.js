@@ -7,29 +7,103 @@ import "@fortawesome/fontawesome-free/js/regular";
 import "@fortawesome/fontawesome-free/js/brands";
 import "./animate.css";
 const $ = require("jquery");
+const moment = require("moment");
 
 $(document).ready(() => {
   const option = {
     // reconnection: false
   };
   var socket = io("/room", option);
-  socket.on("chat-message", data => {
-    console.log(data);
-  });
+  var idRoom = $(`#idRoom`).text();
+  var username = $(`#username`).text();
 
-  socket.on("thread", function(data) {
-    $("#thread").append("<p>" + data + "</p>");
-  });
+  socket.on("recMsg", data => {
+    let messageBoxTag = $(`#room`);
+    let messageTab = $(`#tab #roomTab`);
+    let child = `<div class="my-2">
+                    <h5>
+                      <img src="/avatar/${data.sender}" 
+                      alt=""
+                      width="30px" height="30px"/>
+                      ${data.sender}:
+                    </h5>
+                    <span class="badge badge-light float-right">
+                      ${moment(new Date()).format("LTS")}</span>
+                    <p class="p-2 bg-secondary border border-dark rounded">
+                      ${data.msg}
+                    </p>
+                </div>`;
 
-  $("#frmText").submit(function() {
-    var message = $("#message").val();
-    if (message == null) {
-      return false;
+    if (data.receiver != idRoom) {
+      messageBoxTag = $(`#private`);
+      messageTab = $(`#tab #privateTab`);
     }
-    socket.emit("messages", message);
-    this.reset();
-    return false;
+    $($(messageBoxTag).children()[0]).append(child);
+
+    $(`#room, #private`).scrollTop($($(messageBoxTag).children()[0]).height());
+
+    if (!$(messageBoxTag).hasClass("active"))
+      messageTab.addClass("animated bounce infinite");
   });
+
+  function sendMessage() {
+    let msgTag = $(`#messageText`);
+    let pattern = /^[a-zA-Z0-9\u00c0-\u1ef9 ]*$/;
+    if (pattern.test(msgTag.val()) == false) {
+      alert("The message contains invalid characters!");
+      return;
+    }
+    if (msgTag.val().length == 0 || msgTag.val().length > 255) {
+      alert("Message length must be 1-255 characters!");
+      return;
+    }
+    let receiver = idRoom;
+    if ($(`#receiverSelect`).val() != "all") {
+      receiver = $(`#receiverSelect`).val();
+      let messageBoxTag = $(`#messageBoxPrivate`);
+      let child = `<div class="my-2">
+                    <h5>
+                      <img src="/avatar/${username}" 
+                      alt=""
+                      width="30px" height="30px"/>
+                      ${username}:
+                    </h5>
+                    <span class="badge badge-light float-right">
+                      ${moment(new Date()).format("LTS")}
+                    </span>
+                    <p class="p-2 bg-secondary border border-dark rounded">
+                      ${msgTag.val()}
+                    </p>
+                </div>`;
+      messageBoxTag.append(child);
+    }
+
+    socket.emit("sendMsg", {
+      sender: username,
+      receiver: receiver,
+      msg: msgTag.val()
+    });
+    msgTag.val("");
+  }
+
+  $(`#sendMessage`).mousedown(event => {
+    if (event.which == 1) {
+      sendMessage();
+    }
+  });
+
+  $(`.input-group`).keypress(event => {
+    if (event.which == 13) {
+      sendMessage();
+    }
+  });
+
+  $(`#tab a`).mousedown(event => {
+    if (event.which == 1) {
+      $(event.target).removeClass("animated bounce infinite");
+    }
+  });
+
   $("#createRoom").hide();
   $(".search-box").hide();
 
@@ -39,9 +113,6 @@ $(document).ready(() => {
   $("#show-sidebar").click(function() {
     $("#listPlayers").toggle("fast");
   });
-
-  var idRoom = $(`#idRoom`).text();
-  var username = $(`#username`).text();
 
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
@@ -54,35 +125,16 @@ $(document).ready(() => {
     receiverTag.empty();
     data.player.forEach(p => {
       playerChild += `<h5 class="list-group-item list-group-item-action">
-                    <img src="${
-                      p.avatar == undefined
-                        ? "http://placehold.it/30"
-                        : `/avatar/${p.avatar}`
-                    }" width="30px" height="30px"/>
+                    <img src="/avatar/${p.username}" 
+                      alt=""
+                      width="30px" height="30px"/>
                     ${p.username}
                     ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
                     </a>`;
       if (p.username != username)
-        optionChild += `<option value="${p.username}">${p.username}</option>`;
+        optionChild += `<option value="${p.idSocket}">${p.username}</option>`;
     });
     listPlayerTag.append(playerChild);
     receiverTag.append(optionChild);
-    console.log(data);
-  });
-
-  $("#messageText").keypress(function(event) {
-    if (event.keyCode == 13 || event.which == 13) {
-      var $newMessage = $("#messageBox"),
-        newMessageText = $("#messageText").val();
-
-      $newMessage.append(
-        "<i class='fa fa-user mr-2' id='avatar' aria-hidden='true'></i>"
-      );
-      $newMessage.append(username);
-      $newMessage.append("   ");
-      $newMessage.append(newMessageText);
-
-      $("#messageText").val("");
-    }
   });
 });
