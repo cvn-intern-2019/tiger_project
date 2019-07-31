@@ -107,15 +107,17 @@ module.exports.init = server => {
             r.player.splice(indexPlayer, 1);
             socket.leave(r.id);
 
-            if (r.player.length == 0) roomList.splice(indexRoom, 1);
-            else {
+            if (r.player.length == 0) {
+              roomList.splice(indexRoom, 1);
+              loungeNsp.emit("listRoom", roomList);
+            } else {
               if (r.host == p.username) {
                 r.host = r.player[0].username;
                 r.player[0].isHost = true;
               }
               roomNsp.to(r.id).emit("initRoom", r);
+              loungeNsp.emit("listRoom", roomList);
             }
-            loungeNsp.emit("listRoom", roomList);
           }
         });
       });
