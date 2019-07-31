@@ -6,49 +6,91 @@ const moment = require("moment");
 
 $(document).ready(() => {
   const option = {
-    reconnection: false
+    // reconnection: false
   };
   var socket = io("/room", option);
   var idRoom = $(`#idRoom`).text();
   var username = $(`#username`).text();
 
+  function checkImage(src, good, bad) {
+    var img = new Image();
+    img.onload = good;
+    img.onerror = bad;
+    img.src = src;
+  }
+
   socket.on("recMsg", data => {
     let messageBoxTag = $(`#room`);
     let messageTab = $(`#tab #roomTab`);
-    let child = `<div class="my-2">
-                    <h5>
-                      <img src="/avatar/${data.sender}" 
-                      alt=""
-                      width="30px" height="30px"/>
-                      ${data.sender}:
-                    </h5>
-                    <span class="badge badge-light float-right">
-                      ${moment(new Date()).format("LTS")}</span>
-                    <p class="p-2 bg-secondary border border-dark rounded">
-                      ${data.msg}
-                    </p>
-                </div>`;
 
-    if (data.receiver != idRoom) {
-      messageBoxTag = $(`#private`);
-      messageTab = $(`#tab #privateTab`);
-    }
-    $($(messageBoxTag).children()[0]).append(child);
+    checkImage(
+      `/avatar/${data.sender}`,
+      () => {
+        let child = `<div class="my-2">
+                      <h5>
+                        <img src="/avatar/${data.sender}" 
+                        alt=""
+                        width="30px" height="30px"/>
+                        ${data.sender}:
+                      </h5>
+                      <span class="badge badge-light float-right">
+                        ${moment(new Date()).format("LTS")}</span>
+                      <p class="p-2 bg-secondary border border-dark rounded">
+                        ${data.msg}
+                      </p>
+                    </div>`;
+        if (data.receiver != idRoom) {
+          messageBoxTag = $(`#private`);
+          messageTab = $(`#tab #privateTab`);
+        }
+        $($(messageBoxTag).children()[0]).append(child);
 
-    $(`#room, #private`).scrollTop($($(messageBoxTag).children()[0]).height());
+        $(`#room, #private`).scrollTop(
+          $($(messageBoxTag).children()[0]).height()
+        );
 
-    if (!$(messageBoxTag).hasClass("active"))
-      messageTab.addClass("animated bounce infinite");
+        if (!$(messageBoxTag).hasClass("active"))
+          messageTab.addClass("animated bounce infinite");
+      },
+      () => {
+        let child = `<div class="my-2">
+                      <h5>
+                        <img src="http://placehold.it/30" 
+                        alt=""
+                        width="30px" height="30px"/>
+                        ${data.sender}:
+                      </h5>
+                      <span class="badge badge-light float-right">
+                        ${moment(new Date()).format("LTS")}</span>
+                      <p class="p-2 bg-secondary border border-dark rounded">
+                        ${data.msg}
+                      </p>
+                    </div>`;
+        if (data.receiver != idRoom) {
+          messageBoxTag = $(`#private`);
+          messageTab = $(`#tab #privateTab`);
+        }
+        $($(messageBoxTag).children()[0]).append(child);
+
+        $(`#room, #private`).scrollTop(
+          $($(messageBoxTag).children()[0]).height()
+        );
+
+        if (!$(messageBoxTag).hasClass("active"))
+          messageTab.addClass("animated bounce infinite");
+      }
+    );
   });
 
   function sendMessage() {
     let msgTag = $(`#messageText`);
-    let pattern = /^[/</>]*$/;
-    if (msgTag.val().length == 0 || msgTag.val().length > 255) {
+    let msg = msgTag.val();
+    msg = msg.trim();
+    if (msg.length == 0 || msg.length > 255) {
       alert("Message length must be 1-255 characters!");
       return;
     }
-    if (pattern.test(msgTag.val()) == true) {
+    if (msg.includes(">") || msg.includes("<")) {
       alert("The message contains invalid characters!");
       return;
     }
@@ -67,7 +109,7 @@ $(document).ready(() => {
                       ${moment(new Date()).format("LTS")}
                     </span>
                     <p class="p-2 bg-secondary border border-dark rounded">
-                      ${msgTag.val()}
+                      ${msg}
                     </p>
                 </div>`;
       messageBoxTag.append(child);
@@ -76,7 +118,7 @@ $(document).ready(() => {
     socket.emit("sendMsg", {
       sender: username,
       receiver: receiver,
-      msg: msgTag.val()
+      msg: msg
     });
     msgTag.val("");
   }
@@ -130,11 +172,5 @@ $(document).ready(() => {
     else $(`#startGame`).removeClass("d-none");
     // listPlayerTag.append(playerChild);
     receiverTag.append(optionChild);
-  });
-
-  //disconnect event listen
-  socket.on("disconnect", () => {
-    alert("Disconnect with server!");
-    window.location.href = `/`;
   });
 });
