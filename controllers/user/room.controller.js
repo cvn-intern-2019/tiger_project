@@ -6,6 +6,7 @@ module.exports.getRoomPage = (req, res, next) => {
 
   if (socketIOServer.isExist(idRoom) == false) return res.redirect("/lounge");
   if (socketIOServer.isFull(idRoom)) return res.redirect("/lounge");
+  if (socketIOServer.isPlaying(idRoom)) return res.redirect("/lounge");
 
   let username = req.session.username;
 

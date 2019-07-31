@@ -136,6 +136,7 @@ $(document).ready(() => {
     let playerChild = ``;
     let optionChild = `<option value="all">All</option>`;
     let currentReceiver = receiverTag.val();
+    let startGameButton = $(`#startGame`);
 
     listPlayerTag.empty();
     receiverTag.empty();
@@ -148,8 +149,22 @@ $(document).ready(() => {
         optionChild += `<option value="${p.idSocket}">${p.username}</option>`;
     });
 
-    if (!isHost) $(`#startGame`).addClass("d-none");
-    else $(`#startGame`).removeClass("d-none");
+    if (!isHost) startGameButton.addClass("d-none");
+    else {
+      startGameButton.unbind("click");
+      startGameButton.click(event => {
+        if (event.which == 1) {
+          startGameButton.unbind("click").attr("disabled", true);
+          socket.emit("startGame", idRoom);
+        }
+      });
+
+      startGameButton.removeClass("d-none");
+    }
+
+    // if (room.player.length == room.amount)
+    //   $(`#startGame`).attr("disabled", false);
+    // else $(`#startGame`).attr("disabled", true);
 
     receiverTag.append(optionChild);
 
@@ -165,5 +180,9 @@ $(document).ready(() => {
       $(`#receiverSelect option`).removeAttr("selected");
       $(`#receiverSelect option[value=all]`).prop("selected", true);
     }
+  });
+
+  socket.on("startGame", room => {
+    console.log(room);
   });
 });

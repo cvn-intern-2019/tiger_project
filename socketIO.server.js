@@ -1,4 +1,4 @@
-// var roomList = new Array();
+const game = require("./src/game-server/mainController");
 const AMOUNT_PLAYER = 7;
 
 var roomList = new Array();
@@ -44,6 +44,12 @@ module.exports.isExist = function isExist(id) {
   let room = roomList.find(r => r.id == id);
   if (room == undefined) return false;
   return true;
+};
+
+module.exports.isPlaying = function isPlaying(id) {
+  let room = roomList.find(r => r.id == id);
+  if (room.status == true) return true;
+  return false;
 };
 
 module.exports.joinRoom = function joinRoom(id, username) {
@@ -99,10 +105,37 @@ module.exports.init = server => {
           roomNsp.to(data.idRoom).emit("initRoom", room);
           loungeNsp.emit("listRoom", roomList);
         }
-        // room.player.forEach(p => {
-        //   if (p.username == data.username) p.idSocket = socket.id;
-        // });
       }
+    });
+
+    socket.on("startGame", idRoom => {
+      let room = roomList.find(r => r.id == idRoom);
+      // let temp = game.initGame(room.player);
+      // console.log(temp);
+      // let gameLog = {
+      //   timeStart: new Date(),
+      //   timeFinish: null,
+      //   currentDay: 1,
+      //   currentPharse: 0,
+      //   deadList: new Array(),
+      //   characterRole: []
+      // };
+      room.status = true;
+      loungeNsp.emit("listRoom", roomList);
+      let count = 5;
+      var countDown = setInterval(() => {
+        let sysMsg = {
+          sender: "System to All",
+          receiver: room.id,
+          msg: `The game will start in ${count} second(s)...`
+        };
+        socket.emit("recMsg", sysMsg);
+        count--;
+        if (count < 0) {
+          clearInterval(countDown);
+          roomNsp.to(idRoom).emit("startGame", room);
+        }
+      }, 1000);
     });
 
     socket.on("disconnect", () => {
