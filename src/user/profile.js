@@ -45,9 +45,7 @@ $(document).ready(() => {
   });
 
   var readURL = function(input) {
-    console.log(input.files[0]);
     let extension = input.files[0].type;
-    console.log(typeof extension);
     if (extension !== "image/png" && extension !== "image/jpeg") {
       alert("File is invalid!");
       return;
