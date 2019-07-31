@@ -2,23 +2,29 @@ extends ../layout
 block sessionCSS
     title Room | Werewolf Online - Tiger Team
     script(src="/javascripts/room.js")
-    script(src="/javascripts/layout.js")
     script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
-    .row
-        .col-2
-            .component.p-2
-                button#show-sidebar.btn.btn-lg.btn-light
-                    i.fas.fa-user-friends
-                    |&nbsp;Players
+    .container-fluid
+        //- .col-2
+        //-     .component.p-2
+        //-         button#show-sidebar.btn.btn-lg.btn-light
+        //-             i.fas.fa-user-friends
+        //-             |&nbsp;Players
 
-                #listPlayers.listPlayers.list-group.mt-2
+        //-         #listPlayers.listPlayers.list-group.mt-2
                     //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
                    
-        .col-7
-
+        .col-9
+            .row.py-3.d-flex.align-items-end
+                button#startGame.btn.btn-light.mr-3
+                    i.fas.fa-play
+                    |&nbsp;Start
+                a#leaveRoom.text-light.font-italic(href='/lounge')
+                    i.fas.fa-sign-out-alt
+                    |&nbsp;Leave
+    
         .col-3
             b ID: 
                 #idRoom.m-3.badge.badge-light=idRoom

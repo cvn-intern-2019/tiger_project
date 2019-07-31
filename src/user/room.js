@@ -1,17 +1,12 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap";
-import "jquery/dist/jquery.slim";
-import "@fortawesome/fontawesome-free/js/fontawesome";
-import "@fortawesome/fontawesome-free/js/solid";
-import "@fortawesome/fontawesome-free/js/regular";
-import "@fortawesome/fontawesome-free/js/brands";
+import "../layout";
 import "./animate.css";
+
 const $ = require("jquery");
 const moment = require("moment");
 
 $(document).ready(() => {
   const option = {
-    // reconnection: false
+    reconnection: false
   };
   var socket = io("/room", option);
   var idRoom = $(`#idRoom`).text();
@@ -48,13 +43,13 @@ $(document).ready(() => {
 
   function sendMessage() {
     let msgTag = $(`#messageText`);
-    let pattern = /^[a-zA-Z0-9\u00c0-\u1ef9 ]*$/;
-    if (pattern.test(msgTag.val()) == false) {
-      alert("The message contains invalid characters!");
-      return;
-    }
+    let pattern = /^[/</>]*$/;
     if (msgTag.val().length == 0 || msgTag.val().length > 255) {
       alert("Message length must be 1-255 characters!");
+      return;
+    }
+    if (pattern.test(msgTag.val()) == true) {
+      alert("The message contains invalid characters!");
       return;
     }
     let receiver = idRoom;
@@ -107,34 +102,39 @@ $(document).ready(() => {
   $("#createRoom").hide();
   $(".search-box").hide();
 
-  $("#close-sidebar").click(function() {
-    $(".page-wrapper").removeClass("toggled");
-  });
-  $("#show-sidebar").click(function() {
-    $("#listPlayers").toggle("fast");
-  });
-
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
-  socket.on("joinRoom", data => {
+  socket.on("initRoom", room => {
     let listPlayerTag = $(`#listPlayers`);
     let receiverTag = $(`#receiverSelect`);
+    let isHost = null;
     let playerChild = ``;
     let optionChild = `<option value="all">All</option>`;
     listPlayerTag.empty();
     receiverTag.empty();
-    data.player.forEach(p => {
-      playerChild += `<h5 class="list-group-item list-group-item-action">
-                    <img src="/avatar/${p.username}" 
-                      alt=""
-                      width="30px" height="30px"/>
-                    ${p.username}
-                    ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
-                    </a>`;
+    room.player.forEach(p => {
+      if (p.username == username) {
+        isHost = p.isHost ? true : false;
+      }
+      //   playerChild += `<h5 class="list-group-item list-group-item-action">
+      //                 <img src="/avatar/${p.username}"
+      //                   alt=""
+      //                   width="30px" height="30px"/>
+      //                 ${p.username}
+      //                 ${p.isHost ? `<i class="float-right fas fa-crown"/>` : ""}
+      //                 </a>`;
       if (p.username != username)
         optionChild += `<option value="${p.idSocket}">${p.username}</option>`;
     });
-    listPlayerTag.append(playerChild);
+    if (!isHost) $(`#startGame`).addClass("d-none");
+    else $(`#startGame`).removeClass("d-none");
+    // listPlayerTag.append(playerChild);
     receiverTag.append(optionChild);
+  });
+
+  //disconnect event listen
+  socket.on("disconnect", () => {
+    alert("Disconnect with server!");
+    window.location.href = `/`;
   });
 });
