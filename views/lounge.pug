@@ -6,15 +6,14 @@ block sessionCSS
     script(src="/socket.io/socket.io.js")
 
 block content
-    #roomList.row.room
-        //- .col-sm-4.mt-3
-        //-     .card
-        //-         h5.card-header.text-dark RoomID : 
-        //-         .card-body
-        //-             h5.card-title.text-dark Room's author :  
-        //-                 a(href=`/user/`)  
-        //-             p.card-text.text-dark Number players : 
-        //-             a.btn.btn-dark(href='/user/room') Join
+    .container-fluid.py-5
+        .row.bg-dark.px-3.py-2.flex-row-reverse
+            div.col-sm-4.position-relative
+                input#search_input.form-control(type="text" placeholder="Enter host username or room name...")
+        #roomList.row.room
+
+    
+
                         
 
                         
