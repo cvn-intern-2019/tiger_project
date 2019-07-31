@@ -77,7 +77,7 @@ module.exports.postRegister = (req, res, next) => {
   if (userRegEx.test(body.username) === false) {
     return res.json({
       type: 0,
-      msg: "Your username "
+      msg: "Your username is invalid!"
     });
   }
 
@@ -143,8 +143,10 @@ module.exports.postRegister = (req, res, next) => {
 };
 
 module.exports.getLogout = (req, res, next) => {
-  res.clearCookie("user_sid");
-  res.redirect("/");
+  req.session.destroy(err => {
+    if (err) next(err);
+    res.clearCookie("user_sid").redirect("/");
+  });
 };
 
 module.exports.hashPassword = hashPassword;

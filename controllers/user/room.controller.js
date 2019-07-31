@@ -1,36 +1,17 @@
+var socketIOServer = require("../../socketIO.server");
+var User = require("../../models/user.model");
 
-module.exports.getRoomPage = (req, res, next)=>{
-  
-    var players = [
-        {
-          username : "HoangNhi",
-          id : 1
-        },
-        {
-          username : "HongMo",
-          id : 2
-        },
-        {
-          username : "TuPhi",
-          id : 3
-        },
-        {
-          username : "ThuQuyen",
-          id : 4
-        },
-        {
-          username : "KieuNgan",
-          id : 5
-        }
-    ]
-    
-    res.render('user/room', { 
-      title: 'Room', 
-      players: players ,
-      username: req.session.username
-    });
+module.exports.getRoomPage = (req, res, next) => {
+  let idRoom = req.params.idRoom;
 
-}
+  if (socketIOServer.isExist(idRoom) == false) return res.redirect("/lounge");
+  if (socketIOServer.isFull(idRoom)) return res.redirect("/lounge");
 
-    
-  
+  let username = req.session.username;
+
+  socketIOServer.joinRoom(idRoom, username);
+  res.render("user/room", {
+    idRoom: idRoom,
+    username: req.session.username
+  });
+};
