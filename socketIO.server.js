@@ -41,11 +41,9 @@ module.exports.isFull = function isFull(id) {
 };
 
 module.exports.isExist = function isExist(id) {
-  let index = roomList.findIndex(r => {
-    return r.id == id;
-  });
-  if (index >= 0) return true;
-  return false;
+  let room = roomList.find(r => r.id == id);
+  if (room == undefined) return false;
+  return true;
 };
 
 module.exports.joinRoom = function joinRoom(id, username) {
@@ -57,7 +55,7 @@ module.exports.joinRoom = function joinRoom(id, username) {
     isHost: room.host == username ? true : false
   };
 
-  if (room.player.findIndex(p => p.username == username) < 0) {
+  if (room.player.find(p => p.username == username) == undefined) {
     room.player.push(player);
   }
 };
@@ -94,11 +92,10 @@ module.exports.init = server => {
       let room = roomList.find(r => r.id == data.idRoom);
 
       if (room != undefined) {
-        socket.join(data.idRoom);
         let player = room.player.find(p => p.username == data.username);
         if (player != undefined) {
-          console.log(player);
           player.idSocket = socket.id;
+          socket.join(data.idRoom);
           roomNsp.to(data.idRoom).emit("initRoom", room);
           loungeNsp.emit("listRoom", roomList);
         }
@@ -129,7 +126,7 @@ module.exports.init = server => {
         });
 
         room.player.splice(indexPlayer, 1);
-        socket.leave(room.id);
+        // socket.leave(room.id);
         if (room.player.length == 0) {
           roomList.splice(indexRoom, 1);
         } else {
