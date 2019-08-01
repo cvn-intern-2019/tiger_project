@@ -1,5 +1,9 @@
 const game = require("./src/game-server/init");
 const AMOUNT_PLAYER = 7;
+const STATUS = {
+  alive: 1,
+  dead: 0
+};
 
 var roomList = new Array();
 
@@ -134,8 +138,22 @@ module.exports.init = server => {
         if (TIME < 0) {
           clearInterval(countDown);
           roomNsp.to(idRoom).emit("startGame", room);
+          console.log(room.game.characterRole);
         }
       }, 1000);
+    });
+
+    socket.on("werewolfVote", data => {
+      let room = roomList.find(r => r.id == data.idRoom);
+      let victim = room.gameLog.characterRole.find(
+        role => role.character.username == data.victim
+      );
+      victim.status = STATUS.dead;
+      room.gameLog.deadList.push({
+        username: victim.username,
+        cause: "Werewolf"
+      });
+      roomNsp.to(data.idRoom).emit("auraseerVote", room);
     });
 
     socket.on("disconnect", () => {

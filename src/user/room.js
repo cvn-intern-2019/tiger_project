@@ -3,6 +3,7 @@ import "./animate.css";
 
 const $ = require("jquery");
 const moment = require("moment");
+const clientInit = "../game-client/init.js";
 
 $(document).ready(() => {
   const option = {
@@ -129,7 +130,6 @@ $(document).ready(() => {
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
   socket.on("initRoom", room => {
-    console.log(room);
     let listPlayerTag = $(`#listPlayers`);
     let receiverTag = $(`#receiverSelect`);
     let isHost = null;
@@ -180,9 +180,5 @@ $(document).ready(() => {
       $(`#receiverSelect option`).removeAttr("selected");
       $(`#receiverSelect option[value=all]`).prop("selected", true);
     }
-  });
-
-  socket.on("startGame", room => {
-    console.log(room);
   });
 });
