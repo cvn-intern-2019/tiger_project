@@ -6,7 +6,9 @@ const moment = require("moment");
 
 $(document).ready(() => {
   const option = {
-    reconnection: false
+    reconnection: false,
+    transports: ["websocket"],
+    upgrade: false
   };
   var socket = io("/room", option);
   var idRoom = $(`#idRoom`).text();
@@ -16,24 +18,41 @@ $(document).ready(() => {
     let messageBoxTag = $(`#room`);
     let messageTab = $(`#tab #roomTab`);
     let child = `<div class="my-2">
-                    <h5>
-                      <img src="/avatar/${data.sender}" 
-                      alt=""
-                      width="30px" height="30px"/>
-                      ${data.sender}:
-                    </h5>
-                    <span class="badge badge-light float-right">
-                      ${moment(new Date()).format("LTS")}</span>
-                    <p class="p-2 bg-secondary border border-dark rounded">
-                      ${data.msg}
-                    </p>
-                </div>`;
-
+                      <h5 ${
+                        data.sender == username ? `` : `style="cursor:pointer"`
+                      }>
+                        <img onerror="javascript:this.src='http://placehold.it/30'"
+                          src="/avatar/${data.sender}"
+                          width="30px" height="30px"/>
+                        ${data.receiver != idRoom ? `From: ` : ``}${data.sender}
+                      </h5>
+                      <span class="badge badge-light float-right">
+                        ${moment(new Date()).format("LTS")}</span>
+                      <p class="p-2 bg-secondary border border-dark rounded">
+                        ${data.msg}
+                      </p>
+                    </div>`;
     if (data.receiver != idRoom) {
       messageBoxTag = $(`#private`);
       messageTab = $(`#tab #privateTab`);
     }
     $($(messageBoxTag).children()[0]).append(child);
+
+    $(`.my-2 h5`).mousedown(event => {
+      if (event.which == 1) {
+        let target = $(event.target);
+        if (target.text() != username) {
+          let receiver = $(target)
+            .text()
+            .replace("From: ", "")
+            .trim();
+          $(`#receiverSelect option`).removeAttr("selected");
+          $(`#receiverSelect`)
+            .find(`option:contains("${receiver}")`)
+            .prop("selected", true);
+        }
+      }
+    });
 
     $(`#room, #private`).scrollTop($($(messageBoxTag).children()[0]).height());
 
@@ -43,40 +62,45 @@ $(document).ready(() => {
 
   function sendMessage() {
     let msgTag = $(`#messageText`);
-    let pattern = /^[/</>]*$/;
-    if (msgTag.val().length == 0 || msgTag.val().length > 255) {
+    let msg = msgTag.val();
+    msg = msg.trim();
+    if (msg.length == 0 || msg.length > 255) {
       alert("Message length must be 1-255 characters!");
       return;
     }
-    if (pattern.test(msgTag.val()) == true) {
+    if (msg.includes(">") || msg.includes("<")) {
       alert("The message contains invalid characters!");
       return;
     }
     let receiver = idRoom;
+
     if ($(`#receiverSelect`).val() != "all") {
       receiver = $(`#receiverSelect`).val();
+      $(`#privateTab`).trigger("click");
       let messageBoxTag = $(`#messageBoxPrivate`);
       let child = `<div class="my-2">
                     <h5>
-                      <img src="/avatar/${username}" 
-                      alt=""
+                      <img onerror="javascript:this.src='http://placehold.it/30'"
+                      src="/avatar/${username}"
                       width="30px" height="30px"/>
-                      ${username}:
+                      To: ${$(`#receiverSelect option:selected`).text()}
                     </h5>
                     <span class="badge badge-light float-right">
                       ${moment(new Date()).format("LTS")}
                     </span>
                     <p class="p-2 bg-secondary border border-dark rounded">
-                      ${msgTag.val()}
+                      ${msg}
                     </p>
                 </div>`;
       messageBoxTag.append(child);
+    } else {
+      $(`#roomTab`).trigger("click");
     }
 
     socket.emit("sendMsg", {
       sender: username,
       receiver: receiver,
-      msg: msgTag.val()
+      msg: msg
     });
     msgTag.val("");
   }
@@ -116,12 +140,15 @@ $(document).ready(() => {
     for (let i = 0; i < room.amount; i++) {
       if (room.player[i] != undefined) {
         playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
-                          <img class="m-2" src="/avatar/${
+                          <img class="m-2 border rounded" src="/avatar/${
                             room.player[i].username
                           }" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
-                            <button class="btn btn-light font-weight-bold">${
-                              room.player[i].username
-                            }
+                            <button class="btn btn-light font-weight-bold">
+                              ${
+                                room.player[i].username == room.host
+                                  ? `<i class="fas fa-crown mr-2"/>`
+                                  : ``
+                              }${room.player[i].username}
                               <span class="badge badge-danger float-right ml-4 d-none"> 0
                               </span>
                             </button>
@@ -145,11 +172,18 @@ $(document).ready(() => {
     else $(`#startGame`).removeClass("d-none");
     playerList.append(playerChild);
     receiverTag.append(optionChild);
+
+    $(`#receiverSelect option`).removeAttr("selected");
+    $(`#receiverSelect option[value="${currentReceiver}"]`).prop(
+      "selected",
+      true
+    );
   });
 
-  //disconnect event listen
-  socket.on("disconnect", () => {
-    alert("Disconnect with server!");
-    window.location.href = `/`;
+  $(`#roomTab`).click(event => {
+    if (event.which == 1) {
+      $(`#receiverSelect option`).removeAttr("selected");
+      $(`#receiverSelect option[value=all]`).prop("selected", true);
+    }
   });
 });

@@ -4,7 +4,7 @@ var User = require("../../models/user.model");
 module.exports.getRoomPage = (req, res, next) => {
   let idRoom = req.params.idRoom;
 
-  if (!socketIOServer.isExist(idRoom)) return res.redirect("/lounge");
+  if (socketIOServer.isExist(idRoom) == false) return res.redirect("/lounge");
   if (socketIOServer.isFull(idRoom)) return res.redirect("/lounge");
 
   let username = req.session.username;

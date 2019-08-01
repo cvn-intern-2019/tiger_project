@@ -45,6 +45,11 @@ $(document).ready(() => {
   });
 
   var readURL = function(input) {
+    let extension = input.files[0].type;
+    if (extension !== "image/png" && extension !== "image/jpeg") {
+      alert("File is invalid!");
+      return;
+    }
     if (input.files[0].size > 800000) {
       alert("Size of file can't over 800KB");
       return;
