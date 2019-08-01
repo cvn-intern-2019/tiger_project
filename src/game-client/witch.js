@@ -1,8 +1,7 @@
 const helper = require("./helper");
-
 const $ = require("jquery");
 
-module.exports = (socket, userChar, room) => {
+module.exports.kill = (socket, userChar, room, saveResult) => {
   let MINUTES = 0;
   let SECONDS = 10;
   var countDown = setInterval(() => {
@@ -13,13 +12,12 @@ module.exports = (socket, userChar, room) => {
       clearInterval(countDown);
 
       let victim = $(`#choosenPerson`).text();
-      let result = room.gameLog.characterRole.find(c => c.username == victim);
 
       socket.emit("characterVote", {
         voter: userChar.username,
         victim: victim,
-        idRoom: room.id,
-        result: result.character.team
+        saveResult: saveResult,
+        idRoom: room.id
       });
     }
   }, 1000);

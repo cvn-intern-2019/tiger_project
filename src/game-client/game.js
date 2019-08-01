@@ -1,6 +1,8 @@
 const $ = require("jquery");
 const werewolf = require("./werewolf");
 const auraseer = require("./auraseer");
+const witch = require("./witch");
+const helper = require("./helper");
 const PHARSE = {
   night: 0,
   day: 1
@@ -110,8 +112,57 @@ module.exports.auraseerTurn = (room, socket) => {
   if (userChar.status == STATUS.alive) {
     $(`#playerList button`).attr("disabled", true);
     if (userChar.character.id == ID_CHARACTER.auraSeer) {
+      setNotify("Choose one person who you want :D");
       selectPerson();
       auraseer(socket, userChar, room);
+    }
+  } else {
+    $(`#playerList button`).attr("disabled", true);
+  }
+};
+
+module.exports.witchTurn = (room, socket) => {
+  setNotify("Witch is active >.<");
+
+  if (userChar.status == STATUS.alive) {
+    $(`#playerList button`).attr("disabled", true);
+    if (userChar.character.id == ID_CHARACTER.witch) {
+      let victim = room.gameLog.deadList[0];
+
+      if (userChar.character.save > 0) {
+        if (victim != undefined || victim != null) {
+          setNotify(`${victim} was killed by Werewolf. Do you want to save?`);
+          $(`#witchFunction`).removeClass("d-none");
+        } else {
+          setNotify(`No one was killed!`);
+        }
+      } else {
+        setNotify(`You can't save anyone more!`);
+        $(`#witchFunction`).empty();
+      }
+
+      let MINUTES = 0;
+      let SECONDS = 10;
+      var save = setInterval(() => {
+        let time = helper.countDown(MINUTES, SECONDS);
+        MINUTES = time.minutes;
+        SECONDS = time.seconds;
+        if (MINUTES == 0 && SECONDS == 0) {
+          clearInterval(save);
+          let saveResult = $(
+            `#witchFunction .radio input[name=save]:checked`
+          ).val();
+          $(`#witchFunction`).addClass("d-none");
+
+          if (userChar.character.kill > 0) {
+            setNotify(`Choose one person to kill if you want!`);
+            selectPerson();
+          } else {
+            setNotify(`You can't kill anyone more!`);
+          }
+          witch.kill(socket, userChar, room, saveResult);
+        }
+      }, 1000);
     }
   } else {
     $(`#playerList button`).attr("disabled", true);

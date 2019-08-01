@@ -42,6 +42,15 @@ block content
                 .col.border
                     h4.font-weight-bold Choosen 
                     p#choosenPerson.font-weight-bold
+                    #witchFunction.d-none
+                        .radio.h5
+                            label.mr-3
+                                input(type="radio" value="true" name="save")
+                                | Yes
+                            label
+                                input(type="radio" value="false" name="save" checked)
+                                | No
+
 
         .col-3
             b ID: 
