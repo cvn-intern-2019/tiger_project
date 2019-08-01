@@ -3,6 +3,7 @@ import "./animate.css";
 
 const $ = require("jquery");
 const moment = require("moment");
+const game = require("../game-client/game");
 
 $(document).ready(() => {
   const option = {
@@ -129,14 +130,16 @@ $(document).ready(() => {
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
   socket.on("initRoom", room => {
-    console.log(room);
     let receiverTag = $(`#receiverSelect`);
     let isHost = username == room.host ? true : false;
     let playerChild = ``;
     let playerList = $(`#playerList`);
     let optionChild = `<option value="all">All</option>`;
+    let startGameButton = $(`#startGame`);
+    let currentReceiver = receiverTag.val();
     playerList.empty();
     receiverTag.empty();
+
     for (let i = 0; i < room.amount; i++) {
       if (room.player[i] != undefined) {
         playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
@@ -168,8 +171,23 @@ $(document).ready(() => {
       }
     }
 
-    if (!isHost) $(`#startGame`).addClass("d-none");
-    else $(`#startGame`).removeClass("d-none");
+    if (!isHost) startGameButton.addClass("d-none");
+    else {
+      startGameButton.unbind("click");
+      startGameButton.click(event => {
+        if (event.which == 1) {
+          startGameButton.unbind("click").attr("disabled", true);
+          socket.emit("startGame", idRoom);
+        }
+      });
+
+      startGameButton.removeClass("d-none");
+    }
+
+    // if (room.player.length == room.amount)
+    //   $(`#startGame`).attr("disabled", false);
+    // else $(`#startGame`).attr("disabled", true);
+
     playerList.append(playerChild);
     receiverTag.append(optionChild);
 
@@ -185,5 +203,9 @@ $(document).ready(() => {
       $(`#receiverSelect option`).removeAttr("selected");
       $(`#receiverSelect option[value=all]`).prop("selected", true);
     }
+  });
+
+  socket.on("startGame", room => {
+    game.init(room, username, socket);
   });
 });

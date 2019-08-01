@@ -16,13 +16,12 @@ block content
                     i.fas.fa-sign-out-alt.align-middle
                     |&nbsp;Leave
                
-            .row.animated.slideInDown.faster.d-none
+            #info.row.animated.slideInDown.faster.d-none
                 h1#phase.mr-2
                     .badge.badge-lg.badge-light Night
-                #notification
-                    h5.text-light.p-1
-                        i.fa.fa-bullhorn.fa-2x.mr-2
-                        |  It is midnight. Please go to sleep
+                h5#notify.text-light.p-1
+                    i.fa.fa-bullhorn.fa-2x.mr-2
+                    |  It is midnight. Please go to sleep
                 
 
 
@@ -32,18 +31,15 @@ block content
                     button.btn.btn-light Waiting
               
             
-            .row.animated.slideInUp.faster.d-none
+            #controller.row.animated.slideInUp.faster.d-none
                 .col
-                    h1.display-3
-                        .badge.badge-light.text-dark 00 : 30
-                    
-                   
+                    h1#clock.display-3
+                        .badge.badge-light.text-dark 00:00
                 .col-5
                     .row
-                        h4 Character
-                    
-                    .row
-                        h6 Description
+                        h4#character.font-weight-bold Character     
+                    .row.font-weight-light
+                        h6#des Description
                    
                 .col.border
                     p Result 
