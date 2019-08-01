@@ -1,4 +1,4 @@
-// var roomList = new Array();
+// const Game = require("./src/class/game.class");
 const AMOUNT_PLAYER = 7;
 
 var roomList = new Array();
@@ -10,7 +10,14 @@ function createRoom(username, socketRoomId) {
     host: username,
     player: [],
     amount: AMOUNT_PLAYER,
-    status: false
+    status: false,
+    game: {
+      timeStart: asdas,
+      timeFinish: SVGAnim,
+      currentDay: a,
+      currentPharse: null,
+      deadList: [{ username: asdas, day: asdasd, pharse: asdsa }]
+    }
   };
 
   let flag = false;

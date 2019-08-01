@@ -3,7 +3,7 @@ body {
     padding-right: 6%;
     min-height: 100vh;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
     margin: 0;
     background-image: url('../images/logo.png');
     background-repeat: no-repeat;

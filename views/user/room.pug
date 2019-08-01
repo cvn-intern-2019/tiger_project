@@ -6,16 +6,7 @@ block sessionCSS
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
-    .container-fluid.overflow-auto
-        //- .col-2
-        //-     .component.p-2
-        //-         button#show-sidebar.btn.btn-lg.btn-light
-        //-             i.fas.fa-user-friends
-        //-             |&nbsp;Players
-
-        //-         #listPlayers.listPlayers.list-group.mt-2
-                    //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
-                   
+    .container-fluid.overflow-auto                   
         .col-9
             .row.py-3.d-flex.mb-3
                 button#startGame.btn.btn-light.mr-3
@@ -25,48 +16,23 @@ block content
                     i.fas.fa-sign-out-alt.align-middle
                     |&nbsp;Leave
                
-            #phase
-                h1.float-right
+            .row.animated.slideInDown.faster.d-none
+                h1#phase.mr-2
                     .badge.badge-lg.badge-light Night
+                #notification
+                    h5.text-light.p-1
+                        i.fa.fa-bullhorn.fa-2x.mr-2
+                        |  It is midnight. Please go to sleep
+                
 
-            #notification.row
-                p.border.border-danger.text-light.float-center.p-1 It is midnight. Please go to sleep 
-                    span.fa.fa-bullhorn.float-left.mr-5.fa-2x
 
-            .row.my-3.d-flex.justify-content-center
-                .player.d-flex.flex-column.mr-5.align-items-center
-                    img(src='http://placehold.it/250' width="100px").my-2
-                    button.btn.btn-light Player1
-                        span.badge.badge-danger.float-right.ml-4  3
-                .player.d-flex.flex-column.mr-5.align-items-center
-                    img(src='http://placehold.it/250' width="100px").my-2
-                    button.btn.btn-light Player1
-                        span.badge.badge-danger.float-right.ml-4  3
-                .player.d-flex.flex-column.mr-5.align-items-center
-                    img(src='http://placehold.it/250' width="100px").my-2
-                    button.btn.btn-light Player1
-                        span.badge.badge-danger.float-right.ml-4  3
-                .player.d-flex.flex-column.mr-5.align-items-center
-                    img(src='http://placehold.it/250' width="100px").my-2
-                    button.btn.btn-light Player1
-                        span.badge.badge-danger.float-right.ml-4  3
-
-            .row.pt-4.d-flex.justify-content-center
-                .player.d-flex.flex-column.mr-5.align-items-center
-                    img(src='http://placehold.it/250' width="100px").my-2
-                    button.btn.btn-light Player1
-                        span.badge.badge-danger.float-right.ml-4  3
-                .player.d-flex.flex-column.mr-5.align-items-center
-                    img(src='http://placehold.it/250' width="100px").my-2
-                    button.btn.btn-light Player1
-                        span.badge.badge-danger.float-right.ml-4  3
-                .player.d-flex.flex-column.mr-5.align-items-center
-                    img(src='http://placehold.it/250' width="100px").my-2
-                    button.btn.btn-light Player1
-                        span.badge.badge-danger.float-right.ml-4  3
-               
+            #playerList.row.my-3.d-flex.justify-content-center.flex-wrap
+                .player.d-flex.flex-column.mr-5.align-items-center.mb-4
+                    img(src='http://placehold.it/250' width="150px").m-2
+                    button.btn.btn-light Waiting
+              
             
-            .row.m-5 
+            .row.animated.slideInUp.faster.d-none
                 .col
                     h1.display-3
                         .badge.badge-light.text-dark 00 : 30
@@ -81,7 +47,7 @@ block content
                    
                 .col.border
                     p Result 
-                    p.font-weight-bold Player1
+                    p.font-weight-bold Waiting
                     button.btn.btn-light.mb-2 Choose
                     
                     
@@ -104,7 +70,7 @@ block content
             .tab-content
                 #room.active.tab-pane.p-2.mb-auto
                     .messageBoxRoom#messageBoxRoom
-                        //- div.message.my-2
+                        //- div.message.m-2
                         //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
                         //-     | #{username} 
                         //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -113,7 +79,7 @@ block content
                             
                 #private.tab-pane.p-2.mb-auto
                     .messageBoxPrivate#messageBoxPrivate
-                        //- div.message.my-2
+                        //- div.message.m-2
                         //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
                         //-     | #{username} 
                         //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
