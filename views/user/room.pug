@@ -6,7 +6,7 @@ block sessionCSS
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
-    .container-fluid
+    .container-fluid.overflow-auto
         //- .col-2
         //-     .component.p-2
         //-         button#show-sidebar.btn.btn-lg.btn-light
@@ -67,14 +67,19 @@ block content
                
             
             .row.m-5 
-                .col-2.border
-                    h3
+                .col
+                    h1.display-3
                         .badge.badge-light.text-dark 00 : 30
-                    p Character
+                    
                    
-                .col-5.border
-                    p Description
-                .col-2.border
+                .col-5
+                    .row
+                        h4 Character
+                    
+                    .row
+                        h6 Description
+                   
+                .col.border
                     p Result 
                     p.font-weight-bold Player1
                     button.btn.btn-light.mb-2 Choose
