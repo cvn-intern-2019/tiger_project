@@ -3,6 +3,7 @@ import "./animate.css";
 
 const $ = require("jquery");
 const moment = require("moment");
+const game = require("../game-client/game");
 
 $(document).ready(() => {
   const option = {
@@ -129,25 +130,46 @@ $(document).ready(() => {
   socket.emit("joinRoom", { idRoom: idRoom, username: username });
 
   socket.on("initRoom", room => {
-    console.log(room);
-    let listPlayerTag = $(`#listPlayers`);
     let receiverTag = $(`#receiverSelect`);
-    let isHost = null;
+    let isHost = username == room.host ? true : false;
     let playerChild = ``;
+    let playerList = $(`#playerList`);
     let optionChild = `<option value="all">All</option>`;
-    let currentReceiver = receiverTag.val();
     let startGameButton = $(`#startGame`);
-
-    listPlayerTag.empty();
+    let currentReceiver = receiverTag.val();
+    playerList.empty();
     receiverTag.empty();
 
-    room.player.forEach(p => {
-      if (p.username == username) {
-        isHost = p.isHost ? true : false;
+    for (let i = 0; i < room.amount; i++) {
+      if (room.player[i] != undefined) {
+        playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
+                          <img class="m-2 border rounded" src="/avatar/${
+                            room.player[i].username
+                          }" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+                            <button class="btn btn-light font-weight-bold">
+                              ${
+                                room.player[i].username == room.host
+                                  ? `<i class="fas fa-crown mr-2"/>`
+                                  : ``
+                              }${room.player[i].username}
+                              <span class="badge badge-danger float-right ml-4 d-none"> 0
+                              </span>
+                            </button>
+                        </div>`;
+        if (room.player[i].username != username)
+          optionChild += `<option value="${room.player[i].idSocket}">${
+            room.player[i].username
+          }</option>`;
+      } else {
+        playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
+                          <img class="m-2" src="http://placehold.it/150" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+                            <button class="btn btn-light font-weight-bold">Waiting...
+                              <span class="badge badge-danger float-right ml-4 d-none"> 0
+                              </span>
+                            </button>
+                        </div>`;
       }
-      if (p.username != username)
-        optionChild += `<option value="${p.idSocket}">${p.username}</option>`;
-    });
+    }
 
     if (!isHost) startGameButton.addClass("d-none");
     else {
@@ -166,6 +188,7 @@ $(document).ready(() => {
     //   $(`#startGame`).attr("disabled", false);
     // else $(`#startGame`).attr("disabled", true);
 
+    playerList.append(playerChild);
     receiverTag.append(optionChild);
 
     $(`#receiverSelect option`).removeAttr("selected");
@@ -183,6 +206,6 @@ $(document).ready(() => {
   });
 
   socket.on("startGame", room => {
-    console.log(room);
+    game.init(room, username, socket);
   });
 });

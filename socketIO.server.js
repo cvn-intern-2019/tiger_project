@@ -1,5 +1,7 @@
 const game = require("./src/game-server/init");
 const AMOUNT_PLAYER = 7;
+const NIGHT = 0;
+const DAY = 1;
 
 var roomList = new Array();
 
@@ -115,7 +117,7 @@ module.exports.init = server => {
         timeStart: new Date(),
         timeFinish: null,
         currentDay: 1,
-        currentPharse: 0,
+        currentPharse: NIGHT,
         deadList: new Array(),
         characterRole: randomRole
       };
