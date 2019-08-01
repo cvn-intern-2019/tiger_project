@@ -25,6 +25,8 @@
     "name": "Witch",
     "team": 1,
     "des": "Kill or heal a player, once each per game.",
+    "save": 1,
+    "kill": 1,
     "amount": 1
   },
   {
@@ -39,6 +41,7 @@
     "name": "Hunter",
     "team": 1,
     "des": "If you are killed, take someone down with you.",
+    "target": null,
     "amount": 1
   },
   {

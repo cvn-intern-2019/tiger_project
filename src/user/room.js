@@ -143,17 +143,17 @@ $(document).ready(() => {
     for (let i = 0; i < room.amount; i++) {
       if (room.player[i] != undefined) {
         playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
-                          <img class="m-2 border rounded" src="/avatar/${
+                          <img class="m-1 border rounded" src="/avatar/${
                             room.player[i].username
                           }" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+                            <h5><span class="badge badge-danger d-none"> 0
+                            </span></h5>
                             <button class="btn btn-light font-weight-bold">
                               ${
                                 room.player[i].username == room.host
                                   ? `<i class="fas fa-crown mr-2"/>`
                                   : ``
                               }${room.player[i].username}
-                              <span class="badge badge-danger float-right ml-4 d-none"> 0
-                              </span>
                             </button>
                         </div>`;
         if (room.player[i].username != username)
@@ -162,10 +162,10 @@ $(document).ready(() => {
           }</option>`;
       } else {
         playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
-                          <img class="m-2" src="http://placehold.it/150" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+                          <img class="m-1" src="http://placehold.it/150" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+                          <h5><span class="badge badge-danger d-none"> 0
+                            </span></h5>
                             <button class="btn btn-light font-weight-bold">Waiting...
-                              <span class="badge badge-danger float-right ml-4 d-none"> 0
-                              </span>
                             </button>
                         </div>`;
       }
@@ -206,6 +206,10 @@ $(document).ready(() => {
   });
 
   socket.on("startGame", room => {
-    game.init(room, username, socket);
+    game.init(room, socket);
+  });
+
+  socket.on("auraseerTurn", room => {
+    game.auraseerTurn(room, socket);
   });
 });

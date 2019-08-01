@@ -29,3 +29,8 @@ var randomCharacter = playerList => {
   });
   return playerChar;
 };
+
+module.exports.pharseConclusion = room => {
+  //handle
+  return room;
+};

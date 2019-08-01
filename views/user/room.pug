@@ -17,14 +17,12 @@ block content
                     |&nbsp;Leave
                
             #info.row.animated.slideInDown.faster.d-none
-                h1#phase.mr-2
+                h1#phase.mr-5
                     .badge.badge-lg.badge-light Night
-                h5#notify.text-light.p-1
-                    i.fa.fa-bullhorn.fa-2x.mr-2
-                    |  It is midnight. Please go to sleep
-                
 
-
+                i.fa.fa-bullhorn.fa-2x.mr-2
+                h5#notify.text-light.p-1  It is midnight. Please go to sleep
+                    
             #playerList.row.my-3.d-flex.justify-content-center.flex-wrap
                 .player.d-flex.flex-column.mr-5.align-items-center.mb-4
                     img(src='http://placehold.it/250' width="150px").m-2
@@ -42,16 +40,9 @@ block content
                         h6#des Description
                    
                 .col.border
-                    p Result 
-                    p.font-weight-bold Waiting
-                    button.btn.btn-light.mb-2 Choose
-                    
-                    
-               
+                    h4.font-weight-bold Choosen 
+                    p#choosenPerson.font-weight-bold
 
-
-            
-    
         .col-3
             b ID: 
                 #idRoom.m-3.badge.badge-light=idRoom
