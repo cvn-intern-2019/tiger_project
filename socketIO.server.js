@@ -110,17 +110,17 @@ module.exports.init = server => {
 
     socket.on("startGame", idRoom => {
       let room = roomList.find(r => r.id == idRoom);
-      let temp = game.initGame(room.player, roomNsp);
-      console.log(temp);
-      // let gameLog = {
-      //   timeStart: new Date(),
-      //   timeFinish: null,
-      //   currentDay: 1,
-      //   currentPharse: 0,
-      //   deadList: new Array(),
-      //   characterRole: []
-      // };
+      let randomRole = game.initGame(room.player, roomNsp);
+      let gameLog = {
+        timeStart: new Date(),
+        timeFinish: null,
+        currentDay: 1,
+        currentPharse: 0,
+        deadList: new Array(),
+        characterRole: randomRole
+      };
       room.status = true;
+      room.game = gameLog;
       loungeNsp.emit("listRoom", roomList);
       var TIME = 5;
       var countDown = setInterval(() => {
