@@ -1,4 +1,4 @@
-// var roomList = new Array();
+// const Game = require("./src/class/game.class");
 const AMOUNT_PLAYER = 7;
 
 var roomList = new Array();
