@@ -124,7 +124,7 @@ module.exports.init = server => {
       room.status = true;
       room.game = gameLog;
       loungeNsp.emit("listRoom", roomList);
-      var TIME = 5;
+      var TIME = 1;
       var countDown = setInterval(() => {
         let sysMsg = {
           sender: "System to All",
