@@ -1,4 +1,4 @@
-const game = require("./src/game-server/mainController");
+const game = require("./src/game-server/init");
 const AMOUNT_PLAYER = 7;
 
 var roomList = new Array();
@@ -110,8 +110,8 @@ module.exports.init = server => {
 
     socket.on("startGame", idRoom => {
       let room = roomList.find(r => r.id == idRoom);
-      // let temp = game.initGame(room.player);
-      // console.log(temp);
+      let temp = game.initGame(room.player, roomNsp);
+      console.log(temp);
       // let gameLog = {
       //   timeStart: new Date(),
       //   timeFinish: null,
@@ -122,16 +122,16 @@ module.exports.init = server => {
       // };
       room.status = true;
       loungeNsp.emit("listRoom", roomList);
-      let count = 5;
+      var TIME = 5;
       var countDown = setInterval(() => {
         let sysMsg = {
           sender: "System to All",
           receiver: room.id,
-          msg: `The game will start in ${count} second(s)...`
+          msg: `The game will start in ${TIME} second(s)...`
         };
-        socket.emit("recMsg", sysMsg);
-        count--;
-        if (count < 0) {
+        roomNsp.to(room.id).emit("recMsg", sysMsg);
+        TIME--;
+        if (TIME < 0) {
           clearInterval(countDown);
           roomNsp.to(idRoom).emit("startGame", room);
         }

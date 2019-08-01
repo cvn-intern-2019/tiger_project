@@ -1,6 +1,8 @@
 const characters = require("./characters.json");
+const ALIVE = 1;
+const DEAD = 0;
 
-module.exports.initGame = playerList => {
+module.exports.initGame = (playerList, roomNsp) => {
   return randomCharacter(playerList);
 };
 
@@ -21,7 +23,7 @@ var randomCharacter = playerList => {
     playerChar.push({
       username: p.username,
       character: character,
-      status: 1 //1: live, 0: die
+      status: ALIVE //1: live, 0: die
     });
     idChar.splice(index, 1);
   });
