@@ -1,8 +1,13 @@
 const $ = require("jquery");
 const werewolf = require("./werewolf");
+const auraseer = require("./auraseer");
 const PHARSE = {
   night: 0,
   day: 1
+};
+const TEAM = {
+  werewolf: 0,
+  villager: 1
 };
 
 const STATUS = {
@@ -21,8 +26,6 @@ const ID_CHARACTER = {
 };
 var username = null;
 var userChar = null;
-var socket = null;
-var room = null;
 
 function setPharse(pharse) {
   let pharseNotify = $(`#phase .badge`);
@@ -55,22 +58,37 @@ function selectPerson() {
     });
 }
 
+function showAllie(allie) {
+  let temp = $(`#playerList .player`)
+    .find(`button:contains("${allie}")`)
+    .removeClass("btn-light")
+    .addClass("btn-success");
+  console.log(temp);
+}
+
 module.exports.init = (room, socket) => {
   let infoTag = $(`#info`);
   let controllerTag = $(`#controller`);
-  socket = socket;
   username = $(`#username`).text();
-  userChar = room.game.characterRole.find(c => c.username == username);
-  setPharse(room.game.currentPharse);
+  userChar = room.gameLog.characterRole.find(c => c.username == username);
+  setPharse(room.gameLog.currentPharse);
   setCharacter();
   infoTag.removeClass("d-none");
   controllerTag.removeClass("d-none");
-
-  werewolfTurn(room);
+  if (
+    userChar.character.id == ID_CHARACTER.werewolf ||
+    userChar.character.id == ID_CHARACTER.alphaWerewof
+  ) {
+    let allie = room.gameLog.characterRole.find(
+      c => c.username != username && c.character.team == TEAM.werewolf
+    );
+    showAllie(allie.username);
+    console.log(allie.username);
+  }
+  werewolfTurn(room, socket);
 };
 
-function werewolfTurn(room) {
-  room = room;
+function werewolfTurn(room, socket) {
   setNotify("Werewolf is active >.<");
 
   if (userChar.status == STATUS.alive) {
@@ -85,3 +103,17 @@ function werewolfTurn(room) {
     $(`#playerList button`).attr("disabled", true);
   }
 }
+
+module.exports.auraseerTurn = (room, socket) => {
+  setNotify("Aura Seer is active >.<");
+
+  if (userChar.status == STATUS.alive) {
+    $(`#playerList button`).attr("disabled", true);
+    if (userChar.character.id == ID_CHARACTER.auraSeer) {
+      selectPerson();
+      auraseer(socket, userChar, room);
+    }
+  } else {
+    $(`#playerList button`).attr("disabled", true);
+  }
+};

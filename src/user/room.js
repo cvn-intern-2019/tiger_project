@@ -206,6 +206,10 @@ $(document).ready(() => {
   });
 
   socket.on("startGame", room => {
-    game.init(room, username, socket);
+    game.init(room, socket);
+  });
+
+  socket.on("auraseerTurn", room => {
+    game.auraseerTurn(room, socket);
   });
 });

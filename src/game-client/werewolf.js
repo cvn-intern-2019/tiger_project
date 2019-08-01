@@ -16,7 +16,11 @@ module.exports = (socket, userChar, idRoom) => {
       clearInterval(countDown);
       if (userChar.character.id == ID_WEREWOLF.alpha) {
         let victim = $(`#choosenPerson`).text();
-        socket.emit("werewolfVote", { victim: victim, idRoom: idRoom });
+        socket.emit("characterVote", {
+          voter: userChar.username,
+          victim: victim,
+          idRoom: idRoom
+        });
       }
     }
   }, 1000);

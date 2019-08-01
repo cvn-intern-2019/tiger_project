@@ -1,7 +1,18 @@
-const game = require("./src/game-server/init");
+const game = require("./src/game-server/game");
 const AMOUNT_PLAYER = 7;
 const NIGHT = 0;
 const DAY = 1;
+const STATUS = {
+  alive: 1,
+  dead: 0
+};
+const SWITCH_ROLE = {
+  werewolf: 0,
+  auraSeer: 1,
+  witch: 2,
+  bodyguard: 3,
+  hunter: 4
+};
 
 var roomList = new Array();
 
@@ -118,12 +129,14 @@ module.exports.init = server => {
         timeFinish: null,
         currentDay: 1,
         currentPharse: NIGHT,
-        deadList: new Array(),
-        characterRole: randomRole
+        log: new Array(),
+        characterRole: randomRole,
+        currentRole: SWITCH_ROLE.werewolf
       };
       room.status = true;
-      room.game = gameLog;
+      room.gameLog = gameLog;
       loungeNsp.emit("listRoom", roomList);
+
       var TIME = 1;
       var countDown = setInterval(() => {
         let sysMsg = {
@@ -138,6 +151,39 @@ module.exports.init = server => {
           roomNsp.to(idRoom).emit("startGame", room);
         }
       }, 1000);
+    });
+
+    socket.on("characterVote", data => {
+      let room = roomList.find(r => r.id == data.idRoom);
+      let logElement = {
+        day: room.gameLog.currentDay,
+        pharse: room.gameLog.currentPharse,
+        voter: data.voter,
+        victim: data.victim
+      };
+      room.gameLog.log.push(logElement);
+      if (room.gameLog.currentRole == 4) {
+        room = game.pharseConclusion(room);
+        room.gameLog.currentRole = 0;
+        roomNsp.to(room.id).emit("end", room);
+        return;
+      }
+      room.gameLog.currentRole++;
+
+      switch (room.gameLog.currentRole) {
+        case SWITCH_ROLE.auraSeer:
+          roomNsp.to(data.idRoom).emit("auraseerTurn", room);
+          break;
+        case SWITCH_ROLE.witch:
+          roomNsp.to(data.idRoom).emit("witchTurn", room);
+          break;
+        case SWITCH_ROLE.bodyguard:
+          roomNsp.to(data.idRoom).emit("bodyguardTurn", room);
+          break;
+        case SWITCH_ROLE.hunter:
+          roomNsp.to(data.idRoom).emit("hunterTurn", room);
+          break;
+      }
     });
 
     socket.on("disconnect", () => {
