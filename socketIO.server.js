@@ -130,6 +130,7 @@ module.exports.init = server => {
         currentDay: 1,
         currentPharse: NIGHT,
         log: new Array(),
+        deadList: new Array(),
         characterRole: randomRole,
         currentRole: SWITCH_ROLE.werewolf
       };
@@ -162,6 +163,9 @@ module.exports.init = server => {
         victim: data.victim
       };
       room.gameLog.log.push(logElement);
+      if (room.gameLog.currentRole == SWITCH_ROLE.werewolf) {
+        room.gameLog.deadList.push(data.victim);
+      }
       if (room.gameLog.currentRole == 4) {
         room = game.pharseConclusion(room);
         room.gameLog.currentRole = 0;
