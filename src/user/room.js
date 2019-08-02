@@ -148,12 +148,13 @@ $(document).ready(() => {
                           }" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
                             <h5><span class="badge badge-danger d-none"> 0
                             </span></h5>
+                            ${
+                              room.player[i].username == room.host
+                                ? `<i class="fas fa-1x fa-crown"/>`
+                                : ``
+                            }
                             <button class="btn btn-light font-weight-bold">
-                              ${
-                                room.player[i].username == room.host
-                                  ? `<i class="fas fa-crown mr-2"/>`
-                                  : ``
-                              }${room.player[i].username}
+                              ${room.player[i].username}
                             </button>
                         </div>`;
         if (room.player[i].username != username)
@@ -184,9 +185,9 @@ $(document).ready(() => {
       startGameButton.removeClass("d-none");
     }
 
-    // if (room.player.length == room.amount)
-    //   $(`#startGame`).attr("disabled", false);
-    // else $(`#startGame`).attr("disabled", true);
+    if (room.player.length == room.amount)
+      $(`#startGame`).attr("disabled", false);
+    else $(`#startGame`).attr("disabled", true);
 
     playerList.append(playerChild);
     receiverTag.append(optionChild);

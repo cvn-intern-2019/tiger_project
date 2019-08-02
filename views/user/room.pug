@@ -15,6 +15,9 @@ block content
                 a#leaveRoom.btn.btn-outline-secondary.text-light.font-italic(href='/lounge')
                     i.fas.fa-sign-out-alt.align-middle
                     |&nbsp;Leave
+
+                #deadList.ml-auto.d-flex.flex-row-reverse.border.d-none Dead list:
+
                
             #info.row.animated.slideInDown.faster.d-none
                 h1#phase.mr-5
@@ -23,7 +26,7 @@ block content
                 i.fa.fa-bullhorn.fa-2x.mr-2
                 h5#notify.text-light.p-1  It is midnight. Please go to sleep
                     
-            #playerList.row.my-3.d-flex.justify-content-center.flex-wrap
+            #playerList.row.my-2.d-flex.justify-content-center.flex-wrap
                 .player.d-flex.flex-column.mr-5.align-items-center.mb-4
                     img(src='http://placehold.it/250' width="150px").m-2
                     button.btn.btn-light Waiting

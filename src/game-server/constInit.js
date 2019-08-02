@@ -22,6 +22,12 @@ const ID_CHARACTER = {
 };
 const START = 0;
 
+const WIN_CONDITION = {
+  werewolfWin: 0,
+  villagerWin: 1,
+  draw: -1
+};
+
 module.exports = {
   START: START,
   ID_CHARACTER: ID_CHARACTER,
@@ -31,5 +37,6 @@ module.exports = {
   AMOUNT_PLAYER: AMOUNT_PLAYER,
   NIGHT: NIGHT,
   DAY: DAY,
-  STATUS: STATUS
+  STATUS: STATUS,
+  WIN_CONDITION: WIN_CONDITION
 };

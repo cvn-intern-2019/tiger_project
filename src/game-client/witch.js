@@ -11,4 +11,6 @@ module.exports = (socket, userChar, room) => {
     saveResult: saveResult,
     idRoom: room.id
   });
+
+  $(`#killNotify, #witchFunction`).addClass("d-none");
 };

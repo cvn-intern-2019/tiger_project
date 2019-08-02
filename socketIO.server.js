@@ -124,7 +124,8 @@ module.exports.init = server => {
         deadList: new Array(),
         characterRole: randomRole,
         resRole: constInit.START,
-        survivors: room.amount
+        survivors: room.amount,
+        voteList: new Array()
       };
       room.status = true;
       room.gameLog = gameLog;
@@ -171,6 +172,7 @@ module.exports.init = server => {
         room.gameLog.resRole++;
       }
 
+      console.log(room.gameLog.resRole);
       if (game.isNightPharseFinish(room)) {
         game.nightPharseConclusion(room, roomNsp);
       }
@@ -178,6 +180,16 @@ module.exports.init = server => {
 
     socket.on("werewolfVote", data => {
       game.werewolfVote(roomNsp, data, roomList);
+    });
+
+    socket.on("votePerson", data => {
+      game.votePerson(roomNsp, data, roomList);
+    });
+
+    socket.on("dayPharseFinish", idRoom => {
+      let room = roomList.find(r => r.id == idRoom);
+      room.gameLog.resRole++;
+      if (game.isDayPharseFinish(room)) game.dayPharseConclusion(room, roomNsp);
     });
 
     socket.on("disconnect", () => {

@@ -24,34 +24,50 @@ const ID_CHARACTER = {
 module.exports.init = (room, socket) => {
   let infoTag = $(`#info`);
   let controllerTag = $(`#controller`);
+  let deadListTag = $(`#deadList`);
   var username = $(`#username`).text();
   userChar = room.gameLog.characterRole.find(c => c.username == username);
 
   socket.on("nightPharseFinish", room => {
-    console.log(room);
+    username = $(`#username`).text();
+    userChar = room.gameLog.characterRole.find(c => c.username == username);
+    pharseDay(room, socket);
   });
 
-  // socket.on("witchTurn", room => {
-  //   witchTurn(room, socket);
-  // });
+  socket.on("voteResult", room => {
+    helper.showVoteResult(room);
+  });
+
+  socket.on("werewolfWin", room => {
+    console.log("endgame");
+  });
+  socket.on("villagerWin", room => {
+    console.log("endgame");
+  });
+  socket.on("dayPharseFinish", room => {
+    console.log(room);
+    pharseNight(room, socket);
+  });
 
   helper.setCharacter(userChar);
   infoTag.removeClass("d-none");
   controllerTag.removeClass("d-none");
+  deadListTag.removeClass("d-none");
 
-  if (
-    userChar.character.id == ID_CHARACTER.werewolf ||
-    userChar.character.id == ID_CHARACTER.alphaWerewof
-  ) {
-    helper.showAllie(room.gameLog.characterRole, username);
-  }
   pharseNight(room, socket);
 };
 
 function pharseNight(room, socket) {
+  helper.listPlayerPlaying(room);
   helper.setPharse(room.gameLog.currentPharse);
   helper.selectPerson(false, userChar.username);
   werewolfTurn(room, socket);
+  if (
+    userChar.character.id == ID_CHARACTER.werewolf ||
+    userChar.character.id == ID_CHARACTER.alphaWerewof
+  ) {
+    helper.showAllie(room.gameLog.characterRole);
+  }
   socket.on("werewolfVote", room => {
     let MINUTES = 0;
     let SECONDS = 20;
@@ -140,3 +156,33 @@ var hunterTurn = () => {
     helper.selectPerson(false, userChar.username);
   }
 };
+
+function pharseDay(room, socket) {
+  helper.listPlayerPlaying(room);
+  helper.setPharse(room.currentPharse);
+  helper.selectPerson(false, userChar.username);
+  if (
+    userChar.character.id == ID_CHARACTER.werewolf ||
+    userChar.character.id == ID_CHARACTER.alphaWerewof
+  ) {
+    helper.showAllie(room.gameLog.characterRole);
+  }
+  let MINUTES = 0;
+  let SECONDS = 20;
+  let countdown = helper.countDown(MINUTES, SECONDS);
+  countdown.then(() => {
+    socket.emit("dayPharseFinish", room.id);
+  });
+
+  if (userChar.status == STATUS.alive) {
+    helper.resetChoosen();
+
+    if (
+      userChar.character.id == ID_CHARACTER.werewolf ||
+      userChar.character.id == ID_CHARACTER.alphaWerewof
+    )
+      helper.setNotify("Let's discuss and try to hide yourself!");
+    else helper.setNotify("Let's discuss and find Werewolf to kill!");
+    helper.votePerson(room, socket, userChar);
+  }
+}
