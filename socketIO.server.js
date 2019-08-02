@@ -6,6 +6,10 @@ const STATUS = {
   alive: 1,
   dead: 0
 };
+const TEAM = {
+  werewolf: 0,
+  villager: 1
+};
 const SWITCH_ROLE = {
   werewolf: 0,
   auraSeer: 1,
@@ -162,16 +166,63 @@ module.exports.init = server => {
         voter: data.voter,
         victim: data.victim
       };
-      room.gameLog.log.push(logElement);
-      if (room.gameLog.currentRole == SWITCH_ROLE.werewolf) {
+
+      if (
+        room.gameLog.currentRole == SWITCH_ROLE.werewolf &&
+        data.victim != null
+      ) {
         room.gameLog.deadList.push(data.victim);
       }
+
+      if (room.gameLog.currentRole == SWITCH_ROLE.auraSeer) {
+        let sysMsg = null;
+        let auraseer = room.player.find(p => p.username == data.voter);
+        if (data.result == TEAM.werewolf)
+          sysMsg = {
+            sender: `System`,
+            receiver: auraseer.idSocket,
+            msg: `${data.victim} is Werewolf!`
+          };
+        else
+          sysMsg = {
+            sender: `System`,
+            receiver: auraseer.idSocket,
+            msg: `${data.victim} is not Werewolf!`
+          };
+        roomNsp.to(auraseer.idSocket).emit("recMsg", sysMsg);
+      }
+
+      if (room.gameLog.currentRole == SWITCH_ROLE.witch) {
+        let witch = room.gameLog.characterRole.find(
+          c => c.username == data.voter
+        );
+        if (data.saveResult == "true") {
+          witch.character.save--;
+          logElement.save = room.gameLog.deadList[0];
+          room.gameLog.deadList.splice(0, 1);
+        }
+        if (
+          data.victim != null &&
+          !room.gameLog.deadList.includes(data.victim)
+        ) {
+          witch.character.kill--;
+          room.gameLog.deadList.push(data.victim);
+        }
+        console.log(witch);
+      }
+
+      room.gameLog.log.push(logElement);
+      console.log(data);
+      console.log(room.gameLog.log);
+      console.log(`====================HET`);
+
       if (room.gameLog.currentRole == 4) {
         room = game.pharseConclusion(room);
         room.gameLog.currentRole = 0;
         roomNsp.to(room.id).emit("end", room);
         return;
       }
+
       room.gameLog.currentRole++;
 
       switch (room.gameLog.currentRole) {
