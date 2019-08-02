@@ -208,12 +208,4 @@ $(document).ready(() => {
   socket.on("startGame", room => {
     game.init(room, socket);
   });
-
-  socket.on("auraseerTurn", room => {
-    game.auraseerTurn(room, socket);
-  });
-
-  socket.on("witchTurn", room => {
-    game.witchTurn(room, socket);
-  });
 });

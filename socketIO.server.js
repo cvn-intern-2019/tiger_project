@@ -159,6 +159,92 @@ module.exports.init = server => {
     });
 
     socket.on("characterVote", data => {
+      console.log(data);
+      console.log(`===============================`);
+      // let room = roomList.find(r => r.id == data.idRoom);
+      // let logElement = {
+      //   day: room.gameLog.currentDay,
+      //   pharse: room.gameLog.currentPharse,
+      //   voter: data.voter,
+      //   victim: data.victim
+      // };
+
+      // if (
+      //   room.gameLog.currentRole == SWITCH_ROLE.werewolf &&
+      //   data.victim != null
+      // ) {
+      //   room.gameLog.deadList.push(data.victim);
+      // }
+
+      // if (room.gameLog.currentRole == SWITCH_ROLE.auraSeer) {
+      //   let sysMsg = null;
+      //   let auraseer = room.player.find(p => p.username == data.voter);
+      //   if (data.result == TEAM.werewolf)
+      //     sysMsg = {
+      //       sender: `System`,
+      //       receiver: auraseer.idSocket,
+      //       msg: `${data.victim} is Werewolf!`
+      //     };
+      //   else
+      //     sysMsg = {
+      //       sender: `System`,
+      //       receiver: auraseer.idSocket,
+      //       msg: `${data.victim} is not Werewolf!`
+      //     };
+      //   roomNsp.to(auraseer.idSocket).emit("recMsg", sysMsg);
+      // }
+
+      // if (room.gameLog.currentRole == SWITCH_ROLE.witch) {
+      //   let witch = room.gameLog.characterRole.find(
+      //     c => c.username == data.voter
+      //   );
+      //   if (data.saveResult == "true") {
+      //     witch.character.save--;
+      //     logElement.save = room.gameLog.deadList[0];
+      //     room.gameLog.deadList.splice(0, 1);
+      //   }
+      //   if (
+      //     data.victim != null &&
+      //     !room.gameLog.deadList.includes(data.victim)
+      //   ) {
+      //     witch.character.kill--;
+      //     room.gameLog.deadList.push(data.victim);
+      //   }
+      //   console.log(witch);
+      // }
+
+      // room.gameLog.log.push(logElement);
+      // console.log(data);
+      // console.log(room.gameLog.log);
+      // console.log(`====================HET`);
+
+      // if (room.gameLog.currentRole == 4) {
+      //   room = game.pharseConclusion(room);
+      //   room.gameLog.currentRole = 0;
+      //   roomNsp.to(room.id).emit("end", room);
+      //   return;
+      // }
+
+      // room.gameLog.currentRole++;
+
+      // switch (room.gameLog.currentRole) {
+      //   case SWITCH_ROLE.auraSeer:
+      //     roomNsp.to(data.idRoom).emit("auraseerTurn", room);
+      //     break;
+      //   case SWITCH_ROLE.witch:
+      //     roomNsp.to(data.idRoom).emit("witchTurn", room);
+      //     break;
+      //   case SWITCH_ROLE.bodyguard:
+      //     roomNsp.to(data.idRoom).emit("bodyguardTurn", room);
+      //     break;
+      //   case SWITCH_ROLE.hunter:
+      //     roomNsp.to(data.idRoom).emit("hunterTurn", room);
+      //     break;
+      // }
+    });
+
+    socket.on("werewolfVote", data => {
+      console.log(data);
       let room = roomList.find(r => r.id == data.idRoom);
       let logElement = {
         day: room.gameLog.currentDay,
@@ -166,79 +252,10 @@ module.exports.init = server => {
         voter: data.voter,
         victim: data.victim
       };
-
-      if (
-        room.gameLog.currentRole == SWITCH_ROLE.werewolf &&
-        data.victim != null
-      ) {
+      if (data.victim != null || data.victim != undefined)
         room.gameLog.deadList.push(data.victim);
-      }
-
-      if (room.gameLog.currentRole == SWITCH_ROLE.auraSeer) {
-        let sysMsg = null;
-        let auraseer = room.player.find(p => p.username == data.voter);
-        if (data.result == TEAM.werewolf)
-          sysMsg = {
-            sender: `System`,
-            receiver: auraseer.idSocket,
-            msg: `${data.victim} is Werewolf!`
-          };
-        else
-          sysMsg = {
-            sender: `System`,
-            receiver: auraseer.idSocket,
-            msg: `${data.victim} is not Werewolf!`
-          };
-        roomNsp.to(auraseer.idSocket).emit("recMsg", sysMsg);
-      }
-
-      if (room.gameLog.currentRole == SWITCH_ROLE.witch) {
-        let witch = room.gameLog.characterRole.find(
-          c => c.username == data.voter
-        );
-        if (data.saveResult == "true") {
-          witch.character.save--;
-          logElement.save = room.gameLog.deadList[0];
-          room.gameLog.deadList.splice(0, 1);
-        }
-        if (
-          data.victim != null &&
-          !room.gameLog.deadList.includes(data.victim)
-        ) {
-          witch.character.kill--;
-          room.gameLog.deadList.push(data.victim);
-        }
-        console.log(witch);
-      }
-
       room.gameLog.log.push(logElement);
-      console.log(data);
-      console.log(room.gameLog.log);
-      console.log(`====================HET`);
-
-      if (room.gameLog.currentRole == 4) {
-        room = game.pharseConclusion(room);
-        room.gameLog.currentRole = 0;
-        roomNsp.to(room.id).emit("end", room);
-        return;
-      }
-
-      room.gameLog.currentRole++;
-
-      switch (room.gameLog.currentRole) {
-        case SWITCH_ROLE.auraSeer:
-          roomNsp.to(data.idRoom).emit("auraseerTurn", room);
-          break;
-        case SWITCH_ROLE.witch:
-          roomNsp.to(data.idRoom).emit("witchTurn", room);
-          break;
-        case SWITCH_ROLE.bodyguard:
-          roomNsp.to(data.idRoom).emit("bodyguardTurn", room);
-          break;
-        case SWITCH_ROLE.hunter:
-          roomNsp.to(data.idRoom).emit("hunterTurn", room);
-          break;
-      }
+      roomNsp.to(data.idRoom).emit("werewolfVote", room);
     });
 
     socket.on("disconnect", () => {
