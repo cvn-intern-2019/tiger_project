@@ -44,7 +44,7 @@ module.exports.setCharacter = userChar => {
   desTag.text(userChar.character.des);
 };
 
-module.exports.selectPerson = flag => {
+module.exports.selectPerson = (flag, username) => {
   if (flag)
     $(`#playerList button`)
       .attr("disabled", false)
@@ -105,4 +105,34 @@ module.exports.witchNotify = (save, kill, victim) => {
   killNotifyTag.removeClass("d-none");
   saveNotifyTag.removeClass("d-none");
   $(`#witchFunction`).removeClass("d-none");
+};
+
+module.exports.selectPersonBodyguard = (username, room) => {
+  $(`#playerList button`)
+    .attr("disabled", false)
+    .unbind("click")
+    .click(event => {
+      if (event.which == 1) {
+        let log = room.gameLog.log;
+        let target = $(event.target).text();
+        let previousTarget = log.find(
+          l =>
+            l.day == room.currentDay - 1 &&
+            l.pharse == PHARSE.night &&
+            l.voter == username
+        );
+        if (previousTarget != undefined)
+          if (previousTarget.victim == target) {
+            this.setNotify(
+              `You cannot protect one target for two consecutive nights!`
+            );
+            return;
+          }
+
+        if (target != username) {
+          this.setNotify(`Good choice :D`);
+          $(`#choosenPerson`).text(target);
+        }
+      }
+    });
 };

@@ -27,9 +27,9 @@ module.exports.init = (room, socket) => {
   var username = $(`#username`).text();
   userChar = room.gameLog.characterRole.find(c => c.username == username);
 
-  // socket.on("auraseerTurn", room => {
-  //   auraseerTurn(room, socket);
-  // });
+  socket.on("nightPharseFinish", room => {
+    console.log(room);
+  });
 
   // socket.on("witchTurn", room => {
   //   witchTurn(room, socket);
@@ -50,7 +50,7 @@ module.exports.init = (room, socket) => {
 
 function pharseNight(room, socket) {
   helper.setPharse(room.gameLog.currentPharse);
-  helper.selectPerson(false);
+  helper.selectPerson(false, userChar.username);
   werewolfTurn(room, socket);
   socket.on("werewolfVote", room => {
     let MINUTES = 0;
@@ -71,14 +71,14 @@ function pharseNight(room, socket) {
 
     if (userChar.character.id == ID_CHARACTER.auraSeer) auraseerTurn();
     if (userChar.character.id == ID_CHARACTER.witch) witchTurn(room);
-    if (userChar.character.id == ID_CHARACTER.bodyguard) bodyguardTurn();
+    if (userChar.character.id == ID_CHARACTER.bodyguard) bodyguardTurn(room);
     if (userChar.character.id == ID_CHARACTER.hunter) hunterTurn();
     if (
       userChar.character.id == ID_CHARACTER.villager ||
       userChar.character.id == ID_CHARACTER.werewolf ||
       userChar.character.id == ID_CHARACTER.alphaWerewof
     )
-      helper.selectPerson(false);
+      helper.selectPerson(false, userChar.username);
   });
 }
 
@@ -93,25 +93,25 @@ function werewolfTurn(room, socket) {
 
   if (userChar.status == STATUS.alive) {
     if (userChar.character.id == ID_CHARACTER.alphaWerewof) {
-      helper.selectPerson(true);
+      helper.selectPerson(true, userChar.username);
     }
   } else {
-    helper.selectPerson(false);
+    helper.selectPerson(false, userChar.username);
   }
 }
 
 var auraseerTurn = () => {
   if (userChar.status == STATUS.alive) {
-    helper.selectPerson(true);
+    helper.selectPerson(true, userChar.username);
     helper.setNotify("Choose one person who you want :D");
   } else {
-    helper.selectPerson(false);
+    helper.selectPerson(false, userChar.username);
   }
 };
 
 var witchTurn = room => {
   if (userChar.status == STATUS.alive) {
-    helper.selectPerson(true);
+    helper.selectPerson(true, userChar.username);
     let victim = room.gameLog.deadList[0];
     helper.witchNotify(
       userChar.character.save,
@@ -119,24 +119,24 @@ var witchTurn = room => {
       victim
     );
   } else {
-    helper.selectPerson(false);
+    helper.selectPerson(false, userChar.username);
   }
 };
 
-var bodyguardTurn = () => {
+var bodyguardTurn = room => {
   if (userChar.status == STATUS.alive) {
-    helper.selectPerson(true);
+    helper.selectPersonBodyguard(userChar.username, room);
     helper.setNotify("Choose one person who you want to protect :D");
   } else {
-    helper.selectPerson(false);
+    helper.selectPerson(false, userChar.username);
   }
 };
 
 var hunterTurn = () => {
   if (userChar.status == STATUS.alive) {
-    helper.selectPerson(true);
+    helper.selectPerson(true, userChar.username);
     helper.setNotify("Choose one person who you want to be your target :D");
   } else {
-    helper.selectPerson(false);
+    helper.selectPerson(false, userChar.username);
   }
 };

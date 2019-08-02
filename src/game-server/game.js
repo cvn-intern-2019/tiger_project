@@ -1,6 +1,5 @@
+const constInit = require("./constInit");
 const characters = require("./characters.json");
-const ALIVE = 1;
-const DEAD = 0;
 
 module.exports.initGame = (playerList, roomNsp) => {
   return randomCharacter(playerList);
@@ -23,14 +22,89 @@ var randomCharacter = playerList => {
     playerChar.push({
       username: p.username,
       character: character,
-      status: ALIVE //1: live, 0: die
+      status: constInit.ALIVE //1: live, 0: die
     });
     idChar.splice(index, 1);
   });
   return playerChar;
 };
 
-module.exports.pharseConclusion = room => {
-  //handle
-  return room;
+module.exports.nightPharseConclusion = (room, roomNsp) => {
+  let log = room.gameLog.log;
+  let deadList = room.gameLog.deadList;
+  let characterRole = room.gameLog.characterRole;
+
+  let hunter = characterRole.find(
+    c => c.character.id == constInit.ID_CHARACTER.hunter
+  );
+  let bodyguard = characterRole.find(
+    c => c.character.id == constInit.ID_CHARACTER.bodyguard
+  );
+
+  if (hunter.status == constInit.ALIVE && deadList.includes(hunter.username)) {
+    let log = log.find(
+      l =>
+        l.day == room.currentDay &&
+        l.pharse == room.currentPharse &&
+        l.voter == hunter.username
+    );
+    if (log != undefined)
+      if (
+        log.victim != undefined &&
+        log.victim != null &&
+        !deadList.includes(log.victim)
+      ) {
+        deadList.push(log.victim);
+      }
+
+    log = log.find(
+      l =>
+        l.day == room.currentDay &&
+        l.pharse == room.currentPharse &&
+        l.voter == bodyguard.username
+    );
+    if (deadList.includes(log.victim)) {
+      let index = deadList.findIndex(d => {
+        return d == target;
+      });
+      deadList.splice(index, 1);
+    }
+  }
+
+  characterRole.forEach(c => {
+    if (deadList.includes(c.username)) c.status = constInit.DEAD;
+  });
+
+  room.currentPharse = constInit.DAY;
+  roomNsp.to(room.id).emit("nightPharseFinish", room);
+};
+
+module.exports.werewolfVote = (roomNsp, data, roomList) => {
+  console.log(data);
+  let room = roomList.find(r => r.id == data.idRoom);
+  let logElement = {
+    day: room.gameLog.currentDay,
+    pharse: room.gameLog.currentPharse,
+    voter: data.voter,
+    victim: data.victim
+  };
+  if (data.victim != null || data.victim != undefined)
+    room.gameLog.deadList.push(data.victim);
+  room.gameLog.log.push(logElement);
+  roomNsp.to(data.idRoom).emit("werewolfVote", room);
+};
+
+module.exports.isNightPharseFinish = room => {
+  let resRole = room.gameLog.resRole;
+  let survivors = 0;
+  room.gameLog.characterRole.forEach(c => {
+    if (
+      c.status == constInit.ALIVE &&
+      c.character.team != constInit.TEAM.werewolf &&
+      c.character.id != 6
+    )
+      survivors++;
+  });
+  if (resRole == survivors) return true;
+  return false;
 };
