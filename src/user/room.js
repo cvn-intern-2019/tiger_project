@@ -185,9 +185,9 @@ $(document).ready(() => {
       startGameButton.removeClass("d-none");
     }
 
-    if (room.player.length == room.amount)
-      $(`#startGame`).attr("disabled", false);
-    else $(`#startGame`).attr("disabled", true);
+    // if (room.player.length == room.amount)
+    //   $(`#startGame`).attr("disabled", false);
+    // else $(`#startGame`).attr("disabled", true);
 
     playerList.append(playerChild);
     receiverTag.append(optionChild);
