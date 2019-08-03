@@ -6,94 +6,79 @@ block sessionCSS
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
 
 block content
-    .container-fluid.overflow-auto                   
-        .col-9
-            .row.py-3.d-flex.mb-3
-                button#startGame.btn.btn-light.mr-3
-                    i.fas.fa-play
-                    |&nbsp;Start
-                a#leaveRoom.btn.btn-outline-secondary.text-light.font-italic(href='/lounge')
-                    i.fas.fa-sign-out-alt.align-middle
-                    |&nbsp;Leave
+    .container-fluid.overflow-auto
+        .row
+            .col-9.mb-5
+                .row.py-3.d-flex.mb-3
+                    button#startGame.btn.btn-light.mr-3
+                        i.fas.fa-play
+                        |&nbsp;Start
+                    a#leaveRoom.btn.btn-outline-secondary.text-light.font-italic(href='/lounge')
+                        i.fas.fa-sign-out-alt.align-middle
+                        |&nbsp;Leave
 
-                #deadList.ml-auto.d-flex.flex-row-reverse.border.d-none Dead list:
+                    #deadList.ml-auto.d-flex.flex-row-reverse.border.d-none Dead list
 
-               
-            #info.row.animated.slideInDown.faster.d-none
-                h1#phase.mr-5
-                    .badge.badge-lg.badge-light Night
+                #info.row.animated.slideInDown.faster.d-none
+                    h1#phase.mr-5
+                        .badge.badge-lg.badge-light Night
 
-                i.fa.fa-bullhorn.fa-2x.mr-2
-                h5#notify.text-light.p-1  It is midnight. Please go to sleep
+                    i.fa.fa-bullhorn.fa-2x.mr-2
+                    h5#notify.text-light.p-1  It is midnight. Please go to sleep
+                        
+                #playerList.row.my-2.d-flex.justify-content-center.flex-wrap
+                    .player.d-flex.flex-column.mr-5.align-items-center.mb-4
+                        img(src='http://placehold.it/250' width="150px").m-2
+                        button.btn.btn-light Waiting
+                
+                
+                #controller.row.animated.slideInUp.faster.d-none.mb-5
+                    .col
+                        h1#clock.display-3
+                            .badge.badge-light.text-dark 00:00
+                    .col-5
+                        .row
+                            h4#character.font-weight-bold Character     
+                        .row.font-weight-light
+                            h6#des Description
                     
-            #playerList.row.my-2.d-flex.justify-content-center.flex-wrap
-                .player.d-flex.flex-column.mr-5.align-items-center.mb-4
-                    img(src='http://placehold.it/250' width="150px").m-2
-                    button.btn.btn-light Waiting
-              
+                    .col.border
+                        h4.font-weight-bold Choosen
+                        #killNotify.d-none
+                        p#choosenPerson.font-weight-bold
+                        #witchFunction.d-none
+                            p#saveNotify
+                            #saveOption.radio.h5
+                                label.mr-3
+                                    input(type="radio" value="true" name="save")
+                                    | Yes
+                                label
+                                    input(type="radio" value="false" name="save" checked)
+                                    | No
+
+
+            .col-3.mb-5
+                b ID: 
+                    #idRoom.m-3.badge.badge-light=idRoom
+
             
-            #controller.row.animated.slideInUp.faster.d-none
-                .col
-                    h1#clock.display-3
-                        .badge.badge-light.text-dark 00:00
-                .col-5
-                    .row
-                        h4#character.font-weight-bold Character     
-                    .row.font-weight-light
-                        h6#des Description
-                   
-                .col.border
-                    h4.font-weight-bold Choosen
-                    #killNotify.d-none
-                    p#choosenPerson.font-weight-bold
-                    #witchFunction.d-none
-                        p#saveNotify
-                        #saveOption.radio.h5
-                            label.mr-3
-                                input(type="radio" value="true" name="save")
-                                | Yes
-                            label
-                                input(type="radio" value="false" name="save" checked)
-                                | No
-
-
-        .col-3
-            b ID: 
-                #idRoom.m-3.badge.badge-light=idRoom
-
-        
-            ul.nav.nav-tabs.text-secondary#tab
+                ul.nav.nav-tabs.text-secondary
                     li.nav-item
                         a#roomTab.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#room', data-toggle='tab') Room
                     li.nav-item
                         a#privateTab.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#private', data-toggle='tab') Private
                     
-            .tab-content
-                #room.active.tab-pane.p-2.mb-auto
-                    .messageBoxRoom#messageBoxRoom
-                        //- div.message.m-2
-                        //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
-                        //-     | #{username} 
-                        //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
-                        //-     | #{message}
-    
-                            
-                #private.tab-pane.p-2.mb-auto
-                    .messageBoxPrivate#messageBoxPrivate
-                        //- div.message.m-2
-                        //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
-                        //-     | #{username} 
-                        //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
-                        //-     | #{message}
-                
-                .input-group
-                    .input-group-prepend
-                        select#receiverSelect.custom-select.bg-secondary.text-light(name="receiver")
-                            option(value="all") All
-                    input#messageText.form-control(name="msg" type='text', placeholder="Type something" autofocus)
-                    .input-group-append
-                        button#sendMessage.btn.btn-secondary(type='button') Send
-                
-                    
-                
-                            
+                .tab-content.d-flex.flex-column
+                    #room.active.tab-pane.p-2.mb-auto
+                        .messageBoxRoom#messageBoxRoom
+                    #private.tab-pane.p-2.mb-auto
+                        .messageBoxPrivate#messageBoxPrivate
+
+                    .input-group
+                        .input-group-prepend
+                            select#receiverSelect.custom-select.bg-secondary.text-light(name="receiver")
+                                option(value="all") All
+                        input#messageText.form-control(name="msg" type='text', placeholder="Type something" autofocus)
+                        .input-group-append
+                            button#sendMessage.btn.btn-secondary(type='button') Send
+

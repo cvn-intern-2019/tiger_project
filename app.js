@@ -17,6 +17,7 @@ var app = express();
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
 let connStr = "mongodb://tiger:tiger123@localhost:27017/werewolf";
+
 mongoose.connect(connStr, { useNewUrlParser: true }, err => {
   if (err) return console.log("Error:" + err);
   console.log("Connected database!");

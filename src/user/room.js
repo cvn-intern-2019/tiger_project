@@ -189,6 +189,7 @@ $(document).ready(() => {
       $(`#startGame`).attr("disabled", false);
     else $(`#startGame`).attr("disabled", true);
 
+
     playerList.append(playerChild);
     receiverTag.append(optionChild);
 

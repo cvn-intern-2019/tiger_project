@@ -1,49 +1,16 @@
-.customSetting {
-  position: fixed;
-  bottom: 10%;
-}
 
-.customSetting :hover {
+.nav-tabs li:hover {
   cursor: pointer;
 }
 
-.searchForm {
-  padding-right: 22%;
-  padding-top: 5px;
-}
-
-.messageChat {
-  position: fixed;
-  bottom: 10%;
-  width: 25%;
-}
-
-#tab li:hover {
-  cursor: pointer;
-}
-
-.col-3 {
-  position: fixed;
-  bottom: 10%;
-  top: 10%;
-  right: 3%;
-
-  border-radius: 3%;
-}
 
 .tab-content {
   background: rgb(43, 42, 42);
-  height: 65vh;
+  height: 80%;
 }
 
 #room,
 #private {
-  overflow-y: scroll;
-  height: 65vh;
+  overflow-y: auto;
   word-wrap: break-word;
 }
-
-/* #controller {
-  position: fixed;
-  bottom: 15%;
-} */
