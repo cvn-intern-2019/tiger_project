@@ -1,4 +1,5 @@
 const $ = require("jquery");
+const constInit = require("../constInit");
 const PHARSE = {
   night: 0,
   day: 1
@@ -66,7 +67,9 @@ module.exports.selectPerson = (flag, username) => {
 };
 
 module.exports.showAllie = characterList => {
-  let allie = characterList.find(c => c.character.team == TEAM.werewolf);
+  let allie = characterList.find(
+    c => c.character.team == constInit.TEAM.werewolf
+  );
   $(`#playerList .player`)
     .find(`button:contains("${allie.username}")`)
     .removeClass("btn-light")
@@ -75,7 +78,7 @@ module.exports.showAllie = characterList => {
 
 module.exports.setPharse = pharse => {
   let pharseNotify = $(`#phase .badge`);
-  pharseNotify.text(pharse == PHARSE.night ? "Night" : "Day");
+  pharseNotify.text(pharse == constInit.NIGHT ? "Night" : "Day");
 };
 
 module.exports.witchNotify = (save, kill, victim) => {
@@ -121,7 +124,7 @@ module.exports.selectPersonBodyguard = (username, room) => {
         let previousTarget = log.find(
           l =>
             l.day == room.gameLog.currentDay - 1 &&
-            l.pharse == PHARSE.night &&
+            l.pharse == constInit.NIGHT &&
             l.voter == username
         );
         if (previousTarget != undefined) {
