@@ -7,10 +7,7 @@ const TEAM = {
 const AMOUNT_PLAYER = 7;
 const NIGHT = 0;
 const DAY = 1;
-const STATUS = {
-  alive: 1,
-  dead: 0
-};
+
 const ID_CHARACTER = {
   alphaWerewof: 0,
   werewolf: 1,
@@ -37,6 +34,5 @@ module.exports = {
   AMOUNT_PLAYER: AMOUNT_PLAYER,
   NIGHT: NIGHT,
   DAY: DAY,
-  STATUS: STATUS,
   WIN_CONDITION: WIN_CONDITION
 };

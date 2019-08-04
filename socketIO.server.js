@@ -1,5 +1,5 @@
 const game = require("./src/game-server/game");
-const constInit = require("./src/game-server/constInit");
+const constInit = require("./src/constInit");
 const auraSeer = require("./src/game-server/auraseer");
 const witch = require("./src/game-server/witch");
 const bodyguard = require("./src/game-server/bodyguard");

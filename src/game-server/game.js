@@ -1,4 +1,4 @@
-const constInit = require("./constInit");
+const constInit = require("../constInit");
 const characters = require("./characters.json");
 
 module.exports.initGame = (playerList, roomNsp) => {

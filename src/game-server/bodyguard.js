@@ -1,4 +1,4 @@
-const constInit = require("./constInit");
+const constInit = require("../constInit");
 module.exports = (room, data) => {
   let logElement = {
     day: room.gameLog.currentDay,
