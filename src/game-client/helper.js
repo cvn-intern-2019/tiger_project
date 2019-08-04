@@ -75,7 +75,6 @@ module.exports.showAllie = characterList => {
 };
 
 module.exports.showMyself = username => {
-  console.log(username);
   $(`#${username} button`)
     .removeClass("btn-light")
     .addClass("btn-info");
@@ -177,7 +176,7 @@ module.exports.listPlayerPlaying = room => {
                               </button>
                           </div>`;
         } else {
-          deadListChild += `<img class="border rounded m-2" src="/avatar/${
+          deadListChild += `<img class="border rounded mr-1" src="/avatar/${
             room.player[i].username
           }" onerror="javascript:this.src='http://placehold.it/30'" width="30px" height="30px" alt="${
             room.player[i].username
