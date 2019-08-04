@@ -4,6 +4,8 @@ const TEAM = {
   werewolf: 0,
   villager: 1
 };
+const PLAYING = false;
+const WAITING = true;
 const AMOUNT_PLAYER = 7;
 const NIGHT = 0;
 const DAY = 1;
@@ -34,5 +36,7 @@ module.exports = {
   AMOUNT_PLAYER: AMOUNT_PLAYER,
   NIGHT: NIGHT,
   DAY: DAY,
-  WIN_CONDITION: WIN_CONDITION
+  WIN_CONDITION: WIN_CONDITION,
+  PLAYING: PLAYING,
+  WAITING: WAITING
 };

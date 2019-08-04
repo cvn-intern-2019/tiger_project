@@ -1,32 +1,9 @@
 const constInit = require("../constInit");
 const characters = require("./characters.json");
+const helper = require("./helper");
 
 module.exports.initGame = (playerList, roomNsp) => {
-  return randomCharacter(playerList);
-};
-
-//random character with each player
-var randomCharacter = playerList => {
-  let idChar = new Array();
-  let playerChar = new Array();
-
-  characters.forEach(c => {
-    for (var i = 0; i < c.amount; i++) {
-      idChar.push(c.id);
-    }
-  });
-
-  playerList.forEach(p => {
-    let index = Math.floor(Math.random() * (idChar.length - 1 - 0) + 0);
-    let character = characters.find(c => c.id == idChar[index]);
-    playerChar.push({
-      username: p.username,
-      character: character,
-      status: constInit.ALIVE //1: live, 0: die
-    });
-    idChar.splice(index, 1);
-  });
-  return playerChar;
+  return helper.randomCharacter(playerList, characters);
 };
 
 module.exports.nightPharseConclusion = (room, roomNsp) => {
@@ -141,7 +118,7 @@ module.exports.isDayPharseFinish = room => {
 
 module.exports.dayPharseConclusion = (room, roomNsp) => {
   let voteList = room.gameLog.voteList;
-  let voteMaxPlayer = findMaxVotePlayer(voteList);
+  let voteMaxPlayer = helper.findMaxVotePlayer(voteList);
 
   let victim = room.gameLog.characterRole.find(
     c => c.username == voteMaxPlayer.target
@@ -158,7 +135,7 @@ module.exports.dayPharseConclusion = (room, roomNsp) => {
   room.gameLog.log.push(logElement);
 
   if (
-    checkWinCondition(room.gameLog.characterRole) ==
+    helper.checkWinCondition(room.gameLog.characterRole) ==
     constInit.WIN_CONDITION.werewolfWin
   ) {
     room.gameLog.timeFinish = new Date();
@@ -167,7 +144,7 @@ module.exports.dayPharseConclusion = (room, roomNsp) => {
   }
 
   if (
-    checkWinCondition(room.gameLog.characterRole) ==
+    helper.checkWinCondition(room.gameLog.characterRole) ==
     constInit.WIN_CONDITION.villagerWin
   ) {
     room.gameLog.timeFinish = new Date();
@@ -176,9 +153,10 @@ module.exports.dayPharseConclusion = (room, roomNsp) => {
   }
 
   if (
-    checkWinCondition(room.gameLog.characterRole) ==
+    helper.checkWinCondition(room.gameLog.characterRole) ==
     constInit.WIN_CONDITION.draw
   ) {
+    helper.isAlphawolfDead(room.gameLog.characterRole);
     room.gameLog.voteList = new Array();
     room.gameLog.resRole = constInit.START;
     room.gameLog.currentPharse = constInit.NIGHT;
@@ -187,56 +165,3 @@ module.exports.dayPharseConclusion = (room, roomNsp) => {
     return;
   }
 };
-
-function findMaxVotePlayer(voteList) {
-  let voteSum = new Array();
-  voteList.forEach(v => {
-    let temp = voteSum.find(vs => vs.target == v.target);
-    if (temp == undefined) {
-      voteSum.push({ target: v.target, voteNum: 1 });
-    } else temp.voteNum++;
-  });
-
-  const voteMax = voteSum.reduce(function(prev, current) {
-    return prev.voteNum > current.voteNum ? prev : current;
-  });
-
-  return voteMax;
-}
-
-function checkWinCondition(characterRole) {
-  let werewolfTeam = 0;
-  let villagerTeam = 0;
-  if (
-    characterRole.find(
-      c =>
-        c.character.id == constInit.ID_CHARACTER.alphaWerewof &&
-        c.status == constInit.ALIVE
-    ) == undefined
-  ) {
-    let firstWerewolf = characterRole.find(
-      c => c.character.id == constInit.ID_CHARACTER.werewolf
-    );
-    console.log(firstWerewolf);
-    let alphaWerewof = characters.find(
-      c => c.id == constInit.ID_CHARACTER.alphaWerewof
-    );
-    if (firstWerewolf != undefined) firstWerewolf.character = alphaWerewof;
-  }
-  characterRole.forEach(c => {
-    if (
-      c.character.team == constInit.TEAM.werewolf &&
-      c.status == constInit.ALIVE
-    ) {
-      werewolfTeam++;
-    }
-    if (
-      c.character.team == constInit.TEAM.villager &&
-      c.status == constInit.ALIVE
-    )
-      villagerTeam++;
-  });
-  if (werewolfTeam >= villagerTeam) return constInit.WIN_CONDITION.werewolfWin;
-  if (werewolfTeam == 0) return constInit.WIN_CONDITION.villagerWin;
-  return constInit.WIN_CONDITION.draw;
-}
