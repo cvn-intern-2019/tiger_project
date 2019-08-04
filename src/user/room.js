@@ -1,6 +1,7 @@
 import "../layout";
 import "./animate.css";
-import "../notify"
+import "../notify";
+import "../styleNotify";
 
 const $ = require("jquery");
 const moment = require("moment");
@@ -143,7 +144,9 @@ $(document).ready(() => {
 
     for (let i = 0; i < room.amount; i++) {
       if (room.player[i] != undefined) {
-        playerChild += `<div class="player d-flex flex-column mr-3 align-items-center mb-5" id="${room.player[i].username}">
+        playerChild += `<div class="player d-flex flex-column mr-3 p-2 align-items-center mb-5" id="${
+          room.player[i].username
+        }">
                           <img class="m-1 border rounded" src="/avatar/${
                             room.player[i].username
                           }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
@@ -153,7 +156,7 @@ $(document).ready(() => {
                             <button class="btn btn-sm btn-light font-weight-bold">
                             ${
                               room.player[i].username == room.host
-                                ? `<i class="fas fa-1x fa-crown"/>`
+                                ? `<i class="fas fa-1x fa-crown mr-1"/>`
                                 : ``
                             }
                               ${room.player[i].username}
@@ -191,7 +194,6 @@ $(document).ready(() => {
     //   $(`#startGame`).attr("disabled", false);
     // else $(`#startGame`).attr("disabled", true);
 
-
     playerList.append(playerChild);
     receiverTag.append(optionChild);
 
@@ -209,15 +211,13 @@ $(document).ready(() => {
     }
   });
 
-  $('#playerAvatar').click(event =>{
-    if(event.which == 1){
-      alert("clicked")
+  $("#playerAvatar").click(event => {
+    if (event.which == 1) {
+      alert("clicked");
     }
-  })
-
+  });
 
   socket.on("startGame", room => {
-
     game.init(room, socket);
   });
 });

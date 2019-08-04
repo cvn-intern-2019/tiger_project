@@ -3,7 +3,7 @@ const helper = require("./helper");
 const $ = require("jquery");
 
 module.exports = (socket, userChar, room) => {
-  let victim = $(`#choosenPerson`).text();
+  let victim = $(`#playerList .selectedPerson`).attr("id") || null;
 
   socket.emit("characterVote", {
     voter: userChar.username,

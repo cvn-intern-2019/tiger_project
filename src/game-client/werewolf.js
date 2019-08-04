@@ -7,7 +7,8 @@ const $ = require("jquery");
 
 module.exports = (socket, userChar, idRoom) => {
   if (userChar.character.id == ID_WEREWOLF.alpha) {
-    let victim = $(`#choosenPerson`).text();
+    let victim = $(`#playerList .selectedPerson`).attr("id") || null;
+
     socket.emit("werewolfVote", {
       voter: userChar.username,
       victim: victim,

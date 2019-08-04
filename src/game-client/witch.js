@@ -2,8 +2,8 @@ const helper = require("./helper");
 const $ = require("jquery");
 
 module.exports = (socket, userChar, room) => {
-  let victim = $(`#choosenPerson`).text();
-  let saveResult = $(`#saveOption input[name=save]:checked`).val();
+  let victim = $(`#playerList .selectedPerson`).attr("id") || null;
+  let saveResult = $(`#controller #saveBox`).text() || null;
 
   socket.emit("characterVote", {
     voter: userChar.username,
@@ -11,6 +11,4 @@ module.exports = (socket, userChar, room) => {
     saveResult: saveResult,
     idRoom: room.id
   });
-
-  $(`#killNotify, #witchFunction`).addClass("d-none");
 };
