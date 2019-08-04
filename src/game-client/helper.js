@@ -187,10 +187,10 @@ module.exports.listPlayerPlaying = room => {
       );
       if (playerRole != undefined) {
         if (playerRole.status == STATUS.alive) {
-          playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
+          playerChild += `<div class="player d-flex flex-column mr-3 align-items-center mb-5">
                             <img class="m-1 border rounded" src="/avatar/${
                               room.player[i].username
-                            }" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+                            }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
                             <h5><span class="badge badge-danger d-none"> 0
                             </span></h5>
                             ${
@@ -198,7 +198,7 @@ module.exports.listPlayerPlaying = room => {
                                 ? `<i class="fas fa-1x fa-crown"/>`
                                 : ``
                             }
-                              <button class="btn btn-light font-weight-bold">
+                              <button class="btn btn-sm btn-light font-weight-bold">
                               ${room.player[i].username}
                               </button>
                           </div>`;

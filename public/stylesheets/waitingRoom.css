@@ -14,3 +14,14 @@
   overflow-y: auto;
   word-wrap: break-word;
 }
+
+.player  {
+  cursor: pointer;
+}
+
+.player:hover *{
+  
+  opacity: 1;
+  transform: scale(1.08, 1.08);
+}
+  
