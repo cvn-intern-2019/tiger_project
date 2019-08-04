@@ -17,40 +17,30 @@ block content
                         i.fas.fa-sign-out-alt.align-middle
                         |&nbsp;Leave
 
-                    #deadList.ml-auto.d-flex.flex-row-reverse.border.rounded.p-2.d-none Dead list
-
-                #info.row.animated.slideInDown.faster.d-none.d-flex
+                #info.row.animated.slideInDown.faster.d-none.d-flex.justify-content-between.mb-5
                     h1#phase.mr-5
                         .badge.badge-lg.badge-light Night
+                            //- i.fa.fa-moon.float-left
 
-                    i.fa.fa-bullhorn.fa-2x.mr-2
-                    h5#notify.text-light.p-1  It is midnight. Please go to sleep
+                    //-<i class="fad fa-sun-cloud"></i>
 
-                    .col.ml-auto
+                    #deadList.d-flex.border.rounded.p-2.d-none Dead list
+                        img.border.rounded.m-2(src='http://placehold.it/50' width="50px" height="50px")
+                        img.border.rounded.m-2(src='http://placehold.it/50' width="50px" height="50px")
+                        img.border.rounded.m-2(src='http://placehold.it/50' width="50px" height="50px")
+                        img.border.rounded.m-2(src='http://placehold.it/50' width="50px" height="50px")
+
+                    .col
                         h1#clock.display-4.float-right
                             .badge.badge-light.text-dark 00:00
 
                 .row
-                    .col-5
+                    .col-5.mb-5
                         h4#character.font-weight-bold   Witch     
                         h5#team  Team :  Villager
                         h6#des.font-weight-light Kill or heal a player, once each per game
 
-                        .row.rounded.bg-secondary.mb-5.mt-5.mr-3
-                            .col.border-right 
-                                #killNotify Save poison 
-                            .col
-                                #witchFunction  Kill poison
-                                    p#saveNotify Do you want to save ABC 
-                                    #saveOption.radio.h5
-                                        label.mr-3
-                                            input(type="radio" value="true" name="save")
-                                            | Yes
-                                        label
-                                            input(type="radio" value="false" name="save" checked)
-                                            | No
-
-                    .col-7
+                    .col-7.mb-5
                         #playerList.row.my-2.d-flex.flex-wrap
                             .player.d-flex.flex-column.mr-3.align-items-center.mb-4
                                 img(src='http://placehold.it/80' width="80px").m-2#playerAvatar
@@ -60,8 +50,7 @@ block content
             .col-3.mb-5
                 b ID: 
                     #idRoom.m-3.badge.badge-light=idRoom
-
-            
+ 
                 ul.nav.nav-tabs.text-secondary
                     li.nav-item
                         a#roomTab.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#room', data-toggle='tab') Room
