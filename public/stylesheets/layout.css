@@ -2,9 +2,10 @@ body {
     padding-left: 6%;
     padding-right: 6%;
     min-height: 100vh;
-    position: relative;
-    /* overflow: hidden; */
+    height: 100%;
     margin: 0;
+    position: relative;
+    overflow: auto;
     background-image: url('../images/logo.png');
     background-repeat: no-repeat;
     background-attachment: fixed;

@@ -58,9 +58,11 @@ module.exports.init = (room, socket) => {
 };
 
 function pharseNight(room, socket) {
+
   helper.listPlayerPlaying(room);
   helper.setPharse(room.gameLog.currentPharse);
   helper.selectPerson(false, userChar.username);
+
   werewolfTurn(room, socket);
   if (
     userChar.character.id == ID_CHARACTER.werewolf ||
@@ -68,6 +70,7 @@ function pharseNight(room, socket) {
   ) {
     helper.showAllie(room.gameLog.characterRole);
   }
+
   socket.on("werewolfVote", room => {
     let MINUTES = 0;
     let SECONDS = 20;
@@ -168,7 +171,7 @@ function pharseDay(room, socket) {
     helper.showAllie(room.gameLog.characterRole);
   }
   let MINUTES = 0;
-  let SECONDS = 20;
+  let SECONDS = 30;
   let countdown = helper.countDown(MINUTES, SECONDS);
   countdown.then(() => {
     socket.emit("dayPharseFinish", room.id);

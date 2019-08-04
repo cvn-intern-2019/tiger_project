@@ -7,6 +7,7 @@ var app = express();
 
 databaseConfig.init();
 
+
 middlewareConfig(app);
 
 routesConfig(app);
