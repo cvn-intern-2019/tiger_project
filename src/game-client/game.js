@@ -34,6 +34,15 @@ module.exports.init = (room, socket) => {
     pharseNight(room, socket);
   });
 
+  socket.on("playerDisconect", data => {
+    helper.setNotify(`${data.character} was killed by Disconnect!`, "notify");
+    userChar = data.room.gameLog.characterRole.find(
+      c => c.username == username
+    );
+    helper.listPlayerPlaying(data.room);
+    console.log(data.room);
+  });
+
   helper.setCharacter(userChar);
   infoTag.removeClass("d-none");
   controllerTag.removeClass("d-none");

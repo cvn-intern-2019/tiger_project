@@ -83,7 +83,7 @@ module.exports.showMyself = username => {
 module.exports.setPharse = pharse => {
   let pharseNotify = $(`#phase .badge`);
   pharseNotify.text(pharse == constInit.NIGHT ? "Night" : "Day");
-  pharseNotify.remove("slideInDown").addClass("animated flip faster");
+  pharseNotify.remove("flip").addClass("animated flip faster");
 };
 
 module.exports.witchNotify = (save, kill, victim) => {
@@ -151,40 +151,33 @@ module.exports.listPlayerPlaying = room => {
   let deadListChild = ``;
   playerList.empty();
   deadListTag.empty();
-  for (let i = 0; i < room.amount; i++) {
-    if (room.player[i] != undefined) {
-      let playerRole = room.gameLog.characterRole.find(
-        c => c.username == room.player[i].username
-      );
-      if (playerRole != undefined) {
-        if (playerRole.status == constInit.ALIVE) {
-          playerChild += `<div class="player d-flex flex-column mr-3 p-2 align-items-center mb-5" id="${
-            room.player[i].username
-          }">
-                            <img class="m-1 border rounded" src="/avatar/${
-                              room.player[i].username
-                            }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
-                            <h5><span class="badge badge-danger d-none"> 0
-                            </span></h5>
-                              <button class="btn btn-sm btn-light font-weight-bold">
-                              ${
-                                room.player[i].username == room.host
-                                  ? `<i class="fas fa-1x fa-crown mr-1"/>`
-                                  : ``
-                              }
-                              ${room.player[i].username}
-                              </button>
-                          </div>`;
-        } else {
-          deadListChild += `<img class="border rounded mr-1" src="/avatar/${
-            room.player[i].username
-          }" onerror="javascript:this.src='http://placehold.it/30'" width="30px" height="30px" alt="${
-            room.player[i].username
-          }">`;
-        }
-      }
+  room.gameLog.characterRole.forEach(c => {
+    if (c.status == constInit.ALIVE) {
+      playerChild += `<div class="player d-flex flex-column mr-3 p-2 align-items-center mb-5" id="${
+        c.username
+      }">
+                        <img class="m-1 border rounded" src="/avatar/${
+                          c.username
+                        }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
+                        <h5><span class="badge badge-danger d-none"> 0
+                        </span></h5>
+                          <button class="btn btn-sm btn-light font-weight-bold">
+                          ${
+                            c.username == room.host
+                              ? `<i class="fas fa-1x fa-crown mr-1"/>`
+                              : ``
+                          }
+                          ${c.username}
+                          </button>
+                      </div>`;
+    } else {
+      deadListChild += `<img class="border rounded mr-1" src="/avatar/${
+        c.username
+      }" onerror="javascript:this.src='http://placehold.it/30'" width="30px" height="30px" alt="${
+        c.username
+      }">`;
     }
-  }
+  });
   deadListTag.append(deadListChild);
   playerList.append(playerChild);
 };

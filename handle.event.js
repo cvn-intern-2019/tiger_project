@@ -75,7 +75,21 @@ module.exports.disconnect = (idSocket, roomList, loungeNsp, roomNsp) => {
       if (room.status == constInit.WAITING)
         roomNsp.to(room.id).emit("initRoom", room);
       else {
-        roomNsp.to(room.id).emit("playerDisconect", room);
+        let character = room.gameLog.characterRole.find(
+          c => c.username == player.username
+        );
+        character.status = constInit.DEAD;
+        let logElement = {
+          day: room.gameLog.currentDay,
+          pharse: room.gameLog.currentPharse,
+          voter: "All (disconnect)",
+          victim: character.username
+        };
+        room.gameLog.log.push(logElement);
+        roomNsp.to(room.id).emit("playerDisconect", {
+          room: room,
+          character: character.username
+        });
       }
     }
     loungeNsp.emit("listRoom", roomList);
