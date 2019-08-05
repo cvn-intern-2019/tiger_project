@@ -26,7 +26,7 @@ module.exports.countDown = (minutes, seconds) => {
 };
 
 module.exports.setNotify = (content, style) => {
-  $.notify(content, { style: style, position: "top center" });
+  $.notify(content, { style: style, position: "bottom left" });
 };
 
 module.exports.setCharacter = userChar => {
@@ -50,6 +50,10 @@ module.exports.selectPerson = (flag, username) => {
       .click(event => {
         if (event.which == 1) {
           $(`#playerList .player`).removeClass("selectedPerson");
+          if ($(event.currentTarget).hasClass("selectedPerson")) {
+            $(event.currentTarget).removeClass("selectedPerson");
+            return;
+          }
           if ($(event.currentTarget).attr("id") != username)
             $(event.currentTarget).addClass("selectedPerson");
           else {
@@ -145,7 +149,10 @@ module.exports.selectPersonBodyguard = (username, room) => {
             return;
           }
         }
-
+        if ($(event.currentTarget).hasClass("selectedPerson")) {
+          $(event.currentTarget).removeClass("selectedPerson");
+          return;
+        }
         $(`#playerList .player`).removeClass("selectedPerson");
         $(event.currentTarget).addClass("selectedPerson");
       }
@@ -231,8 +238,7 @@ module.exports.deadStatus = () => {
 module.exports.endGame = (room, team) => {
   let teamConvert = team == constInit.TEAM.werewolf ? `WEREWOLF` : `VILLAGER`;
   let tableBody = ``;
-  let infoTag = $(`#info`);
-  let controllerTag = $(`#controller`);
+
   room.gameLog.characterRole.forEach((c, index) => {
     tableBody += `<tr>
     <th scope="row">${index + 1}</th>
@@ -271,8 +277,7 @@ module.exports.endGame = (room, team) => {
   $(`body #winModal`).remove();
   $(`body`).append(modal);
   $(`#winModal`).modal("show");
-  infoTag.addClass("d-none");
-  controllerTag.addClass("d-none");
+  this.switchLayoutRoom(constInit.WAITING);
 };
 
 module.exports.initWaitingRoom = (room, socket) => {
@@ -295,9 +300,9 @@ module.exports.initWaitingRoom = (room, socket) => {
                         <img class="m-1 border rounded" src="/avatar/${
                           room.player[i].username
                         }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
-                          <h5><span class="badge badge-danger d-none"> 0
-                          </span></h5>
-                         
+                          <h5>
+                            <span class="badge badge-danger d-none">0</span>
+                          </h5>          
                           <button class="btn btn-sm btn-light font-weight-bold">
                           ${
                             room.player[i].username == room.host
@@ -315,8 +320,9 @@ module.exports.initWaitingRoom = (room, socket) => {
     } else {
       playerChild += `<div class="player d-flex flex-column mr-3 align-items-center mb-5">
                         <img class="m-1" src="http://placehold.it/80" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
-                        <h5><span class="badge badge-danger d-none"> 0
-                          </span></h5>
+                        <h5>
+                          <span class="badge badge-danger d-none">0</span>
+                        </h5>
                           <button class="btn btn-sm btn-light font-weight-bold">Waiting...
                           </button>
                       </div>`;
@@ -358,4 +364,20 @@ module.exports.removeEventListen = socket => {
   socket.off("dayPharseFinish");
   socket.off("werewolfVote");
   socket.off("playerDisconect");
+};
+
+module.exports.switchLayoutRoom = switchLayoutRoom = flag => {
+  let infoTag = $(`#info`);
+  let controllerTag = $(`#controller`);
+  let controllerToggleBtn = $(`#controllerToggle`);
+
+  if (flag == constInit.PLAYING) {
+    infoTag.removeClass("d-none");
+    controllerTag.removeClass("d-none");
+    controllerToggleBtn.removeClass("d-none");
+  } else {
+    infoTag.addClass("d-none");
+    controllerTag.addClass("d-none");
+    controllerToggleBtn.addClass("d-none");
+  }
 };

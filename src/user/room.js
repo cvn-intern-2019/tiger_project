@@ -155,4 +155,12 @@ $(document).ready(() => {
   socket.on("startGame", room => {
     game.init(room, socket);
   });
+
+  $(`#controllerToggle`).click(function(event) {
+    if (event.which == 1) {
+      let arrow = $(this).text();
+      $(this).text(arrow == `<` ? ">" : "<");
+      $(`#controller`).toggle("swing");
+    }
+  });
 });

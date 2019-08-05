@@ -8,7 +8,7 @@ block sessionCSS
 block content
     .container-fluid.overflow-auto
         .row
-            .col-9.mb-5
+            .col-8.mb-5
                 .row.py-3.d-flex.mb-3
                     button#startGame.btn.btn-light.mr-3
                         i.fas.fa-play
@@ -35,11 +35,12 @@ block content
                             .badge.badge-light.text-dark 00:00
 
                 .row
-                    #controller.col-4.mb-5.d-none
+                    #controller.col-4.p-3.border.light-white.border-right-0.d-none
                         h1
-                            #character.badge.badge-info  
-                        h6#team.font-weight-bold
+                            #character.badge.badge-info 
+                        h6#team.font-weight-bold 
                         h6#des.font-weight-light
+                    button#controllerToggle.btn.btn-outline-light.btn-sm.d-none &lt;
                     .col-1
                     .col.mb-5
                         #playerList.row.my-2.d-flex.flex-wrap
@@ -48,7 +49,7 @@ block content
                                 button.btn-sm.btn-light Waiting
 
 
-            .col-3.mb-5
+            .col-4.mb-5
                 b ID: 
                     #idRoom.m-3.badge.badge-light=idRoom
  

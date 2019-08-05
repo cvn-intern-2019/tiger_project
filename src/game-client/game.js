@@ -10,8 +10,7 @@ var userChar = null;
 
 module.exports.init = (room, socket) => {
   helper.removeEventListen(socket);
-  let infoTag = $(`#info`);
-  let controllerTag = $(`#controller`);
+
   var username = $(`#username`).text();
   userChar = room.gameLog.characterRole.find(c => c.username == username);
 
@@ -48,9 +47,7 @@ module.exports.init = (room, socket) => {
   });
 
   helper.setCharacter(userChar);
-  infoTag.removeClass("d-none");
-  controllerTag.removeClass("d-none");
-
+  helper.switchLayoutRoom(constInit.PLAYING);
   pharseNight(room, socket);
 };
 
