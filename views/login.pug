@@ -2,7 +2,6 @@ doctype html
 html
     head
         title Login | Werewolf Online - Tiger Team
-        script(src="https://www.google.com/recaptcha/api.js?render=6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd")
         script(src="/javascripts/login_main.js")
     body.bg-dark.text-light(style="overflow:auto;")
         .container-fluid
@@ -56,12 +55,6 @@ html
                                 .input-group
                                     i.fas.fa-3x.fa-check-circle.mr-1
                                     input.form-control-lg.form-control.w-75(type="password" name="confirmPassword" placeholder="Confirm password" required)
-                                script.
-                                    grecaptcha.ready(function() {
-                                        grecaptcha.execute('6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd', {action: '/login'}).then(function(token) {
-                                            document.querySelector("input[name='captcha_token']").value = token;
-                                        });
-                                    });
                                 .row.mt-4
                                     .col
                                         a#goLogin.h5.text-light(href="#") Log in

@@ -64,94 +64,97 @@ module.exports.postLogin = (req, res, next) => {
   });
 };
 
-var request = require('request');
+var request = require("request");
 const CAPTCHA_KEY = {
   site: "6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd",
   secret: "6LdkO7EUAAAAAEPLUtGok-hdj8R4_oa6NhFvXQPR"
-}
+};
 
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
 
-  captchaURL = `https://www.google.com/recaptcha/api/siteverify?secret=${CAPTCHA_KEY.secret}&response=${body.captcha}`;
+  captchaURL = `https://www.google.com/recaptcha/api/siteverify?secret=${
+    CAPTCHA_KEY.secret
+  }&response=${body.captcha}`;
 
-  request.post(captchaURL,(error,response,data)=>{
+  request.post(captchaURL, (error, response, data) => {
     data = JSON.parse(data);
-    if(data.success === false){
+    console.log(data);
+    if (data.success === false) {
       return res.json({
         type: 0,
         msg: "Captcha validation failed."
       });
     }
-  })
-  
-
-  if (usernameRegEx.test(body.username) === false) {
-    return res.json({
-      type: 0,
-      msg: "First character of username must be a alphabetic character!"
-    });
-  }
-
-  if (userRegEx.test(body.username) === false) {
-    return res.json({
-      type: 0,
-      msg: "Your username is invalid!"
-    });
-  }
-
-  if (body.username.length < 5 || body.username.length > 20) {
-    return res.json({
-      type: 0,
-      msg: "Username must have length 5 - 20 characters!"
-    });
-  }
-
-  if (emailRegEx.test(body.email) === false) {
-    return res.json({
-      type: 0,
-      msg: "Your email is invalid!"
-    });
-  }
-
-  if (body.password.length < 5 || body.password.length > 20) {
-    return res.json({
-      type: 0,
-      msg: "Your password must have length 5 - 20 characters!"
-    });
-  }
-
-  if (body.password !== body.confirmPassword) {
-    return res.json({
-      type: 0,
-      msg: "Your confirm password not match!"
-    });
-  }
-
-  User.findOne({ username: body.username, email: body.email }, (err, user) => {
-    if (err) next(err);
-    if (user != undefined) {
+    if (usernameRegEx.test(body.username) === false) {
       return res.json({
         type: 0,
-        msg: "Your username or email already exists!"
+        msg: "First character of username must be a alphabetic character!"
       });
     }
-  });
 
-  let newUser = new User({
-    username: body.username,
-    email: body.email,
-    password: hashPassword(body.username, body.password)
-  });
+    if (userRegEx.test(body.username) === false) {
+      return res.json({
+        type: 0,
+        msg: "Your username is invalid!"
+      });
+    }
 
-  newUser.save(err => {
-    if (err) return err;
-    return res.json({
-      type: 1
+    if (body.username.length < 5 || body.username.length > 20) {
+      return res.json({
+        type: 0,
+        msg: "Username must have length 5 - 20 characters!"
+      });
+    }
+
+    if (emailRegEx.test(body.email) === false) {
+      return res.json({
+        type: 0,
+        msg: "Your email is invalid!"
+      });
+    }
+
+    if (body.password.length < 5 || body.password.length > 20) {
+      return res.json({
+        type: 0,
+        msg: "Your password must have length 5 - 20 characters!"
+      });
+    }
+
+    if (body.password !== body.confirmPassword) {
+      return res.json({
+        type: 0,
+        msg: "Your confirm password not match!"
+      });
+    }
+
+    User.findOne(
+      { username: body.username, email: body.email },
+      (err, user) => {
+        if (err) next(err);
+        if (user != undefined || user != null) {
+          return res.json({
+            type: 0,
+            msg: "Your username or email already exists!"
+          });
+        }
+      }
+    );
+
+    let newUser = new User({
+      username: body.username,
+      email: body.email,
+      password: hashPassword(body.username, body.password)
+    });
+
+    newUser.save(err => {
+      if (err) next(err);
+      return res.json({
+        type: 1
+      });
     });
   });
 };
-
 module.exports.getLogout = (req, res, next) => {
   req.session.destroy(err => {
     if (err) next(err);
