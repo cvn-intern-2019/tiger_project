@@ -1,6 +1,7 @@
 const constInit = require("../constInit");
 const characters = require("./characters.json");
 const helper = require("./helper");
+const profileController = require("../../controllers/user/profile.controller");
 
 module.exports.initGame = (playerList, roomNsp) => {
   return helper.randomCharacter(playerList, characters);
@@ -72,7 +73,6 @@ module.exports.werewolfVote = (roomNsp, data, roomList) => {
   if (data.victim != null || data.victim != undefined)
     room.gameLog.deadList.push(data.victim);
   room.gameLog.log.push(logElement);
-  console.log("trả về sói vote");
   roomNsp.to(data.idRoom).emit("werewolfVote", room);
 };
 
@@ -141,6 +141,10 @@ module.exports.dayPharseConclusion = (roomList, room, roomNsp, loungeNsp) => {
     constInit.WIN_CONDITION.werewolfWin
   ) {
     room.gameLog.timeFinish = new Date();
+    profileController.addHistory(
+      room.gameLog,
+      constInit.WIN_CONDITION.werewolfWin
+    );
     room.status = constInit.WAITING;
     roomNsp.to(room.id).emit("werewolfWin", room);
     loungeNsp.emit("listRoom", roomList);
@@ -152,6 +156,10 @@ module.exports.dayPharseConclusion = (roomList, room, roomNsp, loungeNsp) => {
     constInit.WIN_CONDITION.villagerWin
   ) {
     room.gameLog.timeFinish = new Date();
+    profileController.addHistory(
+      room.gameLog,
+      constInit.WIN_CONDITION.villagerWin
+    );
     room.status = constInit.WAITING;
     roomNsp.to(room.id).emit("villagerWin", room);
     loungeNsp.emit("listRoom", roomList);

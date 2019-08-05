@@ -151,8 +151,6 @@ module.exports.startGame = (roomList, idRoom, loungeNsp, roomNsp) => {
 };
 
 module.exports.characterVote = (roomList, data, roomNsp) => {
-  console.log(data);
-  console.log(`===============================`);
   let room = roomList.find(r => r.id == data.idRoom);
   let player = room.gameLog.characterRole.find(c => c.username == data.voter);
 

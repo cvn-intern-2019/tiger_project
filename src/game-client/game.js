@@ -32,7 +32,6 @@ module.exports.init = (room, socket) => {
     helper.initWaitingRoom(room, socket);
   });
   socket.on("dayPharseFinish", room => {
-    console.log(room);
     pharseNight(room, socket);
   });
 
@@ -46,7 +45,6 @@ module.exports.init = (room, socket) => {
       c => c.username == username
     );
     helper.listPlayerPlaying(data.room);
-    console.log(data.room);
   });
 
   helper.setCharacter(userChar);
@@ -72,7 +70,7 @@ function pharseNight(room, socket) {
 
 function werewolfTurn(room, socket) {
   let MINUTES = 0;
-  let SECONDS = 20;
+  let SECONDS = 30;
   let countdown = helper.countDown(MINUTES, SECONDS);
   countdown.then(() => {
     werewolf(socket, userChar, room);
@@ -143,7 +141,7 @@ function pharseDay(room, socket) {
   if (userChar.character.team == constInit.TEAM.werewolf) {
     helper.showAllie(room.gameLog.characterRole);
   }
-  let MINUTES = 0;
+  let MINUTES = 1;
   let SECONDS = 30;
   let countdown = helper.countDown(MINUTES, SECONDS);
   countdown.then(() => {
@@ -167,7 +165,7 @@ function villagerTurn(room, socket) {
   username = $(`#username`).text();
   userChar = room.gameLog.characterRole.find(c => c.username == username);
   let MINUTES = 0;
-  let SECONDS = 20;
+  let SECONDS = 30;
   let countdown = helper.countDown(MINUTES, SECONDS);
 
   countdown.then(() => {

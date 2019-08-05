@@ -49,12 +49,10 @@ module.exports.init = server => {
     });
 
     socket.on("characterVote", data => {
-      console.log("dân vote");
       haldeEvent.characterVote(roomList, data, roomNsp);
     });
 
     socket.on("werewolfVote", data => {
-      console.log("Sói vote");
       haldeEvent.werewolfVote(roomList, data, roomNsp);
     });
 

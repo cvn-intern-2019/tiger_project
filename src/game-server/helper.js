@@ -18,7 +18,6 @@ module.exports.randomCharacter = (playerList, characters) => {
 
   playerList.forEach(p => {
     let index = generateRandomInteger(idChar.length);
-    console.log(index);
     let character = characters.find(c => c.id == idChar[index]);
     playerChar.push({
       username: p.username,
@@ -58,7 +57,6 @@ module.exports.findMaxVotePlayer = voteList => {
   }
 
   let victimIndex = generateRandomInteger(voteMax.length);
-  console.log(voteMax[victimIndex]);
   return voteMax[victimIndex];
 };
 

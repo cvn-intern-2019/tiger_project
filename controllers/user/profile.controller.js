@@ -1,4 +1,5 @@
 var User = require("../../models/user.model");
+var History = require("../../models/history.model");
 var moment = require("moment");
 var multer = require("multer");
 var helper = require("../helper");
@@ -297,4 +298,22 @@ module.exports.changePassword = (req, res, next) => {
       });
     });
   });
+};
+
+module.exports.addHistory = (gameLog, result) => {
+  let playerList = new Array();
+
+  gameLog.characterRole.forEach(c => {
+    playerList.push({ username: c.username, character: c.character.name });
+  });
+
+  let history = new History({
+    timeStart: gameLog.timeStart,
+    timeFinish: gameLog.timeFinish,
+    result: result,
+    players: playerList,
+    details: gameLog.log
+  });
+
+  history.save();
 };
