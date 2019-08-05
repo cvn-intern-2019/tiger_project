@@ -20,8 +20,11 @@ module.exports.registerBtnEvent = () => {
     username: $(`#registerForm input[name=username]`).val(),
     email: $(`#registerForm input[name=email]`).val(),
     password: $(`#registerForm input[name=password]`).val(),
-    confirmPassword: $(`#registerForm input[name=confirmPassword]`).val()
+    confirmPassword: $(`#registerForm input[name=confirmPassword]`).val(),
+    captcha: $("input[name='captcha_token").val()
   };
+
+  console.log(input);
 
   $.post("/register", input)
     .done(data => {

@@ -64,8 +64,27 @@ module.exports.postLogin = (req, res, next) => {
   });
 };
 
+var request = require('request');
+const CAPTCHA_KEY = {
+  site: "6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd",
+  secret: "6LdkO7EUAAAAAEPLUtGok-hdj8R4_oa6NhFvXQPR"
+}
+
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
+
+  captchaURL = `https://www.google.com/recaptcha/api/siteverify?secret=${CAPTCHA_KEY.secret}&response=${body.captcha}`;
+
+  request.post(captchaURL,(error,response,data)=>{
+    data = JSON.parse(data);
+    if(data.success === false){
+      return res.json({
+        type: 0,
+        msg: "Captcha validation failed."
+      });
+    }
+  })
+  
 
   if (usernameRegEx.test(body.username) === false) {
     return res.json({
