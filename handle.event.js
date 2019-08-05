@@ -128,7 +128,6 @@ module.exports.startGame = (roomList, idRoom, loungeNsp, roomNsp) => {
     deadList: new Array(),
     characterRole: randomRole,
     resRole: constInit.START,
-    survivors: room.amount,
     voteList: new Array()
   };
   room.status = constInit.PLAYING;
@@ -174,7 +173,6 @@ module.exports.characterVote = (roomList, data, roomNsp) => {
     room.gameLog.resRole++;
   }
 
-  console.log(room.gameLog.resRole);
   if (game.isNightPharseFinish(room)) {
     game.nightPharseConclusion(room, roomNsp);
   }
@@ -188,10 +186,11 @@ module.exports.votePerson = (roomList, data, roomNsp) => {
   game.votePerson(roomNsp, data, roomList);
 };
 
-module.exports.dayPharseFinish = (roomList, idRoom, roomNsp) => {
+module.exports.dayPharseFinish = (roomList, idRoom, roomNsp, loungeNsp) => {
   let room = roomList.find(r => r.id == idRoom);
   room.gameLog.resRole++;
-  if (game.isDayPharseFinish(room)) game.dayPharseConclusion(room, roomNsp);
+  if (game.isDayPharseFinish(room))
+    game.dayPharseConclusion(roomList, room, roomNsp, loungeNsp);
 };
 
 module.exports.sendMsg = (data, roomNsp) => {

@@ -31,6 +31,7 @@ module.exports.randomCharacter = (playerList, characters) => {
 };
 
 module.exports.findMaxVotePlayer = voteList => {
+  if (voteList.length == 0) return undefined;
   let voteSum = new Array();
   let voteMax = new Array();
 

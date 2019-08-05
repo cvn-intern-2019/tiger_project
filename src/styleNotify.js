@@ -48,8 +48,8 @@ $.notify.addStyle("witchSave", {
               <span data-notify-text="content"/>
               <p>================</p>
               
-              <button class="yes btn btn-sm btn-dark" data-notify-text='button'></button>
-              <button class="no btn btn-sm btn-secondary">Cancel</button>
+              <button class="yes btn btn-sm btn-dark">Yes</button>
+              <button class="no btn btn-sm btn-secondary">No</button>
             </div>
         </div>`
 });

@@ -11,7 +11,7 @@ module.exports = (room, data, roomNsp) => {
   let auraseerIdSoket = room.player.find(p => p.username == data.voter)
     .idSocket;
   let result = room.gameLog.characterRole.find(c => c.username == data.victim);
-  if (result != undefined)
+  if (result != undefined) {
     if (result.character.team == constInit.TEAM.werewolf)
       sysMsg = {
         sender: `System`,
@@ -24,7 +24,7 @@ module.exports = (room, data, roomNsp) => {
         receiver: auraseerIdSoket,
         msg: `${data.victim} is not Werewolf!`
       };
-
+    roomNsp.to(auraseerIdSoket).emit("recMsg", sysMsg);
+  }
   room.gameLog.log.push(logElement);
-  roomNsp.to(auraseerIdSoket).emit("recMsg", sysMsg);
 };

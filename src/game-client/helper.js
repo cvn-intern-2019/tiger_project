@@ -80,17 +80,25 @@ module.exports.showMyself = username => {
     .addClass("btn-info");
 };
 
-module.exports.setPharse = pharse => {
-  let pharseNotify = $(`#phase .badge`);
-  pharseNotify.text(pharse == constInit.NIGHT ? "Night" : "Day");
-  pharseNotify.remove("flip").addClass("animated flip faster");
+module.exports.setPharse = (date, pharse) => {
+  if (pharse == constInit.NIGHT) {
+    $(`#phase .night`)
+      .text(`Date: ${date} - Night`)
+      .show();
+    $(`#phase .day`).hide();
+  } else {
+    $(`#phase .day`)
+      .text(`Date: ${date} - Day`)
+      .show();
+    $(`#phase .night`).hide();
+  }
 };
 
-module.exports.witchNotify = (save, kill, victim) => {
-  if (save > 0) {
+module.exports.witchNotify = (victim, userChar) => {
+  if (userChar.character.save > 0) {
     if (victim != undefined || victim != null) {
       $("#" + victim).notify(
-        { content: "Do you want to save?", button: "Save" },
+        { content: "Do you want to save?" },
         {
           style: "witchSave",
           autoHide: false,
@@ -105,12 +113,12 @@ module.exports.witchNotify = (save, kill, victim) => {
     this.setNotify(`You can't save anyone more!`, "notify");
   }
 
-  if (kill > 0) {
+  if (userChar.character.save > 0) {
     this.setNotify(`Choose one person to kill if you want!`, "notify");
-    this.selectPerson(true);
+    this.selectPerson(true, userChar.username);
   } else {
     this.setNotify(`You can't kill anyone more!`, "notify");
-    this.selectPerson(false);
+    this.selectPerson(false, userChar.username);
   }
 };
 
@@ -136,10 +144,10 @@ module.exports.selectPersonBodyguard = (username, room) => {
             );
             return;
           }
-        } else {
-          $(`#playerList .player`).removeClass("selectedPerson");
-          $(event.currentTarget).addClass("selectedPerson");
         }
+
+        $(`#playerList .player`).removeClass("selectedPerson");
+        $(event.currentTarget).addClass("selectedPerson");
       }
     });
 };
@@ -215,11 +223,139 @@ module.exports.showVoteResult = room => {
   });
 };
 
-module.exports.resetChoosen = () => {
-  $(`#choosenPerson`).text("");
-};
-
 module.exports.deadStatus = () => {
   $(`#controller .deadStatus`).remove();
   $(`#controller`).append(`<h1 class="deadStatus">You are Killed</h1>`);
+};
+
+module.exports.endGame = (room, team) => {
+  let teamConvert = team == constInit.TEAM.werewolf ? `WEREWOLF` : `VILLAGER`;
+  let tableBody = ``;
+  let infoTag = $(`#info`);
+  let controllerTag = $(`#controller`);
+  room.gameLog.characterRole.forEach((c, index) => {
+    tableBody += `<tr>
+    <th scope="row">${index + 1}</th>
+    <td>${c.username}</td>
+    <td>${c.character.name}</td>
+    <td>${
+      c.character.team == constInit.TEAM.werewolf ? `Werewolf` : `Villager`
+    }</td>
+  </tr>`;
+  });
+  let modal = `<div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="winModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="display-4 text-center font-weight-bold text-dark">${teamConvert} TEAM WIN!</div>
+		<div class="modal-body">
+		<table class="table table-striped">
+		  <thead>
+			<tr>
+			  <th scope="col">#</th>
+			  <th scope="col">Username</th>
+			  <th scope="col">Character</th>
+			  <th scope="col">Team</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			${tableBody}
+		  </tbody>
+		</table>
+		</div>
+		<div class="modal-footer">
+         <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+		</div>
+    </div>
+  </div>
+</div>`;
+  $(`body #winModal`).remove();
+  $(`body`).append(modal);
+  $(`#winModal`).modal("show");
+  infoTag.addClass("d-none");
+  controllerTag.addClass("d-none");
+};
+
+module.exports.initWaitingRoom = (room, socket) => {
+  let username = $(`#username`).text();
+  let receiverTag = $(`#receiverSelect`);
+  let isHost = username == room.host ? true : false;
+  let playerChild = ``;
+  let playerList = $(`#playerList`);
+  let optionChild = `<option value="all">All</option>`;
+  let startGameButton = $(`#startGame`);
+  let currentReceiver = receiverTag.val();
+  playerList.empty();
+  receiverTag.empty();
+
+  for (let i = 0; i < room.amount; i++) {
+    if (room.player[i] != undefined) {
+      playerChild += `<div class="player d-flex flex-column mr-3 p-2 align-items-center mb-5" id="${
+        room.player[i].username
+      }">
+                        <img class="m-1 border rounded" src="/avatar/${
+                          room.player[i].username
+                        }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
+                          <h5><span class="badge badge-danger d-none"> 0
+                          </span></h5>
+                         
+                          <button class="btn btn-sm btn-light font-weight-bold">
+                          ${
+                            room.player[i].username == room.host
+                              ? `<i class="fas fa-1x fa-crown mr-1"/>`
+                              : ``
+                          }
+                            ${room.player[i].username}
+                          </button>
+                      </div>`;
+
+      if (room.player[i].username != username)
+        optionChild += `<option value="${room.player[i].idSocket}">${
+          room.player[i].username
+        }</option>`;
+    } else {
+      playerChild += `<div class="player d-flex flex-column mr-3 align-items-center mb-5">
+                        <img class="m-1" src="http://placehold.it/80" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
+                        <h5><span class="badge badge-danger d-none"> 0
+                          </span></h5>
+                          <button class="btn btn-sm btn-light font-weight-bold">Waiting...
+                          </button>
+                      </div>`;
+    }
+  }
+
+  if (!isHost) startGameButton.addClass("d-none");
+  else {
+    startGameButton.unbind("click");
+    startGameButton.click(event => {
+      if (event.which == 1) {
+        startGameButton.unbind("click").attr("disabled", true);
+        socket.emit("startGame", room.id);
+      }
+    });
+
+    startGameButton.removeClass("d-none");
+  }
+
+  if (room.player.length == room.amount)
+    $(`#startGame`).attr("disabled", false);
+  else $(`#startGame`).attr("disabled", true);
+
+  playerList.append(playerChild);
+  receiverTag.append(optionChild);
+
+  $(`#receiverSelect option`).removeAttr("selected");
+  $(`#receiverSelect option[value="${currentReceiver}"]`).prop(
+    "selected",
+    true
+  );
+};
+
+module.exports.removeEventListen = socket => {
+  socket.off("nightPharseFinish");
+  socket.off("voteResult");
+  socket.off("werewolfWin");
+  socket.off("villagerWin");
+  socket.off("dayPharseFinish");
+  socket.off("werewolfVote");
+  socket.off("playerDisconect");
 };

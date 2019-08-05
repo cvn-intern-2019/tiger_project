@@ -8,16 +8,16 @@ module.exports.init = server => {
   const loungeNsp = io.of("/lounge");
   const roomNsp = io.of("/room");
 
-  io.use((socket, next) => {
-    let token = socket.handshake.query.token;
-    let socketAuthToken = global.socketAuthToken;
-    if (token == socketAuthToken) {
-      return next();
-    }
-    console.log(`Failed authentication: ${socket.id}`);
-    socket.disconnect();
-    return;
-  });
+  // io.use((socket, next) => {
+  //   let token = socket.handshake.query.token;
+  //   let socketAuthToken = global.socketAuthToken;
+  //   if (token == socketAuthToken) {
+  //     return next();
+  //   }
+  //   console.log(`Failed authentication: ${socket.id}`);
+  //   socket.disconnect();
+  //   return;
+  // });
 
   // Handle for LOUNGE namespace
   loungeNsp.on("connection", socket => {
@@ -49,10 +49,12 @@ module.exports.init = server => {
     });
 
     socket.on("characterVote", data => {
+      console.log("dân vote");
       haldeEvent.characterVote(roomList, data, roomNsp);
     });
 
     socket.on("werewolfVote", data => {
+      console.log("Sói vote");
       haldeEvent.werewolfVote(roomList, data, roomNsp);
     });
 
@@ -61,7 +63,8 @@ module.exports.init = server => {
     });
 
     socket.on("dayPharseFinish", idRoom => {
-      haldeEvent.dayPharseFinish(roomList, idRoom, roomNsp);
+      haldeEvent.dayPharseFinish(roomList, idRoom, roomNsp, loungeNsp);
+      loungeNsp.emit("listRoom", roomList);
     });
 
     socket.on("disconnect", () => {

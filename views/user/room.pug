@@ -19,7 +19,8 @@ block content
 
                 #info.row.animated.slideInDown.faster.justify-content-between.mb-5.d-none
                     h1#phase.mr-5
-                        .badge.badge-lg.badge-light
+                        .night.badge.badge-lg.badge-light.animated.flip.faster Night
+                        .day.badge.badge-lg.badge-light.animated.flip.faster Day
                     .border.p-1.rounded
                         i.fas.fa-book-dead.fa-2x.mb-1
                         |&nbsp;<b>Dead list</b>
@@ -51,7 +52,7 @@ block content
                 b ID: 
                     #idRoom.m-3.badge.badge-light=idRoom
  
-                ul.nav.nav-tabs.text-secondary
+                ul#tab.nav.nav-tabs.text-secondary
                     li.nav-item
                         a#roomTab.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#room', data-toggle='tab') Room
                     li.nav-item

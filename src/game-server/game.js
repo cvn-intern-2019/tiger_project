@@ -72,6 +72,7 @@ module.exports.werewolfVote = (roomNsp, data, roomList) => {
   if (data.victim != null || data.victim != undefined)
     room.gameLog.deadList.push(data.victim);
   room.gameLog.log.push(logElement);
+  console.log("trả về sói vote");
   roomNsp.to(data.idRoom).emit("werewolfVote", room);
 };
 
@@ -116,32 +117,33 @@ module.exports.isDayPharseFinish = room => {
   return false;
 };
 
-module.exports.dayPharseConclusion = (room, roomNsp) => {
+module.exports.dayPharseConclusion = (roomList, room, roomNsp, loungeNsp) => {
   let voteList = room.gameLog.voteList;
   let voteMaxPlayer = helper.findMaxVotePlayer(voteList);
-
-  let victim = room.gameLog.characterRole.find(
-    c => c.username == voteMaxPlayer.target
-  );
-  if (victim != undefined) victim.status = constInit.DEAD;
-
   let logElement = {
     day: room.gameLog.currentDay,
     pharse: room.gameLog.currentPharse,
     voter: "All",
-    victim: victim.username
+    victim: null
   };
+  if (voteMaxPlayer != undefined) {
+    let victim = room.gameLog.characterRole.find(
+      c => c.username == voteMaxPlayer.target
+    );
+
+    if (victim != undefined) victim.status = constInit.DEAD;
+    logElement.victim = victim.target;
+  }
 
   room.gameLog.log.push(logElement);
-
-  console.log(room.gameLog);
-
   if (
     helper.checkWinCondition(room.gameLog.characterRole) ==
     constInit.WIN_CONDITION.werewolfWin
   ) {
     room.gameLog.timeFinish = new Date();
+    room.status = constInit.WAITING;
     roomNsp.to(room.id).emit("werewolfWin", room);
+    loungeNsp.emit("listRoom", roomList);
     return;
   }
 
@@ -150,7 +152,9 @@ module.exports.dayPharseConclusion = (room, roomNsp) => {
     constInit.WIN_CONDITION.villagerWin
   ) {
     room.gameLog.timeFinish = new Date();
+    room.status = constInit.WAITING;
     roomNsp.to(room.id).emit("villagerWin", room);
+    loungeNsp.emit("listRoom", roomList);
     return;
   }
 
