@@ -75,7 +75,21 @@ module.exports.disconnect = (idSocket, roomList, loungeNsp, roomNsp) => {
       if (room.status == constInit.WAITING)
         roomNsp.to(room.id).emit("initRoom", room);
       else {
-        roomNsp.to(room.id).emit("playerDisconect", room);
+        let character = room.gameLog.characterRole.find(
+          c => c.username == player.username
+        );
+        character.status = constInit.DEAD;
+        let logElement = {
+          day: room.gameLog.currentDay,
+          pharse: room.gameLog.currentPharse,
+          voter: "All (disconnect)",
+          victim: character.username
+        };
+        room.gameLog.log.push(logElement);
+        roomNsp.to(room.id).emit("playerDisconect", {
+          room: room,
+          character: character.username
+        });
       }
     }
     loungeNsp.emit("listRoom", roomList);
@@ -132,12 +146,12 @@ module.exports.startGame = (roomList, idRoom, loungeNsp, roomNsp) => {
     TIME--;
     if (TIME < 0) {
       clearInterval(countDown);
-      roomNsp.to(idRoom).emit("startGame", room);
+      roomNsp.to(room.id).emit("startGame", room);
     }
   }, 1000);
 };
 
-module.exports.characterVote = (roomList, data) => {
+module.exports.characterVote = (roomList, data, roomNsp) => {
   console.log(data);
   console.log(`===============================`);
   let room = roomList.find(r => r.id == data.idRoom);
@@ -174,7 +188,7 @@ module.exports.votePerson = (roomList, data, roomNsp) => {
   game.votePerson(roomNsp, data, roomList);
 };
 
-module.exports.dayPharseFinish = (roomList, idRoom) => {
+module.exports.dayPharseFinish = (roomList, idRoom, roomNsp) => {
   let room = roomList.find(r => r.id == idRoom);
   room.gameLog.resRole++;
   if (game.isDayPharseFinish(room)) game.dayPharseConclusion(room, roomNsp);

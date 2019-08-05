@@ -1,16 +1,27 @@
-
 .nav-tabs li:hover {
   cursor: pointer;
 }
 
-
 .tab-content {
   background: rgb(43, 42, 42);
-  height: 80%;
+  height: 65vh;
 }
 
 #room,
 #private {
   overflow-y: auto;
   word-wrap: break-word;
+}
+
+.player {
+  cursor: pointer;
+}
+
+.player:hover * {
+  opacity: 1;
+  transform: scale(1.08, 1.08);
+}
+
+.selectedPerson {
+  background-color: lightslategrey;
 }

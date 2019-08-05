@@ -1,5 +1,7 @@
 import "../layout";
 import "./animate.css";
+import "../notify";
+import "../styleNotify";
 
 const $ = require("jquery");
 const moment = require("moment");
@@ -145,18 +147,21 @@ $(document).ready(() => {
 
     for (let i = 0; i < room.amount; i++) {
       if (room.player[i] != undefined) {
-        playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
+        playerChild += `<div class="player d-flex flex-column mr-3 p-2 align-items-center mb-5" id="${
+          room.player[i].username
+        }">
                           <img class="m-1 border rounded" src="/avatar/${
                             room.player[i].username
-                          }" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+                          }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
                             <h5><span class="badge badge-danger d-none"> 0
                             </span></h5>
+                           
+                            <button class="btn btn-sm btn-light font-weight-bold">
                             ${
                               room.player[i].username == room.host
-                                ? `<i class="fas fa-1x fa-crown"/>`
+                                ? `<i class="fas fa-1x fa-crown mr-1"/>`
                                 : ``
                             }
-                            <button class="btn btn-light font-weight-bold">
                               ${room.player[i].username}
                             </button>
                         </div>`;
@@ -165,11 +170,11 @@ $(document).ready(() => {
             room.player[i].username
           }</option>`;
       } else {
-        playerChild += `<div class="player d-flex flex-column mr-5 align-items-center mb-5">
-                          <img class="m-1" src="http://placehold.it/150" onerror="javascript:this.src='http://placehold.it/150'" width="150px" height="150px">
+        playerChild += `<div class="player d-flex flex-column mr-3 align-items-center mb-5">
+                          <img class="m-1" src="http://placehold.it/80" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
                           <h5><span class="badge badge-danger d-none"> 0
                             </span></h5>
-                            <button class="btn btn-light font-weight-bold">Waiting...
+                            <button class="btn btn-sm btn-light font-weight-bold">Waiting...
                             </button>
                         </div>`;
       }
@@ -192,7 +197,6 @@ $(document).ready(() => {
     //   $(`#startGame`).attr("disabled", false);
     // else $(`#startGame`).attr("disabled", true);
 
-
     playerList.append(playerChild);
     receiverTag.append(optionChild);
 
@@ -207,6 +211,12 @@ $(document).ready(() => {
     if (event.which == 1) {
       $(`#receiverSelect option`).removeAttr("selected");
       $(`#receiverSelect option[value=all]`).prop("selected", true);
+    }
+  });
+
+  $("#playerAvatar").click(event => {
+    if (event.which == 1) {
+      alert("clicked");
     }
   });
 

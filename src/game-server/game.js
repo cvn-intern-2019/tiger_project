@@ -54,11 +54,11 @@ module.exports.nightPharseConclusion = (room, roomNsp) => {
     if (deadList.includes(c.username)) c.status = constInit.DEAD;
   });
 
-  roomNsp.to(room.id).emit("nightPharseFinish", room);
-
   room.gameLog.resRole = constInit.START;
-  deadList = new Array();
-  room.currentPharse = constInit.DAY;
+  room.gameLog.deadList = new Array();
+  room.gameLog.currentPharse = constInit.DAY;
+
+  roomNsp.to(room.id).emit("nightPharseFinish", room);
 };
 
 module.exports.werewolfVote = (roomNsp, data, roomList) => {
@@ -82,7 +82,7 @@ module.exports.isNightPharseFinish = room => {
     if (
       c.status == constInit.ALIVE &&
       c.character.team != constInit.TEAM.werewolf &&
-      c.character.id != 6
+      c.character.id != constInit.ID_CHARACTER.villager
     )
       survivors++;
   });
@@ -134,6 +134,8 @@ module.exports.dayPharseConclusion = (room, roomNsp) => {
 
   room.gameLog.log.push(logElement);
 
+  console.log(room.gameLog);
+
   if (
     helper.checkWinCondition(room.gameLog.characterRole) ==
     constInit.WIN_CONDITION.werewolfWin
@@ -156,7 +158,6 @@ module.exports.dayPharseConclusion = (room, roomNsp) => {
     helper.checkWinCondition(room.gameLog.characterRole) ==
     constInit.WIN_CONDITION.draw
   ) {
-    helper.isAlphawolfDead(room.gameLog.characterRole);
     room.gameLog.voteList = new Array();
     room.gameLog.resRole = constInit.START;
     room.gameLog.currentPharse = constInit.NIGHT;

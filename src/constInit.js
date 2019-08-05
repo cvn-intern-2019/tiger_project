@@ -4,8 +4,8 @@ const TEAM = {
   werewolf: 0,
   villager: 1
 };
-const PLAYING = false;
-const WAITING = true;
+const PLAYING = true;
+const WAITING = false;
 const AMOUNT_PLAYER = 7;
 const NIGHT = 0;
 const DAY = 1;

@@ -49,7 +49,7 @@ module.exports.init = server => {
     });
 
     socket.on("characterVote", data => {
-      haldeEvent.characterVote(roomList, data);
+      haldeEvent.characterVote(roomList, data, roomNsp);
     });
 
     socket.on("werewolfVote", data => {
@@ -61,7 +61,7 @@ module.exports.init = server => {
     });
 
     socket.on("dayPharseFinish", idRoom => {
-      haldeEvent.dayPharseFinish(roomList, idRoom);
+      haldeEvent.dayPharseFinish(roomList, idRoom, roomNsp);
     });
 
     socket.on("disconnect", () => {
