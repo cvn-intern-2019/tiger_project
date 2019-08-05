@@ -4,7 +4,7 @@ block sessionCSS
     link(rel="stylesheet", href="/stylesheets/lounge.css")
     script(src="/javascripts/lounge.js")
     script(src="/socket.io/socket.io.js")
-
+    meta(name="socketAuthToken" data-content=socketAuthToken)
 block content
     .container-fluid.py-5
         .row.px-3.py-2.flex-row-reverse

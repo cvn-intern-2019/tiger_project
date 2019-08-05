@@ -5,21 +5,8 @@ const bodyguard = require("./bodyguard");
 const hunter = require("./hunter");
 const witch = require("./witch");
 const helper = require("./helper");
+const constInit = require("../constInit");
 var userChar = null;
-const STATUS = {
-  alive: 1,
-  dead: 0
-};
-
-const ID_CHARACTER = {
-  alphaWerewof: 0,
-  werewolf: 1,
-  auraSeer: 2,
-  witch: 3,
-  bodyguard: 4,
-  hunter: 5,
-  villager: 6
-};
 
 module.exports.init = (room, socket) => {
   let infoTag = $(`#info`);
@@ -65,8 +52,8 @@ function pharseNight(room, socket) {
 
   werewolfTurn(room, socket);
   if (
-    userChar.character.id == ID_CHARACTER.werewolf ||
-    userChar.character.id == ID_CHARACTER.alphaWerewof
+    userChar.character.id == constInit.ID_CHARACTER.werewolf ||
+    userChar.character.id == constInit.ID_CHARACTER.alphaWerewof
   ) {
     helper.showAllie(room.gameLog.characterRole);
   }
@@ -78,24 +65,26 @@ function pharseNight(room, socket) {
 
     helper.setNotify("Your turn");
     countdown.then(() => {
-      if (userChar.character.id == ID_CHARACTER.auraSeer)
+      if (userChar.character.id == constInit.ID_CHARACTER.auraSeer)
         auraseer(socket, userChar, room);
-      if (userChar.character.id == ID_CHARACTER.witch)
+      if (userChar.character.id == constInit.ID_CHARACTER.witch)
         witch(socket, userChar, room);
-      if (userChar.character.id == ID_CHARACTER.bodyguard)
+      if (userChar.character.id == constInit.ID_CHARACTER.bodyguard)
         bodyguard(socket, userChar, room);
-      if (userChar.character.id == ID_CHARACTER.hunter)
+      if (userChar.character.id == constInit.ID_CHARACTER.hunter)
         hunter(socket, userChar, room);
     });
 
-    if (userChar.character.id == ID_CHARACTER.auraSeer) auraseerTurn();
-    if (userChar.character.id == ID_CHARACTER.witch) witchTurn(room);
-    if (userChar.character.id == ID_CHARACTER.bodyguard) bodyguardTurn(room);
-    if (userChar.character.id == ID_CHARACTER.hunter) hunterTurn();
+    if (userChar.character.id == constInit.ID_CHARACTER.auraSeer)
+      auraseerTurn();
+    if (userChar.character.id == constInit.ID_CHARACTER.witch) witchTurn(room);
+    if (userChar.character.id == constInit.ID_CHARACTER.bodyguard)
+      bodyguardTurn(room);
+    if (userChar.character.id == constInit.ID_CHARACTER.hunter) hunterTurn();
     if (
-      userChar.character.id == ID_CHARACTER.villager ||
-      userChar.character.id == ID_CHARACTER.werewolf ||
-      userChar.character.id == ID_CHARACTER.alphaWerewof
+      userChar.character.id == constInit.ID_CHARACTER.villager ||
+      userChar.character.id == constInit.ID_CHARACTER.werewolf ||
+      userChar.character.id == constInit.ID_CHARACTER.alphaWerewof
     )
       helper.selectPerson(false, userChar.username);
   });
@@ -110,8 +99,8 @@ function werewolfTurn(room, socket) {
     werewolf(socket, userChar, room.id);
   });
 
-  if (userChar.status == STATUS.alive) {
-    if (userChar.character.id == ID_CHARACTER.alphaWerewof) {
+  if (userChar.status == constInit.ALIVE) {
+    if (userChar.character.id == constInit.ID_CHARACTER.alphaWerewof) {
       helper.selectPerson(true, userChar.username);
     }
   } else {
@@ -120,7 +109,7 @@ function werewolfTurn(room, socket) {
 }
 
 var auraseerTurn = () => {
-  if (userChar.status == STATUS.alive) {
+  if (userChar.status == constInit.ALIVE) {
     helper.selectPerson(true, userChar.username);
     helper.setNotify("Choose one person who you want :D");
   } else {
@@ -129,7 +118,7 @@ var auraseerTurn = () => {
 };
 
 var witchTurn = room => {
-  if (userChar.status == STATUS.alive) {
+  if (userChar.status == constInit.ALIVE) {
     helper.selectPerson(true, userChar.username);
     let victim = room.gameLog.deadList[0];
     helper.witchNotify(
@@ -143,7 +132,7 @@ var witchTurn = room => {
 };
 
 var bodyguardTurn = room => {
-  if (userChar.status == STATUS.alive) {
+  if (userChar.status == constInit.ALIVE) {
     helper.selectPersonBodyguard(userChar.username, room);
     helper.setNotify("Choose one person who you want to protect :D");
   } else {
@@ -152,7 +141,7 @@ var bodyguardTurn = room => {
 };
 
 var hunterTurn = () => {
-  if (userChar.status == STATUS.alive) {
+  if (userChar.status == constInit.ALIVE) {
     helper.selectPerson(true, userChar.username);
     helper.setNotify("Choose one person who you want to be your target :D");
   } else {
@@ -165,8 +154,8 @@ function pharseDay(room, socket) {
   helper.setPharse(room.currentPharse);
   helper.selectPerson(false, userChar.username);
   if (
-    userChar.character.id == ID_CHARACTER.werewolf ||
-    userChar.character.id == ID_CHARACTER.alphaWerewof
+    userChar.character.id == constInit.ID_CHARACTER.werewolf ||
+    userChar.character.id == constInit.ID_CHARACTER.alphaWerewof
   ) {
     helper.showAllie(room.gameLog.characterRole);
   }
@@ -177,12 +166,12 @@ function pharseDay(room, socket) {
     socket.emit("dayPharseFinish", room.id);
   });
 
-  if (userChar.status == STATUS.alive) {
+  if (userChar.status == constInit.ALIVE) {
     helper.resetChoosen();
 
     if (
-      userChar.character.id == ID_CHARACTER.werewolf ||
-      userChar.character.id == ID_CHARACTER.alphaWerewof
+      userChar.character.id == constInit.ID_CHARACTER.werewolf ||
+      userChar.character.id == constInit.ID_CHARACTER.alphaWerewof
     )
       helper.setNotify("Let's discuss and try to hide yourself!");
     else helper.setNotify("Let's discuss and find Werewolf to kill!");
