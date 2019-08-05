@@ -9,7 +9,10 @@ $(document).ready(() => {
   const option = {
     reconnection: false,
     transports: ["websocket"],
-    upgrade: false
+    upgrade: false,
+    query: {
+      token: $(`meta[name=socketAuthToken]`).data("content")
+    }
   };
   var socket = io("/room", option);
   var idRoom = $(`#idRoom`).text();

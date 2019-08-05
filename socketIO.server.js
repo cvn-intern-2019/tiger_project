@@ -8,6 +8,17 @@ module.exports.init = server => {
   const loungeNsp = io.of("/lounge");
   const roomNsp = io.of("/room");
 
+  io.use((socket, next) => {
+    let token = socket.handshake.query.token;
+    let socketAuthToken = global.socketAuthToken;
+    if (token == socketAuthToken) {
+      return next();
+    }
+    console.log(`Failed authentication: ${socket.id}`);
+    socket.disconnect();
+    return;
+  });
+
   // Handle for LOUNGE namespace
   loungeNsp.on("connection", socket => {
     console.log(`=> Someone just connected: ${socket.id}`);
