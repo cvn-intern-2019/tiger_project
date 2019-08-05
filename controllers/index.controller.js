@@ -1,5 +1,6 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
+var helper = require("./helper");
 const usernameRegEx = /^[a-z]/;
 const userRegEx = /^[a-z0-9]*$/;
 const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;

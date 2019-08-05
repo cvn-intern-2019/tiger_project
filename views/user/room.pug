@@ -4,7 +4,7 @@ block sessionCSS
     script(src="/javascripts/room.js")
     script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
-
+    meta(name="socketAuthToken" data-content=socketAuthToken)
 block content
     .container-fluid.overflow-auto
         .row
