@@ -66,62 +66,50 @@ module.exports.postLogin = (req, res, next) => {
   });
 };
 
-var request = require("request");
-const CAPTCHA_KEY = {
-  site: "6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd",
-  secret: "6LdkO7EUAAAAAEPLUtGok-hdj8R4_oa6NhFvXQPR"
-};
-
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
 
-  captchaURL = `https://www.google.com/recaptcha/api/siteverify?secret=${
-    CAPTCHA_KEY.secret
-  }&response=${body.captcha}`;
+  if (usernameRegEx.test(body.username) === false) {
+    return res.json({
+      type: 0,
+      msg: "First character of username must be a alphabetic character!"
+    });
+  }
 
-  request.post(captchaURL, (error, response, data) => {
-    data = JSON.parse(data);
-    console.log(data);
-    if (data.success === false) {
-      return res.json({
-        type: 0,
-        msg: "Captcha validation failed."
-      });
-    }
-    if (usernameRegEx.test(body.username) === false) {
-      return res.json({
-        type: 0,
-        msg: "First character of username must be a alphabetic character!"
-      });
-    }
+  if (userRegEx.test(body.username) === false) {
+    return res.json({
+      type: 0,
+      msg: "Your username is invalid!"
+    });
+  }
 
-    if (userRegEx.test(body.username) === false) {
-      return res.json({
-        type: 0,
-        msg: "Your username is invalid!"
-      });
-    }
+  if (body.username.length < 5 || body.username.length > 20) {
+    return res.json({
+      type: 0,
+      msg: "Username must have length 5 - 20 characters!"
+    });
+  }
 
-    if (body.username.length < 5 || body.username.length > 20) {
-      return res.json({
-        type: 0,
-        msg: "Username must have length 5 - 20 characters!"
-      });
-    }
+  if (emailRegEx.test(body.email) === false) {
+    return res.json({
+      type: 0,
+      msg: "Your email is invalid!"
+    });
+  }
 
-    if (emailRegEx.test(body.email) === false) {
-      return res.json({
-        type: 0,
-        msg: "Your email is invalid!"
-      });
-    }
+  if (body.password.length < 5 || body.password.length > 20) {
+    return res.json({
+      type: 0,
+      msg: "Your password must have length 5 - 20 characters!"
+    });
+  }
 
-    if (body.password.length < 5 || body.password.length > 20) {
-      return res.json({
-        type: 0,
-        msg: "Your password must have length 5 - 20 characters!"
-      });
-    }
+  if (body.password !== body.confirmPassword) {
+    return res.json({
+      type: 0,
+      msg: "Your confirm password not match!"
+    });
+  }
 
   async.parallel(
     {
@@ -138,13 +126,13 @@ module.exports.postRegister = (req, res, next) => {
       if (data.usernameFound.length > 0) {
         return res.json({
           type: 0,
-          msg: "Username exists"
+          msg: "Username is existed"
         });
       }
       if (data.emailFound.length > 0) {
         return res.json({
           type: 0,
-          msg: "Email exists"
+          msg: "Email is exists"
         });
       }
       let newUser = new User({
@@ -161,6 +149,7 @@ module.exports.postRegister = (req, res, next) => {
     }
   );
 };
+
 module.exports.getLogout = (req, res, next) => {
   req.session.destroy(err => {
     if (err) next(err);
