@@ -163,4 +163,10 @@ $(document).ready(() => {
       $(`#controller`).toggle("swing");
     }
   });
+
+
+  $( "#help" ).click(function() {
+    //helper.wikiNotify();
+  $('.toast').toast('show');
+  });
 });

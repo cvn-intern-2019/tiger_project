@@ -2,10 +2,12 @@
   cursor: pointer;
 }
 
-.tab-content {
+.col-4 .tab-content {
   background: rgb(43, 42, 42);
   height: 65vh;
 }
+
+
 
 #room,
 #private {
@@ -24,4 +26,14 @@
 
 .selectedPerson {
   background-color: lightslategrey;
+  
 }
+
+#navHelp li a{
+  text-decoration: none;
+  color: black;
+}
+
+
+
+

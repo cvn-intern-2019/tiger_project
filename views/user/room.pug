@@ -16,23 +16,23 @@ block content
                     a#leaveRoom.btn.btn-outline-secondary.text-light.font-italic(href='/lounge')
                         i.fas.fa-sign-out-alt.align-middle
                         |&nbsp;Leave
+                    #help.ml-auto
+                        i.fa.fa-lightbulb.fa-2x.m-1
+
 
                 #info.row.animated.slideInDown.faster.justify-content-between.mb-5.d-none
                     h1#phase.mr-5
                         .night.badge.badge-lg.badge-light.animated.flip.faster Night
                         .day.badge.badge-lg.badge-light.animated.flip.faster Day
-                    .border.p-1.rounded
+                    .col
+                        h1#clock.display-4
+                            .badge.badge-light.text-dark 00:00
+                    .border.p-1.rounded.float-right
                         i.fas.fa-book-dead.fa-2x.mb-1
                         |&nbsp;<b>Dead list</b>
                         #deadList.d-flex
                             img.rounded.mr-2(src='http://placehold.it/50' width="50px" height="50px")
-                            //- img.border.rounded.m-2(src='http://placehold.it/50' width="50px" height="50px")
-                            //- img.border.rounded.m-2(src='http://placehold.it/50' width="50px" height="50px")
-                            //- img.border.rounded.m-2(src='http://placehold.it/50' width="50px" height="50px")
 
-                    .col
-                        h1#clock.display-4.float-right
-                            .badge.badge-light.text-dark 00:00
 
                 .row
                     #controller.col-4.p-3.border.light-white.border-right-0.d-none
@@ -48,11 +48,50 @@ block content
                                 img(src='http://placehold.it/80' width="80px").m-2#playerAvatar
                                 button.btn-sm.btn-light Waiting
 
+              
+                div(style='position: absolute; top: 1; right: 0;')
+                    .toast(role='alert', aria-live='assertive', aria-atomic='true', data-autohide='false')
+                        .toast-header
+                            strong.mr-auto About game
+                            small.text-muted just now
+                            button.ml-2.mb-1.close(type='button', data-dismiss='toast', aria-label='Close')
+                                span(aria-hidden='true') &times;
+                        .toast-body.text-dark
+                            .row
+                                .col-sm-3
+                                    ul#navHelp.nav.nav-tabs.font-weight-bold.m-1
+                                        li.active.p-1
+                                            a(href='#alphaWerewolf', data-toggle='tab') AlphaWerewolf
+                                        li.p-1
+                                            a(href='#werewolf', data-toggle='tab') Werewolf
+                                        li.p-1
+                                            a(href='#auraSeer', data-toggle='tab') AuraSeer
+                                        li.p-1
+                                             a(href='#witch', data-toggle='tab') Witch
+                                        li.p-1
+                                            a(href='#bodyguard', data-toggle='tab') Bodyguard
+                                        li.p-1
+                                            a(href='#hunter', data-toggle='tab') Hunter
+                                        li.p-1
+                                             a(href='#villager', data-toggle='tab') Villager
+                                .col-sm-9
+                                    .tab-content.m-3.text-center.p-4
+                                        #alphaWerewolf.tab-pane.active Eat a villager each night. Only alpha werewolf can choose victim.
+                                        #werewolf.tab-pane Eat a villager each night.
+                                        #auraSeer.tab-pane At night, find out if someone has a non-ordinary role and what it is.
+                                        #witch.tab-pane Kill or heal a player, once each per game.
+                                        #bodyguard.tab-pane Choose a different player each night to protect. That player cannot be killed that night.
+                                        #hunter.tab-pane If you are killed, take someone down with you.
+                                        #villager.tab-pane The Villagers are a team seeking to kill all of the Werewolves. A Villager is a player character with no abilities, but the Village also includes any role not on the same team of the Werewolves, like the Guard, the Seer, the Witch, and others.
+
+                            
+                            
 
             .col-4.mb-5
-                b ID: 
+                h6 ID: 
                     #idRoom.m-3.badge.badge-light=idRoom
- 
+    
+        
                 ul#tab.nav.nav-tabs.text-secondary
                     li.nav-item
                         a#roomTab.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#room', data-toggle='tab') Room
