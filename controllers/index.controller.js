@@ -2,6 +2,8 @@ var crypto = require("crypto");
 var User = require("../models/user.model");
 var helper = require("./helper");
 var async = require("async");
+var request = require("request");
+
 const usernameRegEx = /^[a-z]/;
 const userRegEx = /^[a-z0-9]*$/;
 const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
@@ -16,6 +18,10 @@ var hashPassword = (username, password) => {
     .createHmac("SHA256", secret)
     .update(password)
     .digest("hex");
+};
+const CAPTCHA = {
+  site: "6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd",
+  sekret: "6LdkO7EUAAAAAEPLUtGok-hdj8R4_oa6NhFvXQPR"
 };
 
 //===============================================================================
@@ -68,6 +74,28 @@ module.exports.postLogin = (req, res, next) => {
 
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
+
+  if (body.captcha == null) {
+    return res.json({
+      type: 0,
+      msg: "No catcha token in request. Please refresh the page."
+    });
+  }
+
+  captchaLink = `https://www.google.com/recaptcha/api/siteverify?secret=${
+    CAPTCHA.sekret
+  }&response=${body.captcha}`;
+
+  request.post(captchaLink, (error, response, content) => {
+    content = JSON.parse(content);
+    console.log(content);
+    if (body.success == false) {
+      return res.json({
+        type: 0,
+        msg: "Captcha is invalid. Please refresh page."
+      });
+    }
+  });
 
   if (usernameRegEx.test(body.username) === false) {
     return res.json({
