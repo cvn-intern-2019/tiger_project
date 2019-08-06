@@ -219,6 +219,13 @@ module.exports.listPlayerPlaying = room => {
   });
   deadListTag.append(deadListChild);
   playerList.append(playerChild);
+
+  this.showAllie(room.gameLog.characterRole);
+  this.showMyself(
+    $(`#username`)
+      .text()
+      .trim()
+  );
 };
 
 module.exports.votePerson = (room, socket, userChar) => {
@@ -350,82 +357,6 @@ module.exports.endGame = (room, team) => {
   $(`body`).append(modal);
   $(`#winModal`).modal("show");
   this.switchLayoutRoom(constInit.WAITING);
-};
-
-module.exports.initWaitingRoom = (room, socket) => {
-  let username = $(`#username`).text();
-  let receiverTag = $(`#receiverSelect`);
-  let isHost = username == room.host ? true : false;
-  let playerChild = ``;
-  let playerList = $(`#playerList`);
-  let optionChild = `<option value="all">All</option>`;
-  let startGameButton = $(`#startGame`);
-  let currentReceiver = receiverTag.val();
-  playerList.empty();
-  receiverTag.empty();
-
-  for (let i = 0; i < room.amount; i++) {
-    if (room.player[i] != undefined) {
-      playerChild += `<div class="player d-flex flex-column mr-3 p-2 align-items-center mb-5" id="${
-        room.player[i].username
-      }">
-                        <img class="m-1 border rounded" src="/avatar/${
-                          room.player[i].username
-                        }" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
-                          <h5>
-                            <span class="badge badge-danger d-none">0</span>
-                          </h5>          
-                          <button class="btn btn-sm btn-light font-weight-bold">
-                          ${
-                            room.player[i].username == room.host
-                              ? `<i class="fas fa-1x fa-crown mr-1"/>`
-                              : ``
-                          }
-                            ${room.player[i].username}
-                          </button>
-                      </div>`;
-
-      if (room.player[i].username != username)
-        optionChild += `<option value="${room.player[i].idSocket}">${
-          room.player[i].username
-        }</option>`;
-    } else {
-      playerChild += `<div class="player d-flex flex-column mr-3 align-items-center mb-5">
-                        <img class="m-1" src="http://placehold.it/80" onerror="javascript:this.src='http://placehold.it/80'" width="80px" height="80px">
-                        <h5>
-                          <span class="badge badge-danger d-none">0</span>
-                        </h5>
-                          <button class="btn btn-sm btn-light font-weight-bold">Waiting...
-                          </button>
-                      </div>`;
-    }
-  }
-
-  if (!isHost) startGameButton.addClass("d-none");
-  else {
-    startGameButton.unbind("click");
-    startGameButton.click(event => {
-      if (event.which == 1) {
-        startGameButton.unbind("click").attr("disabled", true);
-        socket.emit("startGame", room.id);
-      }
-    });
-
-    startGameButton.removeClass("d-none");
-  }
-
-  if (room.player.length == room.amount)
-    $(`#startGame`).attr("disabled", false);
-  else $(`#startGame`).attr("disabled", true);
-
-  playerList.append(playerChild);
-  receiverTag.append(optionChild);
-
-  $(`#receiverSelect option`).removeAttr("selected");
-  $(`#receiverSelect option[value="${currentReceiver}"]`).prop(
-    "selected",
-    true
-  );
 };
 
 module.exports.removeEventListen = socket => {

@@ -118,37 +118,39 @@ module.exports.joinRoom = (roomList, socket, data, loungeNsp, roomNsp) => {
 
 module.exports.startGame = (roomList, idRoom, loungeNsp, roomNsp) => {
   let room = roomList.find(r => r.id == idRoom);
-  console.log(room);
-  let randomRole = game.initGame(room.player, roomNsp);
-  let gameLog = {
-    timeStart: new Date(),
-    timeFinish: null,
-    currentDay: 1,
-    currentPharse: constInit.NIGHT,
-    log: new Array(),
-    deadList: new Array(),
-    characterRole: randomRole,
-    resRole: constInit.START,
-    voteList: new Array()
-  };
-  room.status = constInit.PLAYING;
-  room.gameLog = gameLog;
-  loungeNsp.emit("listRoom", roomList);
 
-  var TIME = 1;
-  var countDown = setInterval(() => {
-    let sysMsg = {
-      sender: "System to All",
-      receiver: room.id,
-      msg: `The game will start in ${TIME} second(s)...`
+  if (room != undefined) {
+    let randomRole = game.initGame(room.player, roomNsp);
+    let gameLog = {
+      timeStart: new Date(),
+      timeFinish: null,
+      currentDay: 1,
+      currentPharse: constInit.NIGHT,
+      log: new Array(),
+      deadList: new Array(),
+      characterRole: randomRole,
+      resRole: constInit.START,
+      voteList: new Array()
     };
-    roomNsp.to(room.id).emit("recMsg", sysMsg);
-    TIME--;
-    if (TIME < 0) {
-      clearInterval(countDown);
-      roomNsp.to(room.id).emit("startGame", room);
-    }
-  }, 1000);
+    room.status = constInit.PLAYING;
+    room.gameLog = gameLog;
+    loungeNsp.emit("listRoom", roomList);
+
+    var TIME = 1;
+    var countDown = setInterval(() => {
+      let sysMsg = {
+        sender: "System to All",
+        receiver: room.id,
+        msg: `The game will start in ${TIME} second(s)...`
+      };
+      roomNsp.to(room.id).emit("recMsg", sysMsg);
+      TIME--;
+      if (TIME < 0) {
+        clearInterval(countDown);
+        roomNsp.to(room.id).emit("startGame", room);
+      }
+    }, 1000);
+  }
 };
 
 module.exports.characterVote = (roomList, data, roomNsp) => {
@@ -187,9 +189,11 @@ module.exports.votePerson = (roomList, data, roomNsp) => {
 
 module.exports.dayPharseFinish = (roomList, idRoom, roomNsp, loungeNsp) => {
   let room = roomList.find(r => r.id == idRoom);
-  room.gameLog.resRole++;
-  if (game.isDayPharseFinish(room))
-    game.dayPharseConclusion(roomList, room, roomNsp, loungeNsp);
+  if (room != undefined) {
+    room.gameLog.resRole++;
+    if (game.isDayPharseFinish(room))
+      game.dayPharseConclusion(roomList, room, roomNsp, loungeNsp);
+  }
 };
 
 module.exports.sendMsg = (data, roomNsp) => {

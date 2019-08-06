@@ -1,6 +1,6 @@
 const constInit = require("../constInit");
 
-module.exports = (room, data, roomNsp) => {
+module.exports.vote = (room, data, roomNsp) => {
   let logElement = {
     date: room.gameLog.currentDay,
     pharse: room.gameLog.currentPharse,
