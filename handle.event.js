@@ -118,6 +118,7 @@ module.exports.joinRoom = (roomList, socket, data, loungeNsp, roomNsp) => {
 
 module.exports.startGame = (roomList, idRoom, loungeNsp, roomNsp) => {
   let room = roomList.find(r => r.id == idRoom);
+  console.log(room);
   let randomRole = game.initGame(room.player, roomNsp);
   let gameLog = {
     timeStart: new Date(),

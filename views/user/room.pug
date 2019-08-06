@@ -16,8 +16,7 @@ block content
                     a#leaveRoom.btn.btn-outline-secondary.text-light.font-italic(href='/lounge')
                         i.fas.fa-sign-out-alt.align-middle
                         |&nbsp;Leave
-                    #help.ml-auto
-                        i.fa.fa-lightbulb.fa-2x.m-1
+                    
 
 
                 #info.row.justify-content-between.mb-5.d-none
@@ -77,13 +76,13 @@ block content
                                         li.p-1
                                              a(href='#villager', data-toggle='tab') Villager
                                 .col-sm-9
-                                    .tab-content.m-3.text-center.p-4
-                                        #alphaWerewolf.tab-pane.active Eat a villager each night. Only alpha werewolf can choose victim.
-                                        #werewolf.tab-pane Eat a villager each night.
-                                        #auraSeer.tab-pane At night, find out if someone has a non-ordinary role and what it is.
-                                        #witch.tab-pane Kill or heal a player, once each per game.
-                                        #bodyguard.tab-pane Choose a different player each night to protect. That player cannot be killed that night.
-                                        #hunter.tab-pane If you are killed, take someone down with you.
+                                    .tab-content.m-3.text-center.p-4.text-dark
+                                        #alphaWerewolf.tab-pane.active Eat a villager each night. Only alpha werewolf can choose victim.If alphawerewolf dead, werewolf will become a new alphawerewolf.
+                                        #werewolf.tab-pane Eat a villager each night(Just discuss with alphawerewolf). If alphawerewolf dead, werewolf will become a new alphawerewolf.
+                                        #auraSeer.tab-pane At night, find out if someone has a non-ordinary role and what it is.System will send a message contain result (this person is werewolf or not )
+                                        #witch.tab-pane Kill or heal a player, once each per game (If witch used all of kill/heal power, witch will be the same as villager)
+                                        #bodyguard.tab-pane Choose a different player each night to protect. That player cannot be killed that night(Absolutely can protect myself)
+                                        #hunter.tab-pane If you are killed, take someone down with you (if tonight, you was killed, tomorow this person and you will be dead) 
                                         #villager.tab-pane The Villagers are a team seeking to kill all of the Werewolves. A Villager is a player character with no abilities, but the Village also includes any role not on the same team of the Werewolves, like the Guard, the Seer, the Witch, and others.
 
                             
@@ -92,7 +91,8 @@ block content
             .col-4.mb-5
                 h6 ID: 
                     #idRoom.m-3.badge.badge-light=idRoom
-    
+                #help.ml-auto
+                    i.fa.fa-lightbulb.fa-2x.m-1
         
                 ul#tab.nav.nav-tabs.text-secondary
                     li.nav-item
