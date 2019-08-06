@@ -9,6 +9,10 @@ const moment = require("moment");
 const game = require("../game-client/game");
 const helper = require("../game-client/helper");
 
+window.onbeforeunload = function() {
+  return "Leave?";
+};
+
 $(document).ready(() => {
   const option = {
     reconnection: false,

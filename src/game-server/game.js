@@ -21,7 +21,7 @@ module.exports.nightPharseConclusion = (room, roomNsp) => {
 
   let logItem = log.find(
     l =>
-      l.day == room.gameLog.currentDay &&
+      l.date == room.gameLog.currentDay &&
       l.pharse == room.gameLog.currentPharse &&
       l.voter == bodyguard.username
   );
@@ -37,7 +37,7 @@ module.exports.nightPharseConclusion = (room, roomNsp) => {
   if (hunter.status == constInit.ALIVE && deadList.includes(hunter.username)) {
     logItem = log.find(
       l =>
-        l.day == room.gameLog.currentDay &&
+        l.date == room.gameLog.currentDay &&
         l.pharse == room.gameLog.currentPharse &&
         l.voter == hunter.username
     );
@@ -65,7 +65,7 @@ module.exports.nightPharseConclusion = (room, roomNsp) => {
 module.exports.werewolfVote = (roomNsp, data, roomList) => {
   let room = roomList.find(r => r.id == data.idRoom);
   let logElement = {
-    day: room.gameLog.currentDay,
+    date: room.gameLog.currentDay,
     pharse: room.gameLog.currentPharse,
     voter: data.voter,
     victim: data.victim
@@ -121,7 +121,7 @@ module.exports.dayPharseConclusion = (roomList, room, roomNsp, loungeNsp) => {
   let voteList = room.gameLog.voteList;
   let voteMaxPlayer = helper.findMaxVotePlayer(voteList);
   let logElement = {
-    day: room.gameLog.currentDay,
+    date: room.gameLog.currentDay,
     pharse: room.gameLog.currentPharse,
     voter: "All",
     victim: null

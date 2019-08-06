@@ -26,6 +26,49 @@ block content
                         p Maximum: 800KB
                         button#submitChange.btn.btn-dark(type='submit') Save
                     
+    each h,index in histories
+        .modal.fade(id='history'+index, tabindex='-1', role='dialog', aria-labelledby='history'+index, aria-hidden='true')
+            .modal-dialog.modal-lg
+                .modal-content.text-dark
+                    .modal-header
+                        h1.font-weight-light History Detail
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                    .modal-body
+                        .row.d-flet.justify-content-center.mb-3
+                            h2=h.result==1?"VILLAGER WIN!":"WEREWOLF WIN!"
+                        .row
+                            .col
+                                h4.font-weight-bold Roles
+                                table.table
+                                    thead
+                                        tr
+                                            th(scope='col') #
+                                            th(scope='col') Player
+                                            th(scope='col') Character
+                                    tbody
+                                        each p, pIndex in h.players
+                                            tr(class=p.username==username?`table-primary`:``)
+                                                th(scope="row")=pIndex+1
+                                                td
+                                                    a(href="/user/"+p.username)=p.username
+                                                td=p.character
+                            .col
+                                h4.font-weight-bold Event details                                     
+                                table.table
+                                    thead
+                                        tr
+                                            th(scope='col') Date
+                                            th(scope='col') Pharse
+                                            th(scope='col') Event
+                                    tbody
+                                        each d in h.details
+                                            tr(class=d.voter==username||d.voter=="All"?`table-primary`:``)
+                                                th(scope="row")=d.date
+                                                td #{d.pharse==1?"Day":"Night"}
+                                                td 
+                                                    p #{d.voter.includes("All")==true?`All players `:d.voter} #{d.victim==null?`didn't choose anyone.`:`choose ${d.victim}.`}
+                                                    p #{d.saveResult != undefined? (d.saveResult==null? `${d.voter} didn't save anyone`:`${d.voter} save ${d.saveResult}`):``}
 
     .container-fluid.text-light.overflow-auto.mb-5
         .my-5.row
@@ -78,46 +121,28 @@ block content
                                     |&nbsp;&nbsp;#{userData.email==null ? "No information": userData.email}                     
                     #history.tab-pane.p-4.mb-5
                         h1.font-weight-light Play history
-                        table.table.table-hover.table-striped
+                        table.table.table-hover.table-striped.text-center
                             thead
                                 tr
                                     th(scope='col') #
-                                    th(scope='col') UserName
-                                    th(scope='col') StartGame
-                                    th(scope='col') EndGame
-                                    th(scope='col') ViewDetail
-
+                                    th(scope='col') Time Start
+                                    th(scope='col') Time Finish
+                                    th(scope='col') Result
+                                    th(scope='col') Action
                             tbody
-                                tr
-                                    th(scope='row') 1
-                                        td Mark
-                                        td Otto
-                                        td @mdo
-                                        td 
-                                            button.btn.btn-dark
-                                                i.fas.fa-info-circle
-
-                                tr
-                                    th(scope='row') 2
-                                        td Jacob
-                                        td Thornton
-                                        td @fat
-                                        td 
-                                            i.fas.fa-info-circle view
-                                tr
-                                    th(scope='row') 3
-                                        td Larry
-                                        td the Bird
-                                        td @twitter
-                                        td 
-                                            i.fas.fa-info-circle view
-                                tr
-                                    th(scope='row') 3
-                                        td Larry
-                                        td the Bird
-                                        td @twitter
-                                        td 
-                                            i.fas.fa-info-circle view
+                                each h,index in histories
+                                    tr(class=h.result==1?`table-success`:`table-danger`)
+                                        th(scope='row')=index+1
+                                        td=h.timeStart_formatted
+                                        td=h.timeFinish_formatted
+                                        td
+                                            if h.result == 1
+                                                b Villager WIN
+                                            else
+                                                b Werewolf WIN
+                                        td
+                                            button.btn.btn-dark.btn-block(type="button" data-toggle="modal" data-target='#history'+index) Detail
+                                
 
                     #edit.tab-pane.p-4.mb-5
                         h1.font-weight-light Edit profile
