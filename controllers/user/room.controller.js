@@ -9,12 +9,9 @@ module.exports.getRoomPage = (req, res, next) => {
   if (socketIOServer.isPlaying(idRoom)) return res.redirect("/lounge");
 
   let username = req.session.username;
-  global.socketAuthToken = helper.generateToken();
-
   socketIOServer.joinRoom(idRoom, username);
   res.render("user/room", {
     idRoom: idRoom,
-    username: req.session.username,
-    socketAuthToken: socketAuthToken
+    username: req.session.username
   });
 };

@@ -4,6 +4,8 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
 const favicon = require("serve-favicon");
+const MongoStore = require("connect-mongo")(session);
+const mongoose = require("mongoose");
 
 module.exports = app => {
   // view engine setup
@@ -27,10 +29,12 @@ module.exports = app => {
   //session setup
   app.use(
     session({
+      store: new MongoStore({ mongooseConnection: mongoose.connection }),
       key: "user_sid",
       secret: "tiger team",
-      resave: false,
-      saveUninitialized: true,
+      resave: true,
+      saveUninitialized: false,
+      unset: "destroy",
       cookie: {
         maxAge: 1000 * 60 * 60 * 168
       }

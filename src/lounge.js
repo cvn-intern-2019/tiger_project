@@ -32,10 +32,7 @@ $(document).ready(() => {
   const option = {
     reconnection: false,
     transports: ["websocket"],
-    upgrade: false,
-    query: {
-      token: $(`meta[name=socketAuthToken]`).data("content")
-    }
+    upgrade: false
   };
   var socket = io("/lounge", option);
 

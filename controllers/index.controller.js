@@ -1,5 +1,6 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
+var Session = require("../models/session.model");
 var helper = require("./helper");
 var async = require("async");
 var request = require("request");
