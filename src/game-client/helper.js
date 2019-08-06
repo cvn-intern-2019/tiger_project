@@ -86,15 +86,17 @@ module.exports.showMyself = username => {
 
 module.exports.setPharse = (date, pharse) => {
   if (pharse == constInit.NIGHT) {
-    $(`#phase .night`)
-      .text(`Date: ${date} - Night`)
-      .show();
     $(`#phase .day`).hide();
+    $(`#phase .night`).text(`Date: ${date} - Night`);
+    this.handleAddAnimation("#phase .night", "flip fast", () => {
+      $(`#phase .night`).show();
+    });
   } else {
-    $(`#phase .day`)
-      .text(`Date: ${date} - Day`)
-      .show();
     $(`#phase .night`).hide();
+    $(`#phase .day`).text(`Date: ${date} - Day`);
+    this.handleAddAnimation("#phase .day", "flip fast", () => {
+      $(`#phase .day`).show();
+    });
   }
 };
 
@@ -375,9 +377,29 @@ module.exports.switchLayoutRoom = switchLayoutRoom = flag => {
     infoTag.removeClass("d-none");
     controllerTag.removeClass("d-none");
     controllerToggleBtn.removeClass("d-none");
+    this.handleAddAnimation("#info", "slideInDown faster");
+    this.handleAddAnimation("#controller", "slideInDown faster");
   } else {
-    infoTag.addClass("d-none");
-    controllerTag.addClass("d-none");
-    controllerToggleBtn.addClass("d-none");
+    this.handleAddAnimation("#info", "slideOutUp faster", () => {
+      infoTag.addClass("d-none");
+    });
+    this.handleAddAnimation("#controller", "slideOutLeft faster", () => {
+      controllerTag.addClass("d-none");
+      controllerToggleBtn.addClass("d-none");
+    });
   }
+};
+
+module.exports.handleAddAnimation = function(element, animationName, callback) {
+  const node = $(element);
+  node.addClass(`animated ${animationName}`);
+
+  function handleAnimationEnd() {
+    node.removeClass(`animated ${animationName}`);
+    node.unbind("animationend", handleAnimationEnd);
+
+    if (typeof callback === "function") callback();
+  }
+
+  node.bind("animationend", handleAnimationEnd);
 };
