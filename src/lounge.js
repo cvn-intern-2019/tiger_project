@@ -2,6 +2,7 @@ import "./layout";
 import "./user/animate.css";
 
 const $ = require("jquery");
+const constInit = require("./constInit");
 
 let searchRoomEvent = function() {
   let keyword = $("#search_input")
@@ -29,7 +30,12 @@ let searchRoomEvent = function() {
 
 $(document).ready(() => {
   const option = {
-    // reconnection: false
+    reconnection: false,
+    transports: ["websocket"],
+    upgrade: false,
+    query: {
+      token: $(`meta[name=socketAuthToken]`).data("content")
+    }
   };
   var socket = io("/lounge", option);
 
@@ -49,7 +55,7 @@ $(document).ready(() => {
                           <div class="badge badge-dark">ID: ${r.id}
                           </div> ${r.name}
                           ${
-                            r.status == false
+                            r.status == constInit.WAITING
                               ? `<div class="badge badge-warning float-right">Waiting</div>`
                               : `<div class="badge badge-success float-right">Playing</div>`
                           }
@@ -64,7 +70,8 @@ $(document).ready(() => {
                             ${r.player.length}/${r.amount}
                           </p>
                           <a class="btn btn-dark ${
-                            r.player.length == r.amount || r.status == true
+                            r.player.length == r.amount ||
+                            r.status == constInit.PLAYING
                               ? "disabled"
                               : ""
                           }" href="/room/${r.id}"> Join 

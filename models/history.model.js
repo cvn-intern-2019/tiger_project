@@ -9,15 +9,19 @@ var historySchema = new Schema({
   result: { type: Number, required: true, enum: [0, 1] },
   players: [
     {
-      playerId: { type: Schema.Types.ObjectId, ref: "User", required: false },
-      characterId: {
-        type: Schema.Types.ObjectId,
-        ref: "Character",
-        required: true
-      }
+      username: { type: String, required: false },
+      character: { type: String, required: false },
+      _id: false
     }
   ],
-  details: { type: String, required: false }
+  details: [
+    {
+      day: { type: Number, min: 1, required: false },
+      pharse: { type: Number, enum: [0, 1], required: false },
+      voter: { type: String, required: false },
+      victim: { type: String, required: false }
+    }
+  ]
 });
 
 // virtual attribute timeStart_formatted

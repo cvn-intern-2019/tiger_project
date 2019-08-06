@@ -1,5 +1,7 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
+var helper = require("./helper");
+var async = require("async");
 const usernameRegEx = /^[a-z]/;
 const userRegEx = /^[a-z0-9]*$/;
 const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
@@ -121,39 +123,43 @@ module.exports.postRegister = (req, res, next) => {
       });
     }
 
-    if (body.password !== body.confirmPassword) {
-      return res.json({
-        type: 0,
-        msg: "Your confirm password not match!"
+  async.parallel(
+    {
+      usernameFound: function(callback) {
+        User.find({ username: body.username }, callback);
+      },
+      emailFound: function(callback) {
+        User.find({ email: body.email }, callback);
+      }
+    },
+    (err, data) => {
+      if (err) next(err);
+
+      if (data.usernameFound.length > 0) {
+        return res.json({
+          type: 0,
+          msg: "Username exists"
+        });
+      }
+      if (data.emailFound.length > 0) {
+        return res.json({
+          type: 0,
+          msg: "Email exists"
+        });
+      }
+      let newUser = new User({
+        username: body.username,
+        email: body.email,
+        password: hashPassword(body.username, body.password)
+      });
+      newUser.save(err => {
+        if (err) return err;
+        return res.json({
+          type: 1
+        });
       });
     }
-
-    User.findOne(
-      { username: body.username, email: body.email },
-      (err, user) => {
-        if (err) next(err);
-        if (user != undefined || user != null) {
-          return res.json({
-            type: 0,
-            msg: "Your username or email already exists!"
-          });
-        }
-      }
-    );
-
-    let newUser = new User({
-      username: body.username,
-      email: body.email,
-      password: hashPassword(body.username, body.password)
-    });
-
-    newUser.save(err => {
-      if (err) next(err);
-      return res.json({
-        type: 1
-      });
-    });
-  });
+  );
 };
 module.exports.getLogout = (req, res, next) => {
   req.session.destroy(err => {
