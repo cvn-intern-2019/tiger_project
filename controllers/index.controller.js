@@ -110,12 +110,21 @@ module.exports.postRegister = (req, res, next) => {
     });
   }
 
-  User.findOne({ username: body.username, email: body.email }, (err, user) => {
+  User.findOne({ username: body.username }, (err, user) => {
     if (err) next(err);
     if (user != undefined) {
       return res.json({
         type: 0,
-        msg: "Your username or email already exists!"
+        msg: "Your username already exists!"
+      });
+    }
+  });
+  User.findOne({ email: body.email }, (err, user) => {
+    if (err) next(err);
+    if (user != undefined) {
+      return res.json({
+        type: 0,
+        msg: "Your email already exists!"
       });
     }
   });
