@@ -2,7 +2,7 @@ const constInit = require("../constInit");
 
 module.exports = (room, data, roomNsp) => {
   let logElement = {
-    day: room.gameLog.currentDay,
+    date: room.gameLog.currentDay,
     pharse: room.gameLog.currentPharse,
     voter: data.voter,
     victim: data.victim

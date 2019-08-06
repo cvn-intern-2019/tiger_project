@@ -9,6 +9,10 @@ const moment = require("moment");
 const game = require("../game-client/game");
 const helper = require("../game-client/helper");
 
+window.onbeforeunload = function() {
+  return "Leave?";
+};
+
 $(document).ready(() => {
   const option = {
     reconnection: false,
@@ -159,8 +163,16 @@ $(document).ready(() => {
   $(`#controllerToggle`).click(function(event) {
     if (event.which == 1) {
       let arrow = $(this).text();
-      $(this).text(arrow == `<` ? ">" : "<");
-      $(`#controller`).toggle("swing");
+      if (arrow == "<") {
+        helper.handleAddAnimation("#controller", "slideOutLeft faster", () => {
+          $("#controller").addClass("d-none");
+        });
+        $(this).text(">");
+      } else {
+        $("#controller").removeClass("d-none");
+        helper.handleAddAnimation("#controller", "slideInLeft faster");
+        $(this).text("<");
+      }
     }
   });
 
