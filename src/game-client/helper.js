@@ -25,16 +25,13 @@ module.exports.countDown = (minutes, seconds) => {
   });
 };
 
-module.exports.setNotify = (content, style, position,autoHideDelay) => {
-  $.notify(content, 
-    { style: style, 
-      position: position,
-      autoHideDelay : autoHideDelay
-     });
+module.exports.setNotify = (content, style, position, autoHideDelay) => {
+  $.notify(content, {
+    style: style,
+    position: position,
+    autoHideDelay: autoHideDelay
+  });
 };
-
-
-
 
 module.exports.setCharacter = userChar => {
   let characterTag = $(`#character`);
@@ -56,17 +53,19 @@ module.exports.selectPerson = (flag, username) => {
       .unbind("click")
       .click(event => {
         if (event.which == 1) {
-          $(`#playerList .player`).removeClass("selectedPerson");
           if ($(event.currentTarget).hasClass("selectedPerson")) {
             $(event.currentTarget).removeClass("selectedPerson");
             return;
           }
-          if ($(event.currentTarget).attr("id") != username)
+          if ($(event.currentTarget).attr("id") != username) {
+            $(`#playerList .player`).removeClass("selectedPerson");
             $(event.currentTarget).addClass("selectedPerson");
-          else {
+          } else {
             this.setNotify(
               "You can't choose yourselft (except Bodyguard)!",
-              "warning","top center", "5000"
+              "warning",
+              "top center",
+              "5000"
             );
           }
         }
@@ -95,25 +94,26 @@ module.exports.setPharse = (date, pharse) => {
   if (pharse == constInit.NIGHT) {
     $(`#phase .day`).hide();
     $(`#phase .night`).text(`Date: ${date} - Night`);
-    this.handleAddAnimation("#phase .night", "flip fast", () => {
-      $(`#phase .night`).show();
-    });
+    this.handleAddAnimation("#phase .night", "flip fast");
+    $(`#phase .night`).show();
   } else {
     $(`#phase .night`).hide();
     $(`#phase .day`).text(`Date: ${date} - Day`);
-    this.handleAddAnimation("#phase .day", "flip fast", () => {
-      $(`#phase .day`).show();
-    });
+    this.handleAddAnimation("#phase .day", "flip fast");
+    $(`#phase .day`).show();
   }
 };
 
 module.exports.witchNotify = (victim, userChar) => {
-
-  if(userChar.character.save <= 0 && userChar.character.save <= 0){
-    this.setNotify(`You can not SAVE or KILL anyone !!!`, "notify", "bottom left","20000");
+  if (userChar.character.save <= 0 && userChar.character.save <= 0) {
+    this.setNotify(
+      `You can not SAVE or KILL anyone !!!`,
+      "notify",
+      "bottom left",
+      "20000"
+    );
     this.selectPerson(false, userChar.username);
-  } 
-  else{
+  } else {
     if (userChar.character.save > 0) {
       if (victim != undefined || victim != null) {
         $("#" + victim).notify(
@@ -126,17 +126,25 @@ module.exports.witchNotify = (victim, userChar) => {
             autoHideDelay: "30000"
           }
         );
-      }
-      else {
-        this.setNotify(`Tonight no one was killed by Werewolf!`, "notify", "bottom left","20000");
+      } else {
+        this.setNotify(
+          `Tonight no one was killed by Werewolf!`,
+          "notify",
+          "bottom left",
+          "20000"
+        );
       }
     }
     if (userChar.character.save > 0) {
-      this.setNotify(`Choose one person to kill if you want!`, "notify","bottom left","20000");
+      this.setNotify(
+        `Choose one person to kill if you want!`,
+        "notify",
+        "bottom left",
+        "20000"
+      );
       this.selectPerson(true, userChar.username);
     }
   }
-
 };
 
 module.exports.selectPersonBodyguard = (username, room) => {
@@ -154,10 +162,13 @@ module.exports.selectPersonBodyguard = (username, room) => {
             l.voter == username
         );
         if (previousTarget != undefined) {
+          console.log(previousTarget);
           if (previousTarget.victim == target) {
             this.setNotify(
               `You cannot protect one target for two consecutive nights!`,
-              "warning","top center","5000"
+              "warning",
+              "top center",
+              "5000"
             );
             return;
           }
@@ -291,47 +302,47 @@ module.exports.endGame = (room, team) => {
 
   let modal = `<div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="winModal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        <div class="display-4 text-center font-weight-bold text-dark">${teamConvert} WIN!</div>
-    <div class="modal-body">
-      <div class="row">
-      <div class="col">
-        <h4 class="font-weight-bold">Roles</h4>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Player</th>
-              <th scope="col">Character</th>
-              <th scope="col">Team</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${roleTableBody}
-          </tbody>
-        </table>
-      </div>
-        
-      <div class="col">
-        <h4 class="font-weight-bold">Event details</h4>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Pharse</th>
-              <th scope="col">Event</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${detailTableBody}
-          </tbody>
-        </table>
-      </div>
+    <div class="modal-content text-dark">
+        <div class="display-4 text-center font-weight-bold">${teamConvert} WIN!</div>
+      <div class="modal-body">
+        <div class="row">
+        <div class="col">
+          <h4 class="font-weight-bold">Roles</h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Player</th>
+                <th scope="col">Character</th>
+                <th scope="col">Team</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${roleTableBody}
+            </tbody>
+          </table>
+        </div>
+          
+        <div class="col">
+          <h4 class="font-weight-bold">Event details</h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Pharse</th>
+                <th scope="col">Event</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${detailTableBody}
+            </tbody>
+          </table>
+        </div>
 
-		</div>
-		<div class="modal-footer">
-         <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-		</div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>`;

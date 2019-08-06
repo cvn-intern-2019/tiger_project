@@ -12,11 +12,11 @@ $.notify.addStyle("warning", {
   classes: {
     base: {
       "border-radius": ".25rem!important",
-      "border": "1px solid #dee2e6!important",
+      border: "1px solid #dee2e6!important",
       "border-color": "#343a40!important",
       "background-color": "#f8f9fa!important",
-      "padding": "1.5rem!important",
-      "color": "#343a40!important"
+      padding: "1.5rem!important",
+      color: "#343a40!important"
     }
   }
 });
@@ -33,15 +33,14 @@ $.notify.addStyle("notify", {
   classes: {
     base: {
       "border-radius": ".25rem!important",
-      "border": "1px solid #dee2e6!important",
+      border: "1px solid #dee2e6!important",
       "border-color": "#343a40!important",
       "background-color": "#f8f9fa!important",
-      "padding": "1.5rem!important",
-      "color": "#343a40!important"
+      padding: "1.5rem!important",
+      color: "#343a40!important"
     }
   }
 });
-
 
 $.notify.addStyle("witchSave", {
   html: `<div>
@@ -57,12 +56,10 @@ $.notify.addStyle("witchSave", {
 
 //listen for click events from this style
 $(document).on("click", "#saveBox .no", function() {
-  $(`#controller #saveResult`).remove();
   $(this).trigger("notify-hide");
 });
 
 $(document).on("click", "#saveBox .yes", function() {
-  $(`#controller #saveResult`).remove();
   $(`#controller`).append(`<p id="saveResult" class="d-none">true</p>`);
 
   $(this).trigger("notify-hide");

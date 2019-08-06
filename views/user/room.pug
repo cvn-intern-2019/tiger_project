@@ -52,8 +52,7 @@ block content
                 div(style='position: absolute; top: 100px; right: 0;')
                     .toast(role='alert', aria-live='assertive', aria-atomic='true', data-autohide='false')
                         .toast-header
-                            strong.mr-auto About game
-                            small.text-muted just now
+                            strong.mr-auto Characters Wiki
                             button.ml-2.mb-1.close(type='button', data-dismiss='toast', aria-label='Close')
                                 span(aria-hidden='true') &times;
                         .toast-body.text-dark
@@ -75,14 +74,14 @@ block content
                                         li.p-1
                                              a(href='#villager', data-toggle='tab') Villager
                                 .col-sm-9
-                                    .tab-content.m-3.text-center.p-4.text-dark
-                                        #alphaWerewolf.tab-pane.active Eat a villager each night. Only alpha werewolf can choose victim.If alphawerewolf dead, werewolf will become a new alphawerewolf.
-                                        #werewolf.tab-pane Eat a villager each night(Just discuss with alphawerewolf). If alphawerewolf dead, werewolf will become a new alphawerewolf.
-                                        #auraSeer.tab-pane At night, find out if someone has a non-ordinary role and what it is.System will send a message contain result (this person is werewolf or not )
-                                        #witch.tab-pane Kill or heal a player, once each per game (If witch used all of kill/heal power, witch will be the same as villager)
-                                        #bodyguard.tab-pane Choose a different player each night to protect. That player cannot be killed that night(Absolutely can protect myself)
-                                        #hunter.tab-pane If you are killed, take someone down with you (if tonight, you was killed, tomorow this person and you will be dead) 
-                                        #villager.tab-pane The Villagers are a team seeking to kill all of the Werewolves. A Villager is a player character with no abilities, but the Village also includes any role not on the same team of the Werewolves, like the Guard, the Seer, the Witch, and others.
+                                    .tab-content.m-3.p-4.text-dark
+                                        p#alphaWerewolf.tab-pane.active Eat a villager each night. <br>Only alpha werewolf can choose victim. <br>If alphawerewolf dead, werewolf will become a new alphawerewolf.
+                                        p#werewolf.tab-pane Eat a villager each night (Just discuss with alphawerewolf). <br>If alphawerewolf dead, werewolf will become a new alphawerewolf.
+                                        p#auraSeer.tab-pane At night, find out if someone has a non-ordinary role and what it is. <br>System will send a message contain result (this person is werewolf or not )
+                                        p#witch.tab-pane Kill or heal a player, once each per game (If witch used all of kill/heal power, witch will be the same as villager)
+                                        p#bodyguard.tab-pane Choose a different player each night to protect. That player cannot be killed that night (Absolutely can protect myself)
+                                        p#hunter.tab-pane If you are killed, take someone down with you (if tonight, you was killed, tomorow this person and you will be dead) 
+                                        p#villager.tab-pane The Villagers are a team seeking to kill all of the Werewolves. A Villager is a player character with no abilities, but the Village also includes any role not on the same team of the Werewolves, like the Guard, the Seer, the Witch, and others.
 
                             
                             
@@ -92,7 +91,7 @@ block content
                     #idRoom.mr-3.badge.badge-light=idRoom 
                 #help.m-1
                     i.fa.fa-lightbulb.fa-2x.m-1 
-                    | About character
+                    | Wiki
         
                 ul#tab.nav.nav-tabs.text-secondary
                     li.nav-item

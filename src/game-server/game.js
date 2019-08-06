@@ -132,7 +132,7 @@ module.exports.dayPharseConclusion = (roomList, room, roomNsp, loungeNsp) => {
     );
 
     if (victim != undefined) victim.status = constInit.DEAD;
-    logElement.victim = victim.target;
+    logElement.victim = victim.username;
   }
 
   room.gameLog.log.push(logElement);

@@ -175,10 +175,11 @@ $(document).ready(() => {
       }
     }
   });
-
-
-  $( "#help" ).click(function() {
+  $(".toast").hide();
+  $("#help").click(function() {
     //helper.wikiNotify();
-  $('.toast').toast('show');
+    $(".toast")
+      .show()
+      .toast("show");
   });
 });
