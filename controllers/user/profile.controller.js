@@ -15,22 +15,27 @@ module.exports.getProfilePage = (req, res, next) => {
       let csrfToken = helper.generateToken();
       req.session.csrfToken = csrfToken;
 
-      gfs.exist({ filename: data.avatar, root: "avatars" }, (err, found) => {
-        if (err) return next(err);
-        if (found)
-          res.render("user/profile", {
-            userData: data,
-            username: req.session.username,
-            csrfToken: csrfToken
-          });
-        else {
-          data.avatar = undefined;
-          res.render("user/profile", {
-            userData: data,
-            username: req.session.username,
-            csrfToken: csrfToken
-          });
-        }
+      History.find({ "players.username": data.username }, (err, histories) => {
+        if (err) next(err);
+        gfs.exist({ filename: data.avatar, root: "avatars" }, (err, found) => {
+          if (err) return next(err);
+          if (found)
+            res.render("user/profile", {
+              userData: data,
+              username: req.session.username,
+              csrfToken: csrfToken,
+              histories: histories
+            });
+          else {
+            data.avatar = undefined;
+            res.render("user/profile", {
+              userData: data,
+              username: req.session.username,
+              csrfToken: csrfToken,
+              histories: histories
+            });
+          }
+        });
       });
     }
   );

@@ -16,22 +16,24 @@ var historySchema = new Schema({
   ],
   details: [
     {
-      day: { type: Number, min: 1, required: false },
+      date: { type: Number, min: 1, required: false },
       pharse: { type: Number, enum: [0, 1], required: false },
       voter: { type: String, required: false },
-      victim: { type: String, required: false }
+      victim: { type: String, required: false },
+      saveResult: { type: String, require: false, default: undefined },
+      _id: false
     }
   ]
 });
 
 // virtual attribute timeStart_formatted
-historySchema.virtual("timeStart_formatted").get(() => {
-  return moment(this.timeStart).format("HH:MM:ss DD/MM/YYYY");
+historySchema.virtual("timeStart_formatted").get(function() {
+  return moment(this.timeStart).format("LTS DD/MM/YYYY");
 });
 
 // virtual attribute timeFinish to timeFinish_formatted
-historySchema.virtual("timeFinish_formatted").get(() => {
-  return moment(this.timeFinish).format("HH:MM:ss DD/MM/YYYY");
+historySchema.virtual("timeFinish_formatted").get(function() {
+  return moment(this.timeFinish).format("LTS DD/MM/YYYY");
 });
 
 module.exports = mongoose.model("History", historySchema);

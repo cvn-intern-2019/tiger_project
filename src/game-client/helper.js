@@ -93,15 +93,17 @@ module.exports.showMyself = username => {
 
 module.exports.setPharse = (date, pharse) => {
   if (pharse == constInit.NIGHT) {
-    $(`#phase .night`)
-      .text(`Date: ${date} - Night`)
-      .show();
     $(`#phase .day`).hide();
+    $(`#phase .night`).text(`Date: ${date} - Night`);
+    this.handleAddAnimation("#phase .night", "flip fast", () => {
+      $(`#phase .night`).show();
+    });
   } else {
-    $(`#phase .day`)
-      .text(`Date: ${date} - Day`)
-      .show();
     $(`#phase .night`).hide();
+    $(`#phase .day`).text(`Date: ${date} - Day`);
+    this.handleAddAnimation("#phase .day", "flip fast", () => {
+      $(`#phase .day`).show();
+    });
   }
 };
 
@@ -248,36 +250,84 @@ module.exports.deadStatus = () => {
 
 module.exports.endGame = (room, team) => {
   let teamConvert = team == constInit.TEAM.werewolf ? `WEREWOLF` : `VILLAGER`;
-  let tableBody = ``;
+  let roleTableBody = ``;
+  let detailTableBody = ``;
 
   room.gameLog.characterRole.forEach((c, index) => {
-    tableBody += `<tr>
-    <th scope="row">${index + 1}</th>
-    <td>${c.username}</td>
-    <td>${c.character.name}</td>
-    <td>${
-      c.character.team == constInit.TEAM.werewolf ? `Werewolf` : `Villager`
-    }</td>
-  </tr>`;
+    roleTableBody += `
+      <tr>
+        <th scope="row">${index + 1}</th>
+        <td>
+          <a href="/user/${c.username}">${c.username}</a>
+        </td>
+        <td>${c.character.name}</td>
+        <td>
+          ${
+            c.character.team == constInit.TEAM.werewolf
+              ? `Werewolf`
+              : `Villager`
+          }
+        </td>
+      </tr>`;
   });
+
+  room.gameLog.log.forEach(l => {
+    detailTableBody += `
+      <tr>
+        <th scope="row">${l.date}</th>
+        <td>${l.pharse == 1 ? "Day" : "Night"}</td>
+        <td>
+          <p>${l.voter.includes("All") == true ? "All players " : l.voter} ${
+      l.victim == null ? "didn't choose anyone." : `choose ${l.victim}.`
+    }</p>
+          <p>${
+            l.saveResult != undefined
+              ? l.saveResult == null
+                ? `${l.voter} didn't save anyone`
+                : `${l.voter} save ${l.saveResult}`
+              : ``
+          }</p>`;
+  });
+
   let modal = `<div class="modal fade" id="winModal" tabindex="-1" role="dialog" aria-labelledby="winModal" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-        <div class="display-4 text-center font-weight-bold text-dark">${teamConvert} TEAM WIN!</div>
-		<div class="modal-body">
-		<table class="table table-striped">
-		  <thead>
-			<tr>
-			  <th scope="col">#</th>
-			  <th scope="col">Username</th>
-			  <th scope="col">Character</th>
-			  <th scope="col">Team</th>
-			</tr>
-		  </thead>
-		  <tbody>
-			${tableBody}
-		  </tbody>
-		</table>
+        <div class="display-4 text-center font-weight-bold text-dark">${teamConvert} WIN!</div>
+    <div class="modal-body">
+      <div class="row">
+      <div class="col">
+        <h4 class="font-weight-bold">Roles</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Player</th>
+              <th scope="col">Character</th>
+              <th scope="col">Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${roleTableBody}
+          </tbody>
+        </table>
+      </div>
+        
+      <div class="col">
+        <h4 class="font-weight-bold">Event details</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Pharse</th>
+              <th scope="col">Event</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${detailTableBody}
+          </tbody>
+        </table>
+      </div>
+
 		</div>
 		<div class="modal-footer">
          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
@@ -386,9 +436,29 @@ module.exports.switchLayoutRoom = switchLayoutRoom = flag => {
     infoTag.removeClass("d-none");
     controllerTag.removeClass("d-none");
     controllerToggleBtn.removeClass("d-none");
+    this.handleAddAnimation("#info", "slideInDown faster");
+    this.handleAddAnimation("#controller", "slideInDown faster");
   } else {
-    infoTag.addClass("d-none");
-    controllerTag.addClass("d-none");
-    controllerToggleBtn.addClass("d-none");
+    this.handleAddAnimation("#info", "slideOutUp faster", () => {
+      infoTag.addClass("d-none");
+    });
+    this.handleAddAnimation("#controller", "slideOutLeft faster", () => {
+      controllerTag.addClass("d-none");
+      controllerToggleBtn.addClass("d-none");
+    });
   }
+};
+
+module.exports.handleAddAnimation = function(element, animationName, callback) {
+  const node = $(element);
+  node.addClass(`animated ${animationName}`);
+
+  function handleAnimationEnd() {
+    node.removeClass(`animated ${animationName}`);
+    node.unbind("animationend", handleAnimationEnd);
+
+    if (typeof callback === "function") callback();
+  }
+
+  node.bind("animationend", handleAnimationEnd);
 };

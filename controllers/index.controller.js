@@ -1,6 +1,9 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
 var helper = require("./helper");
+var async = require("async");
+var request = require("request");
+
 const usernameRegEx = /^[a-z]/;
 const userRegEx = /^[a-z0-9]*$/;
 const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
@@ -15,6 +18,10 @@ var hashPassword = (username, password) => {
     .createHmac("SHA256", secret)
     .update(password)
     .digest("hex");
+};
+const CAPTCHA = {
+  site: "6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd",
+  sekret: "6LdkO7EUAAAAAEPLUtGok-hdj8R4_oa6NhFvXQPR"
 };
 
 //===============================================================================
@@ -68,6 +75,28 @@ module.exports.postLogin = (req, res, next) => {
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
 
+  if (body.captcha == null) {
+    return res.json({
+      type: 0,
+      msg: "No catcha token in request. Please refresh the page."
+    });
+  }
+
+  captchaLink = `https://www.google.com/recaptcha/api/siteverify?secret=${
+    CAPTCHA.sekret
+  }&response=${body.captcha}`;
+
+  request.post(captchaLink, (error, response, content) => {
+    content = JSON.parse(content);
+    console.log(content);
+    if (body.success == false) {
+      return res.json({
+        type: 0,
+        msg: "Captcha is invalid. Please refresh page."
+      });
+    }
+  });
+
   if (usernameRegEx.test(body.username) === false) {
     return res.json({
       type: 0,
@@ -110,28 +139,43 @@ module.exports.postRegister = (req, res, next) => {
     });
   }
 
-  User.findOne({ username: body.username, email: body.email }, (err, user) => {
-    if (err) next(err);
-    if (user != undefined) {
-      return res.json({
-        type: 0,
-        msg: "Your username or email already exists!"
+  async.parallel(
+    {
+      usernameFound: function(callback) {
+        User.find({ username: body.username }, callback);
+      },
+      emailFound: function(callback) {
+        User.find({ email: body.email }, callback);
+      }
+    },
+    (err, data) => {
+      if (err) next(err);
+
+      if (data.usernameFound.length > 0) {
+        return res.json({
+          type: 0,
+          msg: "Username is existed"
+        });
+      }
+      if (data.emailFound.length > 0) {
+        return res.json({
+          type: 0,
+          msg: "Email is exists"
+        });
+      }
+      let newUser = new User({
+        username: body.username,
+        email: body.email,
+        password: hashPassword(body.username, body.password)
+      });
+      newUser.save(err => {
+        if (err) return err;
+        return res.json({
+          type: 1
+        });
       });
     }
-  });
-
-  let newUser = new User({
-    username: body.username,
-    email: body.email,
-    password: hashPassword(body.username, body.password)
-  });
-
-  newUser.save(err => {
-    if (err) return err;
-    return res.json({
-      type: 1
-    });
-  });
+  );
 };
 
 module.exports.getLogout = (req, res, next) => {
