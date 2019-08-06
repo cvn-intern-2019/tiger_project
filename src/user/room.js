@@ -175,4 +175,10 @@ $(document).ready(() => {
       }
     }
   });
+
+
+  $( "#help" ).click(function() {
+    //helper.wikiNotify();
+  $('.toast').toast('show');
+  });
 });

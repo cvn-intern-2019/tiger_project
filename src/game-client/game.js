@@ -39,7 +39,7 @@ module.exports.init = (room, socket) => {
   });
 
   socket.on("playerDisconect", data => {
-    helper.setNotify(`${data.character} was killed by Disconnect!`, "notify");
+    helper.setNotify(`${data.character} disconnect!`, "warning" ,"top center","5000");
     userChar = data.room.gameLog.characterRole.find(
       c => c.username == username
     );
@@ -58,7 +58,7 @@ function pharseNight(room, socket) {
   helper.showMyself(userChar.username);
   helper.setPharse(room.gameLog.currentDay, room.gameLog.currentPharse);
   helper.selectPerson(false, userChar.username);
-
+  
   werewolfTurn(room, socket);
   if (userChar.character.team == constInit.TEAM.werewolf) {
     helper.showAllie(room.gameLog.characterRole);
@@ -75,7 +75,7 @@ function werewolfTurn(room, socket) {
 
   if (userChar.status == constInit.ALIVE) {
     if (userChar.character.id == constInit.ID_CHARACTER.alphaWerewof) {
-      helper.setNotify("Choose one person who you want to kill!", "notify");
+      helper.setNotify("Choose one person who you want to kill!", "notify" ,"bottom left","20000");
       helper.selectPerson(true, userChar.username);
     }
 
@@ -86,18 +86,20 @@ function werewolfTurn(room, socket) {
           c.status == constInit.ALIVE
       );
       if (alphaWerewof == undefined) {
-        helper.setNotify("Choose one person who you want to kill!", "notify");
+        helper.setNotify("Choose one person who you want to kill!", "notify" ,"bottom left","20000");
         helper.selectPerson(true, userChar.username);
       } else {
         helper.setNotify(
           "Let discuss with Alpha Werewolf to choose target!",
-          "notify"
+          "notify",
+          "bottom left",
+          "20000"
         );
       }
     }
 
     if (userChar.character.team == constInit.TEAM.villager) {
-      helper.setNotify("Werewolf is active!!!", "warning");
+      helper.setNotify("Werewolf is active!!!", "warning", "top center","30000");
       helper.selectPerson(false, userChar.username);
     }
   } else {
@@ -107,7 +109,7 @@ function werewolfTurn(room, socket) {
 
 var auraseerTurn = () => {
   helper.selectPerson(true, userChar.username);
-  helper.setNotify("Choose one person who you want to know!", "notify");
+  helper.setNotify("Choose one person who you want to know!", "notify" ,"bottom left","20000");
 };
 
 var witchTurn = room => {
@@ -118,14 +120,14 @@ var witchTurn = room => {
 
 var bodyguardTurn = room => {
   helper.selectPersonBodyguard(userChar.username, room);
-  helper.setNotify("Choose one person who you want to protect", "notify");
+  helper.setNotify("Choose one person who you want to protect", "notify" ,"bottom left","20000");
 };
 
 var hunterTurn = () => {
   helper.selectPerson(true, userChar.username);
   helper.setNotify(
     "Choose one person who you want to be your target!",
-    "notify"
+    "notify" ,"bottom left","20000"
   );
 };
 
@@ -148,8 +150,8 @@ function pharseDay(room, socket) {
   if (userChar.status == constInit.ALIVE) {
     helper.showMyself(userChar.username);
     if (userChar.character.team == constInit.TEAM.werewolf)
-      helper.setNotify("Let's discuss and try to hide yourself!", "notify");
-    else helper.setNotify("Let's discuss and find Werewolf to kill!", "notify");
+      helper.setNotify("Let's discuss and try to hide yourself!", "notify","top center" ,"30000");
+    else helper.setNotify("Let's discuss and find Werewolf to kill!", "notify", "top center","30000");
 
     helper.votePerson(room, socket, userChar);
   } else {
@@ -190,7 +192,7 @@ function villagerTurn(room, socket) {
       userChar.character.id == constInit.ID_CHARACTER.werewolf ||
       userChar.character.id == constInit.ID_CHARACTER.alphaWerewof
     ) {
-      helper.setNotify("Villager team is active!!!", "warning");
+      helper.setNotify("Villager team is active!!!", "warning" ,"top center","30000");
       helper.selectPerson(false, userChar.username);
     }
   } else {
