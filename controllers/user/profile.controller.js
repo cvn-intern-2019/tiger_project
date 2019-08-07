@@ -4,6 +4,7 @@ var moment = require("moment");
 var multer = require("multer");
 var helper = require("../helper");
 var upload = multer({ storage });
+const validateUser = require("../validate.helper");
 
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
@@ -45,10 +46,6 @@ module.exports.getProfilePage = (req, res, next) => {
 var validateInput = (req, res, next) => {
   let body = req.body;
   let csrfToken = helper.generateToken();
-  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{1,50}$/;
-  const genderRegEx = /^(true|false)$/;
-  const phoneRegEx = /^[0-9]{4,13}$/;
-  const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
 
   if (
     req.session.csrfToken !== body.csrfToken ||
@@ -62,7 +59,7 @@ var validateInput = (req, res, next) => {
     });
   }
 
-  if (fullnameRegEx.test(body.fullname) === false) {
+  if (validateUser.validateFullname(body.fullname) === false) {
     req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
@@ -71,7 +68,7 @@ var validateInput = (req, res, next) => {
     });
   }
 
-  if (genderRegEx.test(body.gender) === false) {
+  if (validateUser.validateGender(body.gender) === false) {
     req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
@@ -80,7 +77,7 @@ var validateInput = (req, res, next) => {
     });
   }
 
-  if (phoneRegEx.test(body.phone) === false) {
+  if (validateUser.validatePhoneNum(body.phone) === false) {
     req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
@@ -90,7 +87,7 @@ var validateInput = (req, res, next) => {
   }
 
   if (
-    dobRegEx.test(body.birthday) === false ||
+    validateUser.validateDob(body.birthday) === false ||
     moment(new Date()).diff(moment(body.birthday), "days") < 1
   ) {
     req.session.csrfToken = csrfToken;
