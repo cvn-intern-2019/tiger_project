@@ -14,8 +14,6 @@ window.onbeforeunload = function() {
 $(document).ready(() => {
   const option = {
     reconnection: false,
-    // transports: ["websocket"],
-    // upgrade: false,
     query: {
       // token: $(`meta[name=socketAuthToken]`).data("content")
     }

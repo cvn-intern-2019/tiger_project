@@ -1,7 +1,11 @@
 const helper = require("./helper");
 const $ = require("jquery");
 
-module.exports.vote = (socket, userChar, room) => {
+module.exports.vote = (socket, room) => {
+  let username = $(`#username`)
+    .text()
+    .trim();
+  let userChar = room.gameLog.characterRole.find(c => c.username == username);
   let victim = $(`#playerList .selectedPerson`).attr("id") || null;
 
   socket.emit("characterVote", {
@@ -11,7 +15,7 @@ module.exports.vote = (socket, userChar, room) => {
   });
 };
 
-module.exports.action = () => {
+module.exports.action = room => {
   let username = $(`#username`)
     .text()
     .trim();

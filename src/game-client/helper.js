@@ -105,7 +105,7 @@ module.exports.setPharse = (date, pharse) => {
 };
 
 module.exports.witchNotify = (victim, userChar) => {
-  if (userChar.character.save <= 0 && userChar.character.save <= 0) {
+  if (userChar.character.save <= 0 && userChar.character.kill <= 0) {
     this.setNotify(
       `You can not SAVE or KILL anyone !!!`,
       "notify",
@@ -113,37 +113,54 @@ module.exports.witchNotify = (victim, userChar) => {
       "20000"
     );
     this.selectPerson(false, userChar.username);
-  } else {
-    if (userChar.character.save > 0) {
-      if (victim != undefined || victim != null) {
-        $("#" + victim).notify(
-          { content: "Do you want to save?" },
-          {
-            style: "witchSave",
-            autoHide: false,
-            clickToHide: false,
-            elementPosition: "top center",
-            autoHideDelay: "30000"
-          }
-        );
-      } else {
-        this.setNotify(
-          `Tonight no one was killed by Werewolf!`,
-          "notify",
-          "bottom left",
-          "20000"
-        );
-      }
-    }
-    if (userChar.character.save > 0) {
+    return;
+  }
+
+  if (userChar.character.save > 0) {
+    if (victim != undefined || victim != null) {
+      $("#" + victim).notify(
+        { content: "Do you want to save?" },
+        {
+          style: "witchSave",
+          autoHide: false,
+          clickToHide: false,
+          elementPosition: "top center",
+          autoHideDelay: "30000"
+        }
+      );
+    } else {
       this.setNotify(
-        `Choose one person to kill if you want!`,
+        `Tonight no one was killed by Werewolf!`,
         "notify",
         "bottom left",
         "20000"
       );
-      this.selectPerson(true, userChar.username);
     }
+  } else {
+    this.setNotify(
+      "You can not SAVE anyone !!!",
+      "notify",
+      "bottom left",
+      "20000"
+    );
+  }
+
+  if (userChar.character.kill > 0) {
+    this.setNotify(
+      `Choose one person to kill if you want!`,
+      "notify",
+      "bottom left",
+      "20000"
+    );
+    this.selectPerson(true, userChar.username);
+  } else {
+    this.setNotify(
+      "You can not KILL anyone !!!",
+      "notify",
+      "bottom left",
+      "20000"
+    );
+    this.selectPerson(false, userChar.username);
   }
 };
 
@@ -157,12 +174,12 @@ module.exports.selectPersonBodyguard = (username, room) => {
         let target = $(event.currentTarget).attr("id");
         let previousTarget = log.find(
           l =>
-            l.day == room.gameLog.currentDay - 1 &&
+            l.date == room.gameLog.currentDay - 1 &&
             l.pharse == constInit.NIGHT &&
             l.voter == username
         );
+        console.log(previousTarget);
         if (previousTarget != undefined) {
-          console.log(previousTarget);
           if (previousTarget.victim == target) {
             this.setNotify(
               `You cannot protect one target for two consecutive nights!`,
@@ -170,8 +187,8 @@ module.exports.selectPersonBodyguard = (username, room) => {
               "top center",
               "5000"
             );
-            return;
           }
+          return;
         }
         if ($(event.currentTarget).hasClass("selectedPerson")) {
           $(event.currentTarget).removeClass("selectedPerson");
@@ -220,12 +237,13 @@ module.exports.listPlayerPlaying = room => {
   deadListTag.append(deadListChild);
   playerList.append(playerChild);
 
-  this.showAllie(room.gameLog.characterRole);
-  this.showMyself(
-    $(`#username`)
-      .text()
-      .trim()
-  );
+  let username = $(`#username`)
+    .text()
+    .trim();
+  let userChar = room.gameLog.characterRole.find(c => c.username == username);
+  if (userChar.character.team == constInit.TEAM.werewolf)
+    this.showAllie(room.gameLog.characterRole);
+  this.showMyself(username);
 };
 
 module.exports.votePerson = (room, socket, userChar) => {

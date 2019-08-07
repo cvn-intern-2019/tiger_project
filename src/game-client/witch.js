@@ -1,7 +1,11 @@
 const helper = require("./helper");
 const $ = require("jquery");
 
-module.exports.vote = (socket, userChar, room) => {
+module.exports.vote = (socket, room) => {
+  let username = $(`#username`)
+    .text()
+    .trim();
+  let userChar = room.gameLog.characterRole.find(c => c.username == username);
   let victim = $(`#playerList .selectedPerson`).attr("id") || null;
   let saveResult = $(`#controller #saveResult`).text() || null;
   $(`#controller #saveResult`).remove();
@@ -19,7 +23,6 @@ module.exports.action = room => {
     .text()
     .trim();
   let userChar = room.gameLog.characterRole.find(c => c.username == username);
-  helper.selectPerson(true, userChar.username);
   let victim = room.gameLog.deadList[0];
   helper.witchNotify(victim, userChar);
 };
