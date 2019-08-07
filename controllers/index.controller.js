@@ -1,28 +1,11 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
 var helper = require("./helper");
-var async = require("async");
 var request = require("request");
-
-const usernameRegEx = /^[a-z]/;
-const userRegEx = /^[a-z0-9]*$/;
-const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
-
-var hashPassword = (username, password) => {
-  let secret = `${username}${password}`
-    .toUpperCase()
-    .split("")
-    .reverse()
-    .join();
-  return crypto
-    .createHmac("SHA256", secret)
-    .update(password)
-    .digest("hex");
-};
-const CAPTCHA = {
-  site: "6LdkO7EUAAAAAI8AirRFTzPYbW09zmELjJmf6wjd",
-  sekret: "6LdkO7EUAAAAAEPLUtGok-hdj8R4_oa6NhFvXQPR"
-};
+var hashPassword = helper.hashPassword;
+const CAPTCHA = require("./captcha.config").captcha;
+const validateUser = require("./validate.helper");
+var async = require("async");
 
 //===============================================================================
 // Handle GET - POST login page
@@ -38,7 +21,7 @@ module.exports.getLogin = (req, res, next) => {
 
 module.exports.postLogin = (req, res, next) => {
   let body = req.body;
-  if (userRegEx.test(body.username) === false) {
+  if (!validateUser.validateUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "Your input must alphabetic character or number!"
@@ -55,7 +38,12 @@ module.exports.postLogin = (req, res, next) => {
         });
       }
 
-      if (hashPassword(body.username, body.password) !== user.password) {
+      if (
+        !validateUser.checkMatch(
+          hashPassword(body.username, body.password),
+          user.password
+        )
+      ) {
         return res.json({
           type: 0,
           msg: "Your username or password is invalid!"
@@ -75,7 +63,7 @@ module.exports.postLogin = (req, res, next) => {
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
 
-  if (body.captcha == null) {
+  if (!validateUser.validateCaptchaNull(body.captcha)) {
     return res.json({
       type: 0,
       msg: "No catcha token in request. Please refresh the page."
@@ -97,42 +85,35 @@ module.exports.postRegister = (req, res, next) => {
     }
   });
 
-  if (usernameRegEx.test(body.username) === false) {
+  if (!validateUser.validateFirstCharOfUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "First character of username must be a alphabetic character!"
     });
   }
 
-  if (userRegEx.test(body.username) === false) {
+  if (!validateUser.validateUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "Your username is invalid!"
     });
   }
 
-  if (body.username.length < 5 || body.username.length > 20) {
+  if (!validateUser.validateMaxLengthUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "Username must have length 5 - 20 characters!"
     });
   }
 
-  if (emailRegEx.test(body.email) === false) {
+  if (!validateUser.validateEmail(body.email)) {
     return res.json({
       type: 0,
       msg: "Your email is invalid!"
     });
   }
 
-  if (body.password.length < 5 || body.password.length > 20) {
-    return res.json({
-      type: 0,
-      msg: "Your password must have length 5 - 20 characters!"
-    });
-  }
-
-  if (body.password !== body.confirmPassword) {
+  if (!validateUser.checkMatch(body.password, body.confirmPassword)) {
     return res.json({
       type: 0,
       msg: "Your confirm password not match!"
