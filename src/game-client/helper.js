@@ -178,7 +178,6 @@ module.exports.selectPersonBodyguard = (username, room) => {
             l.pharse == constInit.NIGHT &&
             l.voter == username
         );
-        console.log(previousTarget);
         if (previousTarget != undefined) {
           if (previousTarget.victim == target) {
             this.setNotify(
