@@ -30,11 +30,13 @@ module.exports.init = (room, socket) => {
 
   socket.on("werewolfWin", room => {
     helper.endGame(room, constInit.TEAM.werewolf);
+    helper.switchLayoutRoom(constInit.WAITING);
     handleEvent.initWaitingRoom(room, socket);
   });
 
   socket.on("villagerWin", room => {
     helper.endGame(room, constInit.TEAM.villager);
+    helper.switchLayoutRoom(constInit.WAITING);
     handleEvent.initWaitingRoom(room, socket);
   });
 
@@ -72,7 +74,7 @@ function pharseDay(room, socket) {
   helper.setPharse(room.gameLog.currentDay, room.gameLog.currentPharse);
   helper.listPlayerPlaying(room);
 
-  let MINUTES = 1;
+  let MINUTES = 0;
   let SECONDS = 30;
   let countdown = helper.countDown(MINUTES, SECONDS);
   countdown.then(() => {

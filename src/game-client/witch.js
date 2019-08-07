@@ -15,9 +15,11 @@ module.exports.vote = (socket, room) => {
     saveResult: saveResult,
     idRoom: room.id
   });
+  $(`#saveBox`).attr("disabled", false);
 };
 
 module.exports.action = room => {
+  $(`#saveBox`).attr("disabled", true);
   let username = $(`#username`)
     .text()
     .trim();
