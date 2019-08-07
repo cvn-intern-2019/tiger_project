@@ -6,6 +6,7 @@ const hunter = require("./hunter");
 const witch = require("./witch");
 const helper = require("./helper");
 const constInit = require("../constInit");
+const handleEvent = require("../handle.event.room");
 
 module.exports.init = (room, socket) => {
   helper.removeEventListen(socket);
@@ -29,12 +30,12 @@ module.exports.init = (room, socket) => {
 
   socket.on("werewolfWin", room => {
     helper.endGame(room, constInit.TEAM.werewolf);
-    helper.initWaitingRoom(room, socket);
+    handleEvent.initWaitingRoom(room, socket);
   });
 
   socket.on("villagerWin", room => {
     helper.endGame(room, constInit.TEAM.villager);
-    helper.initWaitingRoom(room, socket);
+    handleEvent.initWaitingRoom(room, socket);
   });
 
   socket.on("werewolfVote", room => {
@@ -57,13 +58,8 @@ module.exports.init = (room, socket) => {
 };
 
 function pharseNight(room, socket) {
-  let username = $(`#username`)
-    .text()
-    .trim();
-  let userChar = room.gameLog.characterRole.find(c => c.username == username);
   helper.listPlayerPlaying(room);
   helper.setPharse(room.gameLog.currentDay, room.gameLog.currentPharse);
-  helper.selectPerson(false, userChar.username);
 
   werewolf.action(room, socket);
 }
@@ -118,27 +114,28 @@ function villagerTurn(room, socket) {
   countdown.then(() => {
     if (userChar.status == constInit.ALIVE) {
       if (userChar.character.id == constInit.ID_CHARACTER.auraSeer)
-        auraseer.vote(socket, userChar, room);
+        auraseer.vote(socket, room);
       if (userChar.character.id == constInit.ID_CHARACTER.witch)
-        witch.vote(socket, userChar, room);
+        witch.vote(socket, room);
       if (userChar.character.id == constInit.ID_CHARACTER.bodyguard)
-        bodyguard.vote(socket, userChar, room);
+        bodyguard.vote(socket, room);
       if (userChar.character.id == constInit.ID_CHARACTER.hunter)
-        hunter.vote(socket, userChar, room);
+        hunter.vote(socket, room);
     }
   });
 
   if (userChar.status == constInit.ALIVE) {
     if (userChar.character.id == constInit.ID_CHARACTER.auraSeer)
-      auraseer.action();
+      auraseer.action(room);
     if (userChar.character.id == constInit.ID_CHARACTER.witch)
       witch.action(room);
     if (userChar.character.id == constInit.ID_CHARACTER.bodyguard)
-      bodyguard.vote(room);
-    if (userChar.character.id == constInit.ID_CHARACTER.hunter) hunter.vote();
+      bodyguard.action(room);
+    if (userChar.character.id == constInit.ID_CHARACTER.hunter)
+      hunter.action(room);
     if (
       userChar.character.team == constInit.TEAM.werewolf ||
-      userChar.character.id == constInit.ID_CHARACTER.alphaWerewof
+      userChar.character.id == constInit.ID_CHARACTER.villager
     ) {
       helper.setNotify(
         "Villager team is active!!!",
