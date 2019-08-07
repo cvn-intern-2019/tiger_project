@@ -2,91 +2,21 @@ import "./layout";
 import "./user/animate.css";
 
 const $ = require("jquery");
-
-let searchRoomEvent = function() {
-  let keyword = $("#search_input")
-    .val()
-    .toLowerCase();
-
-  $("#roomList>div")
-    .hide()
-    .each(function(index, element) {
-      let roomName = $(element)
-        .find(".room_name")
-        .text()
-        .toLowerCase();
-
-      let roomAuthor = $(element)
-        .find(".room_author")
-        .text()
-        .toLowerCase();
-
-      if (roomName.search(keyword) != -1 || roomAuthor.search(keyword) != -1) {
-        $(element).fadeIn(200);
-      }
-    });
-};
+const handleEvent = require("./handle.event.lounge");
 
 $(document).ready(() => {
   const option = {
-    // reconnection: false
+    reconnection: false
   };
   var socket = io("/lounge", option);
 
-  //list room event listen
+  //------------------- EVENT SOCKET -----------------------------
   socket.on("listRoom", listRoom => {
-    let roomListTag = $(`#roomList`);
-    roomListTag.empty();
-
-    listRoom.sort((a, b) => {
-      return a.status > b.status;
-    });
-
-    listRoom.forEach(r => {
-      let cardTag = `<div class="col-sm-3 mt-3">
-                      <div class="card">
-                        <h5 class="card-header text-dark room_name">
-                          <div class="badge badge-dark">ID: ${r.id}
-                          </div> ${r.name}
-                          ${
-                            r.status == false
-                              ? `<div class="badge badge-warning float-right">Waiting</div>`
-                              : `<div class="badge badge-success float-right">Playing</div>`
-                          }
-                        </h5>
-                        <div class="card-body">
-                          <h5 class="card-title text-dark room_author">
-                            <strong>Host:</strong>
-                              <a href="/user/${r.host}" >${r.host}</a>
-                          </h5>
-                          <p class="card-text text-dark">
-                            <strong>Players:</strong> 
-                            ${r.player.length}/${r.amount}
-                          </p>
-                          <a class="btn btn-dark ${
-                            r.player.length == r.amount || r.status == true
-                              ? "disabled"
-                              : ""
-                          }" href="/room/${r.id}"> Join 
-                          </a>
-                        </div>
-                      </div>
-                    </div>`;
-      roomListTag.append(cardTag);
-    });
+    handleEvent.listRoom(listRoom);
   });
 
-  //create room event listen
   socket.on("createRoom", room => {
-    if (room) window.location.href = `/room/${room.id}`;
-    else alert("Something wrong!");
-  });
-
-  $(`#createRoom`).mousedown(event => {
-    if (event.which == 1) {
-      let username = $(`#navbarDropdown #username`).text();
-      socket.emit("createRoom", username);
-    }
+    handleEvent.listenCreateRoom(room);
   });
 
   //disconnect event listen
@@ -94,5 +24,14 @@ $(document).ready(() => {
   //   alert("Disconnect with server!");
   //   window.location.href = `/`;
   // });
-  $("#search_input").keyup(searchRoomEvent);
+
+  //------------------- EVENT USER -----------------------------
+
+  $(`#createRoom`).mousedown(event => {
+    if (event.which == 1) {
+      handleEvent.emitCreateRoom(socket);
+    }
+  });
+
+  $("#search_input").keyup(handleEvent.searchRoomEvent());
 });

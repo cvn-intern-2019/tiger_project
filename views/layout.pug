@@ -11,20 +11,11 @@ html
       a.navbar-brand(href='/lounge')
         h1 WereWolf Online
 
-      .search-box
-        input.search-txt(type='text', name='', placeholder='Type roomID')
-        a.search-btn(href='#')
-            i.fas.fa-search-plus
-
-      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
-        span.navbar-toggler-icon
       #navbarSupportedContent.collapse.navbar-collapse
 
       a.btn.btn-outline-secondary.mr-3#createRoom(role="button") 
         i.fas.fa-plus-circle(aria-hidden='true')
         |                             CreateRoom
-
-   
 
       form#frmSignout(action='/user/room', method='POST')
       ul.navbar-nav
@@ -37,14 +28,12 @@ html
               i.fa.fa-user(aria-hidden='true')
               |                             Profile
             .dropdown-divider
-            form(method="POST", action="/logout")
+            form(method="POST", action="/logout", name="logout")
               button.dropdown-item(type="submit")
                 i.fa.fa-sign-out-alt(aria-hidden='true')
                 |                             Sign Out
 
-
     block content
-
 
     footer.page-footer.font-weight-bold.text-light
       .footer-copyright.py-3.text-center

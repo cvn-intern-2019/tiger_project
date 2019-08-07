@@ -4,64 +4,112 @@ block sessionCSS
     script(src="/javascripts/room.js")
     script(src="/socket.io/socket.io.js")
     link(rel="stylesheet", href="/stylesheets/waitingRoom.css")
-
 block content
-    .container-fluid
-        //- .col-2
-        //-     .component.p-2
-        //-         button#show-sidebar.btn.btn-lg.btn-light
-        //-             i.fas.fa-user-friends
-        //-             |&nbsp;Players
+    .container-fluid.overflow-auto
+        .row
+            .col-8.mb-5
+                .row.py-3.d-flex.mb-3
+                    button#startGame.btn.btn-light.mr-3
+                        i.fas.fa-play
+                        |&nbsp;Start
+                    a#leaveRoom.btn.btn-outline-secondary.text-light.font-italic(href='/lounge')
+                        i.fas.fa-sign-out-alt.align-middle
+                        |&nbsp;Leave
+                    
 
-        //-         #listPlayers.listPlayers.list-group.mt-2
-                    //- a.list-group-item.list-group-item-action(href='#') Dapibus ac facilisis in
-                   
-        .col-9
-            .row.py-3.d-flex.align-items-end
-                button#startGame.btn.btn-light.mr-3
-                    i.fas.fa-play
-                    |&nbsp;Start
-                a#leaveRoom.text-light.font-italic(href='/lounge')
-                    i.fas.fa-sign-out-alt
-                    |&nbsp;Leave
-    
-        .col-3
-            b ID: 
-                #idRoom.m-3.badge.badge-light=idRoom
 
+                #info.row.justify-content-between.mb-5.d-none
+                    h1#phase.mr-5
+
+                        .night.badge.badge-lg.badge-light.animated.flip.faster Night
+                        .day.badge.badge-lg.badge-light.animated.flip.faster Day
+                    .col
+                        h1#clock.display-4
+                            .badge.badge-light.text-dark 00:00
+                    .border.p-1.rounded.float-right
+
+                        i.fas.fa-book-dead.fa-2x.mb-1
+                        |&nbsp;<b>Dead list</b>
+                        #deadList.d-flex
+                            img.rounded.mr-2(src='http://placehold.it/50' width="50px" height="50px")
+
+
+                .row
+                    #controller.col-4.p-3.border.light-white.border-right-0.d-none
+                        h4.font-weight-bold Your Character: 
+                        h1
+                            #character.badge.badge-info 
+                        hr
+                        h5#team.font-weight-bold 
+                        hr
+                        h5.font-weight-bold Your role:
+                        h6#des.font-weight-light
+                    button#controllerToggle.btn.btn-outline-light.btn-sm.d-none &lt;
+                    .col-1
+                    .col.mb-5
+                        #playerList.row.my-2.d-flex.flex-wrap
+                         
+                div(style='position: absolute; top: 100px; right: 0;')
+                    .toast(role='alert', aria-live='assertive', aria-atomic='true', data-autohide='false')
+                        .toast-header
+                            strong.mr-auto Characters Wiki
+                            button.ml-2.mb-1.close(type='button', aria-label='Close')
+                                span(aria-hidden='true') &times;
+                        .toast-body.text-dark
+                            .row
+                                .col-sm-3
+                                    ul#navHelp.nav.nav-tabs.font-weight-bold.m-1
+                                        li.active.p-1
+                                            a(href='#alphaWerewolf', data-toggle='tab') AlphaWerewolf
+                                        li.p-1
+                                            a(href='#werewolf', data-toggle='tab') Werewolf
+                                        li.p-1
+                                            a(href='#auraSeer', data-toggle='tab') AuraSeer
+                                        li.p-1
+                                             a(href='#witch', data-toggle='tab') Witch
+                                        li.p-1
+                                            a(href='#bodyguard', data-toggle='tab') Bodyguard
+                                        li.p-1
+                                            a(href='#hunter', data-toggle='tab') Hunter
+                                        li.p-1
+                                             a(href='#villager', data-toggle='tab') Villager
+                                .col-sm-9
+                                    .tab-content.m-3.p-4.text-dark
+                                        p#alphaWerewolf.tab-pane.active Eat a villager each night. <br>Only alpha werewolf can choose victim. <br>If alphawerewolf dead, werewolf will become a new alphawerewolf.
+                                        p#werewolf.tab-pane Eat a villager each night (Just discuss with alphawerewolf). <br>If alphawerewolf dead, werewolf will become a new alphawerewolf.
+                                        p#auraSeer.tab-pane At night, find out if someone has a non-ordinary role and what it is. <br>System will send a message contain result (this person is werewolf or not )
+                                        p#witch.tab-pane Kill or heal a player, once each per game (If witch used all of kill/heal power, witch will be the same as villager)
+                                        p#bodyguard.tab-pane Choose a different player each night to protect. That player cannot be killed that night (Absolutely can protect myself)
+                                        p#hunter.tab-pane If you are killed, take someone down with you (if tonight, you was killed, tomorow this person and you will be dead) 
+                                        p#villager.tab-pane The Villagers are a team seeking to kill all of the Werewolves. A Villager is a player character with no abilities, but the Village also includes any role not on the same team of the Werewolves, like the Guard, the Seer, the Witch, and others.
+
+                            
+                            
+
+            .col-4.mb-5
+                #help.m-1
+                    i.fa.fa-lightbulb.fa-2x.m-1 
+                    | Wiki
+                h4.float-right ID ROOM: 
+                    #idRoom.mr-3.badge.badge-light=idRoom     
         
-            ul.nav.nav-tabs.text-secondary#tab
+                ul#tab.nav.nav-tabs.text-secondary
                     li.nav-item
                         a#roomTab.nav-link.active.border.btn-lg.btn-outline-light.font-weight-bold(data-target='#room', data-toggle='tab') Room
                     li.nav-item
                         a#privateTab.nav-link.border.btn-lg.btn-outline-light.font-weight-bold( data-target='#private', data-toggle='tab') Private
                     
-            .tab-content
-                #room.active.tab-pane.p-2.mb-auto
-                    .messageBoxRoom#messageBoxRoom
-                        //- div.message.my-2
-                        //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
-                        //-     | #{username} 
-                        //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
-                        //-     | #{message}
-    
-                            
-                #private.tab-pane.p-2.mb-auto
-                    .messageBoxPrivate#messageBoxPrivate
-                        //- div.message.my-2
-                        //-     i#avatar.fa.fa-user.mr-2(aria-hidden='true')
-                        //-     | #{username} 
-                        //-     |&nbsp;&nbsp;&nbsp;&nbsp; 
-                        //-     | #{message}
-                
-                .input-group
-                    .input-group-prepend
-                        select#receiverSelect.custom-select.bg-secondary.text-light(name="receiver")
-                            option(value="all") All
-                    input#messageText.form-control(name="msg" type='text', placeholder="Type something" autofocus)
-                    .input-group-append
-                        button#sendMessage.btn.btn-secondary(type='button') Send
-                
-                    
-                
-                            
+                .tab-content.d-flex.flex-column
+                    #room.active.tab-pane.p-2.mb-auto
+                        .messageBoxRoom#messageBoxRoom
+                    #private.tab-pane.p-2.mb-auto
+                        .messageBoxPrivate#messageBoxPrivate
+
+                    .input-group
+                        .input-group-prepend
+                            select#receiverSelect.custom-select.bg-secondary.text-light(name="receiver")
+                                option(value="all") All
+                        input#messageText.form-control(name="msg" type='text', placeholder="Type something" autofocus)
+                        .input-group-append
+                            button#sendMessage.btn.btn-secondary(type='button') Send
+

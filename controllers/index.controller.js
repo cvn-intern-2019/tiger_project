@@ -1,20 +1,11 @@
 var crypto = require("crypto");
 var User = require("../models/user.model");
-const usernameRegEx = /^[a-z]/;
-const userRegEx = /^[a-z0-9]*$/;
-const emailRegEx = /^[a-z][a-z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
-
-var hashPassword = (username, password) => {
-  let secret = `${username}${password}`
-    .toUpperCase()
-    .split("")
-    .reverse()
-    .join();
-  return crypto
-    .createHmac("SHA256", secret)
-    .update(password)
-    .digest("hex");
-};
+var helper = require("./helper");
+var request = require("request");
+var hashPassword = helper.hashPassword;
+const CAPTCHA = require("./captcha.config").captcha;
+const validateUser = require("./validate.helper");
+var async = require("async");
 
 //===============================================================================
 // Handle GET - POST login page
@@ -30,7 +21,7 @@ module.exports.getLogin = (req, res, next) => {
 
 module.exports.postLogin = (req, res, next) => {
   let body = req.body;
-  if (userRegEx.test(body.username) === false) {
+  if (!validateUser.validateUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "Your input must alphabetic character or number!"
@@ -47,7 +38,12 @@ module.exports.postLogin = (req, res, next) => {
         });
       }
 
-      if (hashPassword(body.username, body.password) !== user.password) {
+      if (
+        !validateUser.checkMatch(
+          hashPassword(body.username, body.password),
+          user.password
+        )
+      ) {
         return res.json({
           type: 0,
           msg: "Your username or password is invalid!"
@@ -67,70 +63,100 @@ module.exports.postLogin = (req, res, next) => {
 module.exports.postRegister = (req, res, next) => {
   let body = req.body;
 
-  if (usernameRegEx.test(body.username) === false) {
+  if (!validateUser.validateCaptchaNull(body.captcha)) {
+    return res.json({
+      type: 0,
+      msg: "No catcha token in request. Please refresh the page."
+    });
+  }
+
+  captchaLink = `https://www.google.com/recaptcha/api/siteverify?secret=${
+    CAPTCHA.sekret
+  }&response=${body.captcha}`;
+
+  request.post(captchaLink, (error, response, content) => {
+    content = JSON.parse(content);
+    console.log(content);
+    if (body.success == false) {
+      return res.json({
+        type: 0,
+        msg: "Captcha is invalid. Please refresh page."
+      });
+    }
+  });
+
+  if (!validateUser.validateFirstCharOfUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "First character of username must be a alphabetic character!"
     });
   }
 
-  if (userRegEx.test(body.username) === false) {
+  if (!validateUser.validateUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "Your username is invalid!"
     });
   }
 
-  if (body.username.length < 5 || body.username.length > 20) {
+  if (!validateUser.validateMaxLengthUsername(body.username)) {
     return res.json({
       type: 0,
       msg: "Username must have length 5 - 20 characters!"
     });
   }
 
-  if (emailRegEx.test(body.email) === false) {
+  if (!validateUser.validateEmail(body.email)) {
     return res.json({
       type: 0,
       msg: "Your email is invalid!"
     });
   }
 
-  if (body.password.length < 5 || body.password.length > 20) {
-    return res.json({
-      type: 0,
-      msg: "Your password must have length 5 - 20 characters!"
-    });
-  }
-
-  if (body.password !== body.confirmPassword) {
+  if (!validateUser.checkMatch(body.password, body.confirmPassword)) {
     return res.json({
       type: 0,
       msg: "Your confirm password not match!"
     });
   }
 
-  User.findOne({ username: body.username, email: body.email }, (err, user) => {
-    if (err) next(err);
-    if (user != undefined) {
-      return res.json({
-        type: 0,
-        msg: "Your username or email already exists!"
+  async.parallel(
+    {
+      usernameFound: function(callback) {
+        User.find({ username: body.username }, callback);
+      },
+      emailFound: function(callback) {
+        User.find({ email: body.email }, callback);
+      }
+    },
+    (err, data) => {
+      if (err) next(err);
+
+      if (data.usernameFound.length > 0) {
+        return res.json({
+          type: 0,
+          msg: "Username is existed"
+        });
+      }
+      if (data.emailFound.length > 0) {
+        return res.json({
+          type: 0,
+          msg: "Email is exists"
+        });
+      }
+      let newUser = new User({
+        username: body.username,
+        email: body.email,
+        password: hashPassword(body.username, body.password)
+      });
+      newUser.save(err => {
+        if (err) return err;
+        return res.json({
+          type: 1
+        });
       });
     }
-  });
-
-  let newUser = new User({
-    username: body.username,
-    email: body.email,
-    password: hashPassword(body.username, body.password)
-  });
-
-  newUser.save(err => {
-    if (err) return err;
-    return res.json({
-      type: 1
-    });
-  });
+  );
 };
 
 module.exports.getLogout = (req, res, next) => {

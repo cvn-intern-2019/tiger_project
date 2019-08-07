@@ -1,44 +1,42 @@
-.customSetting {
-  position: fixed;
-  bottom: 10%;
-}
-
-.customSetting :hover {
+.nav-tabs li:hover {
   cursor: pointer;
 }
 
-.searchForm {
-  padding-right: 22%;
-  padding-top: 5px;
-}
-
-.messageChat {
-  position: fixed;
-  bottom: 10%;
-  width: 25%;
-}
-
-#tab li:hover {
-  cursor: pointer;
-}
-
-.col-3 {
-  position: fixed;
-  bottom: 10%;
-  top: 10%;
-  right: 3%;
-
-  border-radius: 3%;
-}
-
-.tab-content {
+.col-4 .tab-content {
   background: rgb(43, 42, 42);
   height: 65vh;
 }
 
+
+
 #room,
 #private {
-  overflow-y: scroll;
-  height: 65vh;
+  overflow-y: auto;
   word-wrap: break-word;
 }
+
+.player {
+  cursor: pointer;
+}
+
+.player:hover * {
+  opacity: 1;
+  transform: scale(1.08, 1.08);
+}
+
+.selectedPerson {
+  background-color: lightslategrey;
+  
+}
+
+#navHelp li a{
+  text-decoration: none;
+  color: black;
+}
+
+
+#help {
+  cursor: pointer;
+}
+
+

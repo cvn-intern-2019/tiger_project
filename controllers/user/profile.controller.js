@@ -1,79 +1,43 @@
 var User = require("../../models/user.model");
-var crypto = require("crypto");
+var History = require("../../models/history.model");
 var moment = require("moment");
 var multer = require("multer");
-var GridFsStorage = require("multer-gridfs-storage");
-var Grid = require("gridfs-stream");
-var mongoose = require("mongoose");
-
-var gfs = null;
-//let connStr = "mongodb+srv://tiger:tiger@cluster-werewolf-qiefh.gcp.mongodb.net/werewolf?retryWrites=true&w=majority";
-let connStr = "mongodb://tiger:tiger123@localhost:27017/werewolf";
-
-mongoose.connect(connStr, { useNewUrlParser: true }, err => {
-  if (err) next(err);
-  gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  gfs.collection("avatars");
-});
-
-const storage = new GridFsStorage({
-  url: connStr,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      const filename = req.session.username;
-      const fileInfo = {
-        filename: filename,
-        bucketName: "avatars"
-      };
-      resolve(fileInfo);
-    });
-  }
-});
-let upload = multer({ storage });
-
-var generateToken = () => {
-  return crypto.randomBytes(64).toString("hex");
-};
-
-var hashPassword = (username, password) => {
-  let secret = `${username}${password}`
-    .toUpperCase()
-    .split("")
-    .reverse()
-    .join();
-  return crypto
-    .createHmac("SHA256", secret)
-    .update(password)
-    .digest("hex");
-};
+var helper = require("../helper");
+var upload = multer({ storage });
+const validateUser = require("../validate.helper");
 
 module.exports.getProfilePage = (req, res, next) => {
   let userId = req.session.userId;
-
   User.findById(
     userId,
     "username email avatar fullname phone gender birthday",
     (err, data) => {
       if (err) next(err);
-      let csrfToken = generateToken();
+      let csrfToken = helper.generateToken();
       req.session.csrfToken = csrfToken;
 
-      gfs.exist({ filename: data.avatar, root: "avatars" }, (err, found) => {
-        if (err) return next(err);
-        if (found)
-          res.render("user/profile", {
-            userData: data,
-            username: req.session.username,
-            csrfToken: csrfToken
-          });
-        else {
-          data.avatar = undefined;
-          res.render("user/profile", {
-            userData: data,
-            username: req.session.username,
-            csrfToken: csrfToken
-          });
-        }
+      History.find({ "players.username": data.username }, (err, histories) => {
+        if (err) next(err);
+
+        gfs.exist({ filename: data.avatar, root: "avatars" }, (err, found) => {
+          if (err) return next(err);
+          if (found)
+            res.render("user/profile", {
+              userData: data,
+              username: req.session.username,
+              csrfToken: csrfToken,
+              histories: histories
+            });
+          else {
+            data.avatar = undefined;
+            res.render("user/profile", {
+              userData: data,
+              username: req.session.username,
+              csrfToken: csrfToken,
+              histories: histories
+            });
+          }
+        });
       });
     }
   );
@@ -81,11 +45,7 @@ module.exports.getProfilePage = (req, res, next) => {
 
 var validateInput = (req, res, next) => {
   let body = req.body;
-  let csrfToken = generateToken();
-  const fullnameRegEx = /^[a-zA-Z\u00c0-\u1ef9 ]{1,50}$/;
-  const genderRegEx = /^(true|false)$/;
-  const phoneRegEx = /^[0-9]{4,13}$/;
-  const dobRegEx = /^\d{4}(\-)(((0)[0-9])|((1)[0-2]))(\-)([0-2][0-9]|(3)[0-1])$/;
+  let csrfToken = helper.generateToken();
 
   if (
     req.session.csrfToken !== body.csrfToken ||
@@ -99,7 +59,7 @@ var validateInput = (req, res, next) => {
     });
   }
 
-  if (fullnameRegEx.test(body.fullname) === false) {
+  if (validateUser.validateFullname(body.fullname) === false) {
     req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
@@ -108,7 +68,7 @@ var validateInput = (req, res, next) => {
     });
   }
 
-  if (genderRegEx.test(body.gender) === false) {
+  if (validateUser.validateGender(body.gender) === false) {
     req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
@@ -117,7 +77,7 @@ var validateInput = (req, res, next) => {
     });
   }
 
-  if (phoneRegEx.test(body.phone) === false) {
+  if (validateUser.validatePhoneNum(body.phone) === false) {
     req.session.csrfToken = csrfToken;
     return res.json({
       type: 0,
@@ -127,7 +87,7 @@ var validateInput = (req, res, next) => {
   }
 
   if (
-    dobRegEx.test(body.birthday) === false ||
+    validateUser.validateDob(body.birthday) === false ||
     moment(new Date()).diff(moment(body.birthday), "days") < 1
   ) {
     req.session.csrfToken = csrfToken;
@@ -172,6 +132,7 @@ var deleteOldAvatar = (req, res, next) => {
     next();
   });
 };
+
 module.exports.changeAvatar = [
   deleteOldAvatar,
   upload.single("avatarFile"),
@@ -265,7 +226,7 @@ module.exports.getUserPage = (req, res, next) => {
 
 module.exports.changePassword = (req, res, next) => {
   let body = req.body;
-  let csrfToken = generateToken();
+  let csrfToken = helper.generateToken();
   let idUser = req.session.userId;
 
   //check csrf token
@@ -281,7 +242,7 @@ module.exports.changePassword = (req, res, next) => {
   User.findById(idUser, "username password", (err, dataSavedInDB) => {
     if (err) next(err);
 
-    var hashedCurrentPassword = hashPassword(
+    var hashedCurrentPassword = helper.hashPassword(
       dataSavedInDB.username,
       body.currentPassword
     );
@@ -296,7 +257,7 @@ module.exports.changePassword = (req, res, next) => {
     }
 
     if (
-      hashPassword(dataSavedInDB.username, body.newPassword) ==
+      helper.Password(dataSavedInDB.username, body.newPassword) ==
       hashedCurrentPassword
     ) {
       req.session.csrfToken = csrfToken;
@@ -325,7 +286,7 @@ module.exports.changePassword = (req, res, next) => {
       });
     }
 
-    dataSavedInDB.password = hashPassword(
+    dataSavedInDB.password = helper.hashPassword(
       dataSavedInDB.username,
       body.newPassword
     );
@@ -340,4 +301,22 @@ module.exports.changePassword = (req, res, next) => {
       });
     });
   });
+};
+
+module.exports.addHistory = (gameLog, result) => {
+  let playerList = new Array();
+
+  gameLog.characterRole.forEach(c => {
+    playerList.push({ username: c.username, character: c.character.name });
+  });
+
+  let history = new History({
+    timeStart: gameLog.timeStart,
+    timeFinish: gameLog.timeFinish,
+    result: result,
+    players: playerList,
+    details: gameLog.log
+  });
+
+  history.save();
 };
