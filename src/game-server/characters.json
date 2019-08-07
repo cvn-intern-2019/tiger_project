@@ -3,7 +3,7 @@
     "id": 0,
     "name": "Alpha Werewolf",
     "team": 0,
-    "des": "Eat a villager each night. Only alpha werewolf can choose victim.",
+    "des": "Eat a villager each night. Only alpha werewolf can choose victim. Click on avatar of user who you want to choose (Except youself)",
     "amount": 1
   },
   {
@@ -17,14 +17,14 @@
     "id": 2,
     "name": "Aura Seer",
     "team": 1,
-    "des": "At night, find out if someone has a non-ordinary role and what it is.",
+    "des": "At night, find out if someone has a non-ordinary role and what it is. Click on avatar of user who you want to choose (Except youself)",
     "amount": 1
   },
   {
     "id": 3,
     "name": "Witch",
     "team": 1,
-    "des": "Kill or heal a player, once each per game.",
+    "des": "Kill or heal a player, once each per game. Click on avatar of user who you want to choose (Except youself)",
     "save": 1,
     "kill": 1,
     "amount": 1
@@ -33,14 +33,14 @@
     "id": 4,
     "name": "Bodyguard",
     "team": 1,
-    "des": "Choose a different player each night to protect. That player cannot be killed that night.",
+    "des": "Choose a different player each night to protect. That player cannot be killed that night. Click on avatar of user who you want to choose",
     "amount": 1
   },
   {
     "id": 5,
     "name": "Hunter",
     "team": 1,
-    "des": "If you are killed, take someone down with you.",
+    "des": "If you are killed, take someone down with you. Click on avatar of user who you want to choose (Except youself)",
     "target": null,
     "amount": 1
   },

@@ -36,19 +36,17 @@ block content
 
                 .row
                     #controller.col-4.p-3.border.light-white.border-right-0.d-none
+                        h4.font-weight-bold Your Character : 
                         h1
                             #character.badge.badge-info 
                         h6#team.font-weight-bold 
+                        h6 Your role : 
                         h6#des.font-weight-light
                     button#controllerToggle.btn.btn-outline-light.btn-sm.d-none &lt;
                     .col-1
                     .col.mb-5
                         #playerList.row.my-2.d-flex.flex-wrap
-                            //- .player.d-flex.flex-column.mr-3.align-items-center.mb-4
-                            //-     img(src='http://placehold.it/80' width="80px").m-2
-                            //-     button.btn-sm.btn-light Waiting
-
-              
+                         
                 div(style='position: absolute; top: 100px; right: 0;')
                     .toast(role='alert', aria-live='assertive', aria-atomic='true', data-autohide='false')
                         .toast-header
