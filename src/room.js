@@ -80,7 +80,11 @@ $(document).ready(() => {
 
   $("#help").click(function() {
     $(".toast")
-      .show()
-      .toast("show");
+      .toast("show")
+      .show("fast");
+  });
+
+  $(".toast .toast-header button").click(function() {
+    $(".toast").hide("fast");
   });
 });
