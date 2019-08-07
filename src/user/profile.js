@@ -1,9 +1,19 @@
 import "../layout";
+import "datatables.net/js/jquery.dataTables";
 
 const $ = require("jquery");
 const editProfile = require("./profile.edit");
 
 $(document).ready(() => {
+  $("#history table").DataTable({
+    scrollY: "40vh",
+    scrollCollapse: true,
+    order: [[0, "desc"]],
+    paging: false
+  });
+  $("#createRoom").hide();
+  $(".search-box").hide();
+
   if (
     $(`#changeAvatarModal img`)
       .attr("src")
@@ -44,28 +54,6 @@ $(document).ready(() => {
     }
   });
 
-  var readURL = function(input) {
-    let extension = input.files[0].type;
-    if (extension !== "image/png" && extension !== "image/jpeg") {
-      alert("File is invalid!");
-      return;
-    }
-    if (input.files[0].size > 800000) {
-      alert("Size of file can't over 800KB");
-      return;
-    }
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $(`#changeAvatarModal img`).attr("src", e.target.result);
-      };
-
-      reader.readAsDataURL(input.files[0]);
-    } else {
-      $(`#changeAvatarModal img`).attr("src", "http://placehold.it/250");
-    }
-  };
-
   var urlClone = null;
   $(`#changeAvatarModal input[name=avatarFile]`).change(function(e) {
     if ($(e.target).val() == "") {
@@ -73,7 +61,7 @@ $(document).ready(() => {
       return;
     }
     urlClone = $(e.target).clone();
-    readURL(this);
+    editProfile.readURL(this);
     $(`#changeAvatarModal #submitChange`).attr("disabled", false);
     if ($(this).val() == "") $(`#changeAvatarModal #deleteAvatar`).hide();
     else $(`#changeAvatarModal #deleteAvatar`).show();
@@ -94,7 +82,4 @@ $(document).ready(() => {
     );
     $(`#changeAvatarModal input`).val("");
   });
-
-  $("#createRoom").hide();
-  $(".search-box").hide();
 });

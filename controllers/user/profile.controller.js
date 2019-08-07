@@ -17,9 +17,7 @@ module.exports.getProfilePage = (req, res, next) => {
 
       History.find({ "players.username": data.username }, (err, histories) => {
         if (err) next(err);
-        histories.sort((a, b) => {
-          return a.timeStart < b.timeStart;
-        });
+
         gfs.exist({ filename: data.avatar, root: "avatars" }, (err, found) => {
           if (err) return next(err);
           if (found)
