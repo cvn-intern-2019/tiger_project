@@ -72,7 +72,7 @@ function pharseDay(room, socket) {
   helper.setPharse(room.gameLog.currentDay, room.gameLog.currentPharse);
   helper.listPlayerPlaying(room);
 
-  let MINUTES = 0;
+  let MINUTES = 1;
   let SECONDS = 30;
   let countdown = helper.countDown(MINUTES, SECONDS);
   countdown.then(() => {
