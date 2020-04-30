@@ -21,7 +21,7 @@
     "express-session": "^1.16.2",
     "gridfs-stream": "^1.1.1",
     "http-errors": "~1.6.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "mongo": "^0.1.0",
     "mongodb": "^3.3.0-beta2",
