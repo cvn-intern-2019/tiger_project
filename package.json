@@ -14,7 +14,7 @@
     "chai-http": "^4.3.0",
     "connect-mongo": "^3.0.0",
     "cookie-parser": "~1.4.4",
-    "datatables.net": "^1.10.19",
+    "datatables.net": "^1.10.22",
     "debug": "~2.6.9",
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
