@@ -48,7 +48,7 @@
     "nodemon": "^1.19.1",
     "style-loader": "^0.23.1",
     "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.12"
   },
   "description": "Tiger team project"
 }
